@@ -1,0 +1,49 @@
+<core:FragmentDefinition xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns="sap.m"
+	xmlns:smartField="sap.ui.comp.smartfield" xmlns:form="sap.ui.comp.smartform" xmlns:upload="sap.m.upload">
+	<f:SimpleForm id="idAirportInfoDisplay" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="2"
+		labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+		singleContainerFullSize="false" visible="{= ${ViewMode>/mode} === 'view' ? true : false }">
+		<f:content>
+
+			<Label text="{i18n>AirportCode}"/>
+			<Text text="{Header>/AirportCode}" visible="{= ${ViewMode>/mode} === 'view' ? true : false }"/>
+
+			<Label text="{i18n>AirportName}"/>
+			<Text text="{Header>/AirportName}" visible="{= ${ViewMode>/mode} === 'view' ? true : false }"/>
+
+			<Label text="{i18n>Country}"/>
+            <Text text="{Header>/Country}" visible="{= ${ViewMode>/mode} === 'view' ? true : false }"/>
+
+            <Label text="{i18n>City}"/>
+            <Text text="{Header>/City}" visible="{= ${ViewMode>/mode} === 'view' ? true : false }"/>
+		</f:content>
+	</f:SimpleForm>
+
+	<f:SimpleForm id="idAirportInfoEdit" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="2" labelSpanS="12"
+		adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+		singleContainerFullSize="false" visible="{= ${ViewMode>/mode} === 'edit' ? true : ${ViewMode>/mode} === 'add' ? true :false }">
+		<f:content>
+
+			<Label text="{i18n>AirportCode}"/>
+			<Input id="idAirportCode" value="{Header>/AirportCode}"
+				visible="{= ${ViewMode>/mode} === 'edit' ? true : ${ViewMode>/mode} === 'add' ? true :false }" showValueHelp="true"
+				valueHelpRequest="onAirportRequest" liveChange="onAirportChange" submit="onAirportChange" required="true"
+				editable="{= ${ViewMode>/mode} === 'add' ? true :false }" maxLength="3"/>
+            
+            <Label text="{i18n>AirportName}"/>
+			<Input id="idAirportName" value="{Header>/AirportName}"
+				visible="{= ${ViewMode>/mode} === 'edit' ? true : ${ViewMode>/mode} === 'add' ? true :false }" editable="false">
+			</Input>
+
+			<Label text="{i18n>Country}"/>
+            <Input id="idCountry" value="{Header>/Country}"
+                visible="{= ${ViewMode>/mode} === 'edit' ? true : ${ViewMode>/mode} === 'add' ? true :false }" editable="false">
+            </Input>
+
+			<Label text="{i18n>City}"/>
+			<Input id="idCity" value="{Header>/City}"
+				visible="{= ${ViewMode>/mode} === 'edit' ? true : ${ViewMode>/mode} === 'add' ? true :false }" editable="false">
+			</Input>
+		</f:content>
+	</f:SimpleForm>
+</core:FragmentDefinition>
