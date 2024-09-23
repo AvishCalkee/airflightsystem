@@ -69,12 +69,18 @@
 					id="smartTable"
 					smartVariant="PageVariantId"
 					smartFilterId="smartFilterBar"
-					entitySet="Flight"
+					entitySet="FlightSet"
 					beforeRebindTable="onBeforeRebindTable"
 					tableType="Table"
 					enableAutoColumnWidth="true"
 					useTablePersonalisation="true"
-					showRowCount="true">
+					showRowCount="true"
+					enableExport="true"
+					enableAutoBinding="true"
+					class='sapUiResponsiveContentPadding'
+					justifyContent="Start" 
+					placeToolbarInTable="true"
+					>
 					<smartTable:customToolbar>
 						<m:OverflowToolbar>
 							<m:Title text="{i18n>airFlight}"/>
@@ -83,9 +89,15 @@
 						</m:OverflowToolbar>
 					</smartTable:customToolbar>
 					<m:Table
-						id="flightTableId">
+						id="flightTableId"
+						growing="true"
+						growingScrollToLoad="true"
+						sticky="ColumnHeaders,HeaderToolbar"
+						fixedLayout="false"
+						popinLayout="GridSmall"
+						alternateRowColors="true">
 						<m:columns>
-							<m:Column id="FlightIdCol">
+							<m:Column id="FlightIdCol" hAlign="Begin">
 								<m:Text text="{i18n>flightId}"/>
 									<m:customData>
 										<core:CustomData id="dataFlightId"
@@ -94,11 +106,10 @@
 												"columnIndex": "0",
 												"leadingProperty": "FlightId",
 												"columnKey": "FlightId"
-												}
 											}'/>
 								</m:customData>
 							</m:Column>
-							<m:Column id="ArrivalDateTimeCol">
+							<m:Column id="ArrivalDateTimeCol" hAlign="Begin">
 								<m:Text text="{i18n>arrivalTime}"/>
 									<m:customData>
 										<core:CustomData id="ArrivalDateTimeId"
@@ -107,11 +118,10 @@
 													"columnIndex": "1",
 													"leadingProperty": "ArrivalDateTime",
 													"columnKey": "ArrivalDateTime"
-													}
 												}'/>
 									</m:customData>
 							</m:Column>
-							<m:Column id="DepartureDateTimeCol">
+							<m:Column id="DepartureDateTimeCol" hAlign="Begin">
 								<m:Text text="{i18n>departureTime}"/>
 									<m:customData>
 										<core:CustomData id="DepartureDateTimeId"
@@ -120,11 +130,10 @@
 													"columnIndex": "2",
 													"leadingProperty": "DepartureDateTime",
 													"columnKey": "DepartureDateTime"
-													}
 												}'/>
 									</m:customData>
 							</m:Column>
-							<m:Column id="FlightStatusCol">
+							<m:Column id="FlightStatusCol" hAlign="Begin">
 								<m:Text text="{i18n>Statut}"/>
 									<m:customData>
 										<core:CustomData id="flightStatusDataId"
@@ -133,11 +142,10 @@
 												"columnIndex": "3",
 												"leadingProperty": "FlightStatus",
 												"columnKey": "FlightStatus"
-												}
 											}'/>
 										</m:customData>
 							</m:Column>
-							<m:Column id="FlightDurationCol">
+							<m:Column id="FlightDurationCol" hAlign="Begin">
 								<m:Text text="{i18n>flightDuration}"/>
 									<m:customData>
 										<core:CustomData id="flightDurationDataId"
@@ -146,14 +154,21 @@
 													"columnIndex": "4",
 													"leadingProperty": "FlightDuration",
 													"columnKey": "FlightDuration"
-													}
 												}'/>
 									</m:customData>
 							</m:Column>
 						</m:columns>
 						<m:items>
-							<m:ColumnListItem>
-									<m:Text text="{FlightId}" />
+							<m:ColumnListItem type="Navigation">
+							       <m:HBox alignItems="Center">
+								<m:Avatar
+									src="sap-icon://flight"
+									class="sapUiTinyMarginEnd"
+									displaySize="S"
+									backgroundColor="Accent7"/>
+								        <m:Text text="{FlightId}" />
+								   </m:HBox>
+									
 									<m:Text	text="{ArrivalDateTime}" />
 									<m:Text	text="{DepartureDateTime}" />
 									<m:Text	text="{FlightStatus}" />
