@@ -6,7 +6,7 @@ function (Controller) {
 
     return Controller.extend("fiori.bootcamp.airflightsystem.controller.AirFlightList", {
         onInit: function () {
-            this.getView().bindElement("/AirlineSet");
+           
         },
 
         onBeforeRebindTable: function(oEvent) {
