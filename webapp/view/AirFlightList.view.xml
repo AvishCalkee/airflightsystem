@@ -190,7 +190,7 @@
 										text="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatus' }"
 										state="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatusState' }"
 										icon="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatusIcon' }"/>
-									<m:Text	text="{FlightDuration}" />
+									<m:Text	text="{path: 'FlightDuration', formatter: '.formatter.fnFlightDuration'}" />
 									<!--<m:HBox alignItems="Center">
 									<m:Avatar
 									src="sap-icon://da"

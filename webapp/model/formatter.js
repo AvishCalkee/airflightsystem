@@ -57,10 +57,19 @@ function (JSONModel, DateFormat) {
         },
 
         fnFormatDate: function(oDate){
-            var oDateFormat = DateFormat.getDateTimeInstance({pattern: "MMM dd, yyyy"}),
+            var oDateFormat = DateFormat.getDateTimeInstance({pattern: "HH:mm MMM dd, yyyy"}),
                 sDate = oDateFormat.format(oDate);
             
             return sDate;
+        },
+
+        fnFlightDuration: function(oDuration){
+            var hours = Math.floor(oDuration.ms / (1000 * 60 * 60));
+            var minutes = Math.floor((oDuration.ms % (1000 * 60 * 60)) / (1000 * 60));
+
+            var formattedTime = hours + "hrs " + minutes + "mins";
+        
+            return formattedTime;
         }
     };
 
