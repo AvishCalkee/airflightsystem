@@ -111,7 +111,7 @@
         },
         {
           "name": "AirFlightDetail",
-          "pattern": "AirFlightDetail",
+          "pattern": "Detail/{DetailPath}",
           "target": [
             "TargetAirFlightDetail"
           ]

@@ -80,6 +80,7 @@
 					class='sapUiResponsiveContentPadding'
 					justifyContent="Start" 
 					placeToolbarInTable="true"
+					requestAtLeastFields="ToCrew/LastName"
 					>
 					<smartTable:customToolbar>
 						<m:OverflowToolbar>
@@ -96,7 +97,7 @@
 						fixedLayout="false"
 						popinLayout="GridSmall"
 						alternateRowColors="true"
-						itemPress="fnListItemPress">
+						itemPress="fnOnItemPress">
 						<m:columns>
 							<m:Column id="FlightIdCol" hAlign="Begin">
 								<m:Text text="{i18n>flightId}"/>
@@ -158,9 +159,22 @@
 												}'/>
 									</m:customData>
 							</m:Column>
+							<m:Column id="FlightCap" hAlign="Begin">
+								<m:Text text="{i18n>lblTeam}"/>
+								<m:customData>
+										<core:CustomData id="flightCrew"
+												key="p13nData"
+												value='\{
+													"columnIndex": "5",
+													"leadingProperty": "ToCrew",
+													"columnKey": "ToCrew"
+												}'/>
+									</m:customData>
+							</m:Column>
 						</m:columns>
 						<m:items>
 							<m:ColumnListItem type="Navigation">
+							<m:cells>
 							       <m:HBox alignItems="Center">
 								<m:Avatar
 									src="sap-icon://flight"
@@ -180,6 +194,19 @@
 
 									<!-- <m:Text	text="{ path: 'FlightStatus', formatter: '.fnFlightStatus'}" /> -->
 									<m:Text	text="{FlightDuration}" />
+									<!--<m:HBox alignItems="Center">
+									<m:Avatar
+									src="sap-icon://da"
+									class="sapUiTinyMarginEnd"
+									displaySize="S"
+									backgroundColor="Accent7"/>
+									 <m:Text text="{path : 'ToCrew',formatter: '.formatter.fnGetCap'}" />
+								   </m:HBox> -->
+								   <m:Tokenizer width='100%' tokens="{path : 'ToCrew',templateShareable: true}">
+								       <m:Token editable="false" text="{LastName}" tooltip="{Role}" class='tokenizerToLeft'>
+									   </m:Token>
+								   </m:Tokenizer>
+								   </m:cells>
 							</m:ColumnListItem>
 						</m:items>
 					</m:Table>
