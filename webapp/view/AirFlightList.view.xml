@@ -95,7 +95,8 @@
 						sticky="ColumnHeaders,HeaderToolbar"
 						fixedLayout="false"
 						popinLayout="GridSmall"
-						alternateRowColors="true">
+						alternateRowColors="true"
+						itemPress="fnListItemPress">
 						<m:columns>
 							<m:Column id="FlightIdCol" hAlign="Begin">
 								<m:Text text="{i18n>flightId}"/>
@@ -169,9 +170,15 @@
 								        <m:Text text="{FlightId}" />
 								   </m:HBox>
 									
-									<m:Text	text="{ArrivalDateTime}" />
-									<m:Text	text="{DepartureDateTime}" />
-									<m:Text	text="{FlightStatus}" />
+									<m:Text	text="{ path:'ArrivalDateTime', formatter: '.formatter.fnFormatDate'}" />
+									<m:Text	text="{ path:'DepartureDateTime', formatter: '.formatter.fnFormatDate'}" />
+									<m:ObjectStatus
+										text="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatus' }"
+										state="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatusState' }"
+										icon="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatusIcon' }"/>
+
+
+									<!-- <m:Text	text="{ path: 'FlightStatus', formatter: '.fnFlightStatus'}" /> -->
 									<m:Text	text="{FlightDuration}" />
 							</m:ColumnListItem>
 						</m:items>
