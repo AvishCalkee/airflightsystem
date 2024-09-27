@@ -13,6 +13,14 @@ function (JSONModel, Device) {
             var oModel = new JSONModel(Device);
             oModel.setDefaultBindingMode("OneWay");
             return oModel;
+        },
+
+        fnInitCustomizing: function (oUIModel, oComponent){
+            oComponent.pInitCustomizingReady = new Promise (resolve => oUIModel.attachRequestCompleted(function (){
+                oComponent.oDefaultCustomizing = JSON.parse(JSON.stringify(oUIModel.getData()));
+                resolve();
+            }))
+
         }
     };
 

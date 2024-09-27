@@ -11,11 +11,12 @@ function (Controller) {
             oRouter.getRoute("AirFlightDetail").attachPatternMatched(this.fnObjectMatched,this);
         },
 
-        fnObjectMatched: function (oEvent){
+        fnObjectMatched: async function (oEvent){
             var sFlightId = "/"+oEvent.getParameter("arguments").DetailPath,
             oView = this.getView();
+            await this.fnRestoreUIModel();
             oView.bindElement({path : sFlightId,
-                parameters:{},
+                parameters:{expand:"ToAirport"},
                 events:{
                   dataRequested: function (){
                     oView.setBusy(true);
@@ -30,7 +31,24 @@ function (Controller) {
                 }
 
             });
+        },
+
+        fnRestoreUIModel : async function (){
+            var oOwnerComponent = this.getOwnerComponent(),
+                oUIModel = this.getView().getModel("UIModel");
+
+            await oOwnerComponent.pInitCustomizingReady;
+
+            return new Promise((resolve, reject) => {
+                var oInitialUIModel = JSON.parse(JSON.stringify(oOwnerComponent.oDefaultCustomizing));
+                oUIModel.setData(oInitialUIModel);
+                resolve();
+            });
+
         }
+
+
+
 
 
 
