@@ -1,6 +1,6 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "fiori/bootcamp/airflightsystem/model/formatter",
+    "../model/formatter"
 ],
 function (Controller,Formatter) {
     "use strict";
