@@ -89,6 +89,21 @@
 			</m:FlexBox>
 		</headerContent>
 
+		<sections>
+			<ObjectPageSection id="oPSAirport" title="Airport">
+                 <subSections>
+				    <ObjectPageSubSection >
+					   <blocks>
+					      <core:Fragment id="fAirport" fragmentName="fiori.bootcamp.airflightsystem.view.fragment.Airport" type="XML"/>
+					   </blocks>
+					</ObjectPageSubSection>
+				 
+				 </subSections>
+
+			</ObjectPageSection>
+		
+		</sections>
+
 		
 	</ObjectPageLayout>
 </mvc:View>

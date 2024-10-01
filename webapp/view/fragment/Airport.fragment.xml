@@ -1,5 +1,6 @@
 <core:FragmentDefinition xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns="sap.m"
-	xmlns:smartField="sap.ui.comp.smartfield" xmlns:form="sap.ui.comp.smartform" xmlns:upload="sap.m.upload">
+	xmlns:smartField="sap.ui.comp.smartfield" xmlns:form="sap.ui.comp.smartform" xmlns:tnt="sap.tnt" xmlns:upload="sap.m.upload">
+	<!--
 	<f:SimpleForm id="idAirportInfoDisplay" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="2"
 		labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
 		singleContainerFullSize="false" visible="{= ${ViewMode>/mode} === 'view' ? true : false }">
@@ -43,5 +44,132 @@
 				visible="{= ${ViewMode>/mode} === 'edit' ? true : ${ViewMode>/mode} === 'add' ? true :false }" editable="false">
 			</Input>
 		</f:content>
-	</f:SimpleForm>
+	</f:SimpleForm>-->
+	<VBox class="sapUiSmallMargin">
+		<f:SimpleForm id="SimpleFormDisplay480_Trial"
+			editable="false"
+			layout="ResponsiveGridLayout"
+			title="Departure and arrival details"
+			labelSpanXL="4"
+			labelSpanL="4"
+			labelSpanM="4"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="0"
+			emptySpanL="0"
+			emptySpanM="0"
+			emptySpanS="0"
+			columnsXL="3"
+			columnsL="2"
+			columnsM="2"
+			singleContainerFullSize="false" >
+			<f:content>
+				<core:Title text="Departure Airport" />
+				<Label text="Airport Code" />
+				<Text text="{ToDepartureAiport/AirportCode}" />
+				<Label text="Airport Name" />
+				<Text text="{ToDepartureAiport/AirportName}" />
+				<Label text="City" />
+				<Text text="{ToDepartureAiport/City}" />
+				<Label text="Country" />
+				<Text text="{ToDepartureAiport/Country}" />
+                <Label text="Departure Date/Time"/>
+				<tnt:InfoLabel id="iLabelDepartureDateTime" text="{ path:'DepartureDateTime', formatter: '.formatter.fnFormatDate'}"  colorScheme="6" width = "140px"/>
+
+				<core:Title text="Arrival Airport" />
+				<Label text="Airport Code" />
+				<Text text="{ToDepartureAiport/AirportCode}" />
+				<Label text="Airport Name" />
+				<Text text="{ToDepartureAiport/AirportName}" />
+				<Label text="City" />
+				<Text text="{ToDepartureAiport/City}" />
+				<Label text="Country" />
+				<Text text="{ToDepartureAiport/Country}" />
+				
+				<Label text="Arrival Date/Time"/>
+				<tnt:InfoLabel id="iLabelArrivalDateTime" text="{ path:'ArrivalDateTime', formatter: '.formatter.fnFormatDate'}"  colorScheme="6" width = "140px"/>
+			
+			</f:content>
+		</f:SimpleForm>
+		
+		<f:SimpleForm id="sFModif"
+			editable="false"
+			layout="ResponsiveGridLayout"
+			title="Departure and arrival details"
+			labelSpanXL="4"
+			labelSpanL="4"
+			labelSpanM="4"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="0"
+			emptySpanL="0"
+			emptySpanM="0"
+			emptySpanS="0"
+			columnsXL="3"
+			columnsL="2"
+			columnsM="2"
+			singleContainerFullSize="false" >
+			<f:content>
+				<core:Title text="Departure Airport" />
+				<Label text="Airport Code" labelFor="inputAirportCode"/>
+				<Input id="inputAirportCode"
+						placeholder="Enter airport code"
+						value="{ToDepartureAiport/AirportCode}"/>
+                
+				<Label text="Airport Name" labelFor="inputAirportName"/>
+				<Input id="inputAirportName"
+						placeholder="Enter airport Name"
+						value="{ToDepartureAiport/AirportName}"/>
+
+				<Label text="City" labelFor="inputCity"/>
+				<Input id="inputCity"
+						placeholder="Enter City"
+						value="{ToDepartureAiport/City}"/>
+				
+				<Label text="Country" labelFor="inputCountry"/>
+				<Input id="inputCountry"
+						placeholder="Enter Country"
+						value="{ToDepartureAiport/Country}"/>
+
+                <Label text="Departure Date/Time"/>
+				<tnt:InfoLabel id="infoLabelDeparture" text="{ path:'DepartureDateTime', formatter: '.formatter.fnFormatDate'}"  colorScheme="6" width = "140px"/>
+
+				<core:Title text="Arrival Airport" />
+				<!-- <Label text="Airport Code" />
+				<Text text="{ToDepartureAiport/AirportCode}" />
+				<Label text="Airport Name" />
+				<Text text="{ToDepartureAiport/AirportName}" />
+				<Label text="City" />
+				<Text text="{ToDepartureAiport/City}" />
+				<Label text="Country" />
+				<Text text="{ToDepartureAiport/Country}" /> -->
+				
+				
+			    
+
+                <Label text="Airport Code" labelFor="inputDestinationAirportCode"/>
+				<Input id="inputDestinationAirportCode"
+						placeholder="Enter airport code"
+						value="{ToDestinationAirport/AirportCode}"/>
+                
+				<Label text="Airport Name" labelFor="inputDestinationAirportName"/>
+				<Input id="inputDestinationAirportName"
+						placeholder="Enter airport Name"
+						value="{ToDestinationAirport/AirportName}"/>
+
+				<Label text="City" labelFor="inputDestionationCity"/>
+				<Input id="inputDestinationCity"
+						placeholder="Enter City"
+						value="{ToDestinationAirport/City}"/>
+				
+				<Label text="Country" labelFor="inputDestinationCountry"/>
+				<Input id="inputDestinationCountry"
+						placeholder="Enter Country"
+						value="{ToDestinationAirport/Country}"/>
+
+				<Label text="Arrival Date/Time"/>
+				<tnt:InfoLabel id="infoLabelArrival" text="{ path:'ArrivalDateTime', formatter: '.formatter.fnFormatDate'}"  colorScheme="6" width = "140px"/>
+			</f:content>
+		</f:SimpleForm>
+	</VBox>
 </core:FragmentDefinition>

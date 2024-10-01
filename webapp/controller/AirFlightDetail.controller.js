@@ -1,10 +1,12 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
+    "sap/ui/core/mvc/Controller",
+    "../model/formatter",
 ],
-function (Controller) {
+function (Controller,Formatter) {
     "use strict";
 
     return Controller.extend("fiori.bootcamp.airflightsystem.controller.AirFlightDetail", {
+        formatter: Formatter,
         onInit: function () {
 
             var oRouter = this.getOwnerComponent().getRouter();
@@ -16,7 +18,7 @@ function (Controller) {
             oView = this.getView();
             await this.fnRestoreUIModel();
             oView.bindElement({path : sFlightId,
-                parameters:{expand:"ToAirport"},
+                parameters:{expand:"ToDepartureAiport,ToDestinationAirport"},
                 events:{
                   dataRequested: function (){
                     oView.setBusy(true);
