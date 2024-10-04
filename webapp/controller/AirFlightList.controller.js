@@ -14,9 +14,38 @@ function (Controller,Formatter) {
 
         onBeforeRebindTable: function(oEvent) {
 			oEvent.getParameter("bindingParams").parameters["expand"] = "ToCrew";
-            oEvent.getSource().attachEventOnce("dataReceived",null,this.onDataReceived,this);
+            
+            var aFilters = oEvent.getParameter("bindingParams").filters;
+            var oFilters = [];
 
+            var sFlightID = this.byId("oFlightIdFilter").getValue() !== "";
+            if(sFlightID) {
+                oFilters.push(new sap.ui.model.Filter("FlightId", "EQ", this.byId("oFlightIdFilter").getValue()));
+            }
 
+            var sDestAirport = this.byId("oDestAirportCodeFilter").getValue() !== "";
+            if(sDestAirport) {
+                oFilters.push(new sap.ui.model.Filter("DestinationAirportCode", "EQ", this.byId("oDestAirportCodeFilter").getValue()));
+            }
+
+            var sOriginAirport = this.byId("oOriginAirportCodeFilter").getValue() !== "";
+            if(sOriginAirport) {
+                oFilters.push(new sap.ui.model.Filter("OriginAirportCode", "EQ", this.byId("oOriginAirportCodeFilter").getValue()));
+            }
+
+            var sAirlineID = this.byId("oAirlineIdFilter").getValue() !== "";
+            if(sAirlineID) {
+                oFilters.push(new sap.ui.model.Filter("AirlineId", "EQ", this.byId("oAirlineIdFilter").getValue()));
+            }
+
+            if (oFilters.length !== 0){
+                aFilters.push(new sap.ui.model.Filter({
+                    filters: oFilters,
+                    and: true
+                }));
+            }
+
+            oEvent.getSource().attachEventOnce("dataReceived",aFilters,this.onDataReceived,this);
 		},
 
         onDataReceived: function(oEvent,aFilter){
