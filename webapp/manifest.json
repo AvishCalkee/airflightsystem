@@ -5,7 +5,7 @@
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
-      "version": "0.0.15"
+      "version": "0.0.16"
     },
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
@@ -24,6 +24,10 @@
           "localUri": "localService/metadata.xml",
           "odataVersion": "2.0"
         }
+      },
+      "FlightStatus_json_model_data_source":{
+        "uri": "valueHelp/FlightStatus.json",
+        "type": "JSON"
       }
     }
   },
@@ -84,6 +88,10 @@
         "type": "sap.ui.model.json.JSONModel",
         "uri" : "model/UIModel.json",
         "preload": false
+      },
+      "flightStatus_global_json_model":{
+        "type": "sap.ui.model.json.JSONModel",
+        "dataSource": "FlightStatus_json_model_data_source"
       }
     },
     "resources": {

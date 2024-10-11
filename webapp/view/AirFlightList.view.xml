@@ -23,10 +23,8 @@
 								</sfb:ControlConfiguration>
 								<sfb:ControlConfiguration index="2" key="FlightStatus" label="{i18n>Statut}">
 									<sfb:customControl>
-										<m:Select id="flightStatusId">
-											<core:Item key="1" text="On Time"/>
-                                            <core:Item key="2" text="Delayed"/>
-                                            <core:Item key="3" text="Cancel"/>
+										<m:Select id="flightStatusId" items="{ path:'/FlightStatus', templateShareable:false, sorter:{path:'text'} }">
+											<core:Item key="{key}" text="{text}"/>
 										</m:Select>
 									</sfb:customControl>
 								</sfb:ControlConfiguration>
