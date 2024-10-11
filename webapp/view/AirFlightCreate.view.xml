@@ -14,12 +14,12 @@
 	xmlns:html="http://www.w3.org/1999/xhtml">
 	<uxap:ObjectPageLayout id="idObjectPageLayout" showTitleInHeaderContent="false" upperCaseAnchorBar="false" backgroundDesignAnchorBar="Translucent">
 		<uxap:headerTitle>
-			<uxap:ObjectPageHeader id="idNewBookingHeader" objectTitle="New Booking" />
+			<uxap:ObjectPageHeader id="idNewBookingHeader" objectTitle="New Booking"></uxap:ObjectPageHeader>
 		</uxap:headerTitle>
 		<uxap:headerContent>
 			<FlexBox wrap="Wrap" fitContainer="true" alignItems="Stretch">
 				<HBox justifyContent="Center" class="sapUiSmallMarginEnd">
-					<form:Avatar id="idNewBookingAvatar" src="sap-icon://flight" displaySize="L" displayShape="Square" class="sapUiTinyMarginEnd" backgroundColor="Accent9" />
+					<form:Avatar id="idNewBookingAvatar" src="sap-icon://flight" displaySize="L" displayShape="Square" class="sapUiTinyMarginEnd" backgroundColor="Accent9"></form:Avatar>
 				</HBox>
 			</FlexBox>
 		</uxap:headerContent>
@@ -29,23 +29,23 @@
 					<uxap:ObjectPageSubSection id="idDestinationSection">
 						<f:SimpleForm id="idDestinationDet" editable="false" layout="ResponsiveGridLayout" labelSpanXL="5" labelSpanL="5" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="3" singleContainerFullSize="false" visible="true">
 							<f:content>
-								<core:Title text="Destination Details" />
-								<Label text="From" required="true" />
+								<core:Title text="Destination Details"/>
+								<Label text="From" required="true"/>
 								<ComboBox id="idDepartureFrom" selectionChange="customFieldChange">
-									<core:Item key="1" text="Mauritius" />
-									<core:Item key="2" text="Paris" />
-									<core:Item key="3" text="Rome" />
-									<core:Item key="4" text="Dubai" />
-									<core:Item key="5" text="Istanbul" />
+									<core:Item key="1" text="Mauritius"/>
+									<core:Item key="2" text="Paris"/>
+									<core:Item key="3" text="Rome"/>
+									<core:Item key="4" text="Dubai"/>
+									<core:Item key="5" text="Istanbul"/>
 								</ComboBox>
-								<core:Title text="" />
-								<Label text="To" required="true" />
+								<core:Title text=""/>
+								<Label text="To" required="true"/>
 								<ComboBox id="idDepartureTo" selectionChange="customFieldChange">
-									<core:Item key="1" text="Mauritius" />
-									<core:Item key="2" text="Paris" />
-									<core:Item key="3" text="Rome" />
-									<core:Item key="4" text="Dubai" />
-									<core:Item key="5" text="Istanbul" />
+									<core:Item key="1" text="Mauritius"/>
+									<core:Item key="2" text="Paris"/>
+									<core:Item key="3" text="Rome"/>
+									<core:Item key="4" text="Dubai"/>
+									<core:Item key="5" text="Istanbul"/>
 								</ComboBox>
 							</f:content>
 						</f:SimpleForm>
@@ -54,92 +54,82 @@
 			</uxap:ObjectPageSection>
 			<uxap:ObjectPageSection id="idBookingSection" title="Booking">
 				<uxap:subSections>
-					<uxap:ObjectPageSubSection id="idBookingSubSection1" title="Flight Details">
+					<uxap:ObjectPageSubSection id="idBookingSubSection" title="Flight Details">
 						<f:SimpleForm id="idBookingDet" editable="false" layout="ResponsiveGridLayout" labelSpanXL="5" labelSpanL="5" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="3" singleContainerFullSize="false" visible="true">
 							<f:content>
-								<core:Title text="Flight Info" />
-								<Label text="Booking ID" />
-								<Text text="-" />
-								<Label text="Booking Date" required="true" />
-								<DatePicker id="idBookingDate" placeholder="Enter Date" change="onHandleDateChange" class="sapUiSmallMarginBottom" />
+								<core:Title text="Flight Info"/>
+								<Label text="Booking ID"/>
+								<Text text="-"/>
 
-								<core:Title text="" />
-								<Label text="Airline ID" required="true" />
-								<Input id="idAirlineID" value="{Booking>/AirlineId}" showValueHelp="true" valueHelpRequest="onRequestAirline" change="onChangeFlight" visible="true" />
-								<Label text="Flight ID" required="true" />
-								<Input id="idFlightID" value="{Booking>/FlightId}" showValueHelp="true" valueHelpRequest="onRequestFlight" visible="true" />
-								<Label text="Flight Number" required="true" />
-								<Input id="idFlightNumber" value="{Booking>/FlightNo}" visible="true" showValueHelp="true" valueHelpRequest="onFlightNumber" />
+								<Label text="Booking Date" required="true"/>
+								<DatePicker id="idBookingDate" value="{ 'path':'Booking>/BookingDate', 'type':'sap.ui.model.type.Date' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/>
 
-								<core:Title text="" />
-								<Label text="Airport Code" required="true" />
-								<Input value="{Booking>/AirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true" />
+								<core:Title text=""/>
+								<Label text="Airline Id" required="true"/>
+								<Input id="idAirlineId" value="{Booking>/AirlineId}" showValueHelp="true" valueHelpRequest="onRequestAirline" change="onChangeFlight" visible="true"/>
 
-								<Label text="Flight Date" required="true" />
-								<DatePicker id="idFlighteDateTime" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom" />
-							</f:content>
-						</f:SimpleForm>
-					</uxap:ObjectPageSubSection>
-					<uxap:ObjectPageSubSection id="idBookingSubSection2" title="Seat Details">
-						<f:SimpleForm id="idSeatDet" editable="false" layout="ResponsiveGridLayout" labelSpanXL="5" labelSpanL="5" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="3" singleContainerFullSize="false" visible="true">
-							<f:content>
-								<core:Title text="Seat Info" />
-								<Label text="Seat Class" required="true" />
-								<ComboBox id="idSeatClass" selectionChange="onSeatClassChange">
-									<core:Item key="1" text="Economy" />
-									<core:Item key="2" text="Premium economy" />
-									<core:Item key="3" text="Business" />
-									<core:Item key="4" text="First class" />
-								</ComboBox>
+								<Label text="Airline Name" required="true"/>
+								<Input id="idAirlinename" value="{Booking>/AirlineName}" />
 
-								<Label text="Seat Number" required="true" />
-								<Input id="idSeatNumber" value="{Booking>/SeatNo}" showValueHelp="true" valueHelpRequest="onRequestSeat" change="onChangeSeat">
-									<layoutData>
-										<l:GridData span="XL3 L3 M3 S3" />
-									</layoutData>
-								</Input>
-								<Text text="{Booking>/SeatStatus}" visible="{= ${Booking>/SeatNo} !== '' ? true : false }" />
+								<Label text="Flight Id" required="true"/>
+								<Input id="idFlightId" value="{Booking>/FlightId}" showValueHelp="true" valueHelpRequest="onRequestFlight" visible="true"/>
+
+								<Label text="Flight Number" required="true"/>
+								<Input id="idFlightNumber" value="{Booking>/FlightNo}"/>
+
+								<core:Title text=""/>
+								<Label text="Airport Code" required="true"/>
+								<Input value="{Booking>/AirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
+
+								<Label text="Airport Name" required="true"/>
+								<Input value="{Booking>/AirportName}"/>
+
+								<Label text="Flight Date" required="true"/>
+								<DatePicker id="idFlighteDateTime" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/>
+
 							</f:content>
 						</f:SimpleForm>
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
 			</uxap:ObjectPageSection>
-
-			<uxap:ObjectPageSection id="idPassengerSection" title="Passenger Details">
+			<uxap:ObjectPageSection id="idCrewSection2" title="Crew Details">
 				<uxap:subSections>
-					<uxap:ObjectPageSubSection id="idPassengerSubSection1" title="Passenger Details">
-						<f:SimpleForm id="idPassengerDet" editable="false" layout="ResponsiveGridLayout" labelSpanXL="5" labelSpanL="5" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="3" singleContainerFullSize="false" visible="true">
-							<f:content>
-								<core:Title text="Passenger Info" />
-								<Label text="Passenger ID" required="true" />
-								<Input id="idPassengerID" value="{Booking>/PassengerId}" showValueHelp="true" valueHelpRequest="onRequestPassenger" change="onChangePassenger" visible="true" />
-
-								<Label text="Last Name" required="true" />
-								<Input id="idLastName" value="{Booking>/LastName}" />
-
-								<Label text="First Name" required="true" />
-								<Input id="idFirstName" value="{Booking>/FirstName}" />
-
-								<core:Title text="" />
-								<Label text="Passport Number" required="true" />
-								<Input id="idPassportNumber" value="{Booking>/PassportNumber}" />
-
-								<Label text="Email" required="true" />
-								<Input id="idEmail" value="{Booking>/Email}" />
-							</f:content>
-						</f:SimpleForm>
-					</uxap:ObjectPageSubSection>
-					<uxap:ObjectPageSubSection id="idPassengerSubSection2" title="Baggage Details">
-						<f:SimpleForm id="idBaggageDet" editable="false" layout="ResponsiveGridLayout" labelSpanXL="5" labelSpanL="5" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="3" singleContainerFullSize="false" visible="true">
-							<f:content>
-								<core:Title text="Baggage Info" />
-								<Label text="Baggage ID" required="true" />
-								<Input id="idBaggageID" value="{Booking>/BaggageId}" showValueHelp="true" valueHelpRequest="onRequestBaggage" change="onChangeBaggage" visible="true" />
-
-								<Label text="Baggage Weight" required="true" />
-								<Input id="idBaggageWeight" value="{Booking>/BagWeight}" />
-							</f:content>
-						</f:SimpleForm>
+					<uxap:ObjectPageSubSection id="idCrewSubSection" title="Crew Details">
+						<Table id="idCrewTable" mode="SingleSelect" items="{ path: 'CrewModel>/'}">
+							<headerToolbar>
+								<OverflowToolbar>
+									<content>
+										<ToolbarSpacer/>
+										<Button id="idAddCrewbtn" text="Add" press="onAddCrew" type="Transparent" visible="true" enabled="true"/>
+										<Button id="idDeleteCrewbtn" text="Delete" press="onDeleteCrew" type="Transparent" visible="true" enabled="true"/>
+									</content>
+								</OverflowToolbar>
+							</headerToolbar>
+							<columns>
+								<Column width="auto">
+									<Text text="Crew Id"/>
+								</Column>
+								<Column width="auto">
+									<Text text="Role"/>
+								</Column>
+								<Column width="auto">
+									<Text text="Last Name"/>
+								</Column>
+								<Column width="auto">
+									<Text text="First Name"/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem vAlign="Middle">
+									<cells>
+										<Input id="idCrewId" value="{CrewModel>CrewId}" showValueHelp="true" valueHelpRequest="onRequestCrew"/>
+										<Input id="idRole" value="{CrewModel>Role}"/>
+										<Input id="idLastName" value="{CrewModel>LastName}"/>
+										<Input id="idFirstName" value="{CrewModel>FirstName}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
 			</uxap:ObjectPageSection>

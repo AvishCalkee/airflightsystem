@@ -11,6 +11,11 @@ function (Controller,Formatter) {
 
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("AirFlightDetail").attachPatternMatched(this.fnObjectMatched,this);
+
+            var oViewModel = new JSONModel({
+                modifMode: "false"
+            });
+            this.getView().setModel(oViewModel, "ViewMode");
         },
 
         fnObjectMatched: async function (oEvent){
@@ -47,6 +52,9 @@ function (Controller,Formatter) {
                 resolve();
             });
 
+        },
+        onPressEdit: function(oEvent) {
+            this.getView().getModel("ViewMode").setProperty("/modifMode", true);
         }
 
 
