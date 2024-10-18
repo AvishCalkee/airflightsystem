@@ -1,0 +1,38 @@
+<mvc:View id="PassengerSectionView" 
+    controllerName="fiori.bootcamp.airflightsystem.controller.PassengerSection"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:smartTable="sap.ui.comp.smarttable">
+
+    <smartTable:SmartTable  id="PassengerList"
+    						header="{i18n>lpassenger}"
+						    enableAutoBinding="true"
+							entitySet="PassengerSet"
+                            placeToolbarInTable="true"
+							tableType="ResponsiveTable"
+							enableExport="true"
+							initiallyVisibleFields="PassengerId,FirstName,LastName,Email,PassportNumber,Nationality,SeatNumber"
+							useTablePersonalisation="true"
+							showVariantManagement="true"
+							noData="{i18n>noData}"
+                            showRowCount="true"
+							class="sapUiResponsiveContentPadding">
+
+<smartTable:customToolbar>
+<m:OverflowToolbar id="stickyToolbarObjetLiee" design="Transparent" style="Clear">
+<m:ToolbarSpacer/>
+<m:Button id="buttonRefresh"
+						icon="sap-icon://refresh"
+						tooltip="{i18n>refresh}"
+						press="onRefreshTableContent"/>
+<m:ToolbarSeparator id="toolbarSeparator"/>
+</m:OverflowToolbar>
+</smartTable:customToolbar>
+<m:Table  sticky="ColumnHeaders,HeaderToolbar" growing="true" growingScrollToLoad="false"
+			growingThreshold="10" growingTriggerText="{i18n>load}" 
+			fixedLayout="false" popinLayout="GridSmall">
+        </m:Table>
+
+</smartTable:SmartTable>
+</mvc:View>

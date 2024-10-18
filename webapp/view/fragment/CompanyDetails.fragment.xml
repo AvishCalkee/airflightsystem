@@ -1,0 +1,58 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+    xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core">
+	<QuickView 
+		id="quickView"
+		placement="Auto">
+<QuickViewPage
+				pageId="QuickViewContactPageId"
+				header="{i18n>companyDetail}"
+				title="{ToAirline/NCompany}"
+				titleUrl=""
+				description="CEO Name">
+
+                <avatar>
+                    <Avatar
+                        src="sap-icon://Netweaver-business-client"
+                        displayShape="Square"
+                    />
+                </avatar>
+<!-- About Us -->
+<QuickViewGroup 
+				heading="{i18n>aboutUs}">
+<QuickViewGroupElement 
+					label="{i18n>yearFounded}" 
+					value="1978" 
+					type="text"/>
+ <QuickViewGroupElement 
+					label="{i18n>employee}" 
+					value="800" 
+					type="text"/>
+ <QuickViewGroupElement 
+					label="{i18n>planeOwned}" 
+					value="" 
+					type="text"/>
+                 
+</QuickViewGroup>
+
+<!-- Contact -->
+<QuickViewGroup 
+				heading="{i18n>mainContact}">
+<QuickViewGroupElement 
+					label="{i18n>name}" 
+					value="" 
+					type="text"/>
+ <QuickViewGroupElement 
+					label="{i18n>Mobile}" 
+					value="1234567" 
+					type="text"/>
+ <QuickViewGroupElement 
+					label="{i18n>Fax}" 
+					value="7654321" 
+					type="text"/>
+</QuickViewGroup>
+
+</QuickViewPage>
+</QuickView>
+</core:FragmentDefinition>

@@ -1,0 +1,130 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	<VBox class="sapUiSmallMargin">
+		<f:Form id="FormDescriptionChange" editable="true">
+			<f:layout>
+				<f:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" emptySpanXL="6" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="3" singleContainerFullSize="true" />
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer title="{i18n>geninfo}">
+					<f:formElements>
+						<f:FormElement label="{i18n>airlineID}">
+							<f:fields>
+                                <Input id="oAirlineID" value="{ToAirline/AirlineId}" type="Text" enabled="false"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>compname}">
+							<f:fields>
+                                <Input id="oCompanyName" value="{ToAirLine/NCompany}" type="Text" />
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>yearmanuf}">
+							<f:fields>
+								<DatePicker id="oYear" value="{path:'ToAirline/YManufactured', type: 'sap.ui.model.type.Date', formatOptions: { style: 'short'}}"/>
+							</f:fields>
+						</f:FormElement>
+                        <f:FormElement label="{i18n>lstMaintDate}">
+							<f:fields>
+								<DatePicker id="lstMaintDate" value="{path:'ToAirline/LMaintenaceDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'short'}}"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+
+                <f:FormContainer title="{i18n>contactinfo}">
+					<f:formElements>
+						<f:FormElement label="{i18n>address}">
+							<f:fields>
+								<Input id="oAddress" value="{ToAirline/address}" type="Text" />
+							</f:fields>
+						</f:FormElement>
+
+						<f:FormElement label="{i18n>number}">
+							<f:fields>
+								<HBox alignItems="Center"
+									  renderType="Bare">
+								<core:Icon src="sap-icon://call"
+										size="1em"
+										width="1.5em"/>
+									<Input id="oNumber" value="{ToAirline/Tel}" type="Tel" liveChange=".fnPhoneValidation" maxLength="10"/>
+								</HBox>
+							</f:fields>
+						</f:FormElement>
+
+						<f:FormElement label="{i18n>email}">
+							<f:fields>
+								<HBox alignItems="Center"
+								renderType="Bare">
+						  <core:Icon src="sap-icon://email"
+								  size="1em"
+								  width="1.5em"/>
+								  <Input id="oEmail" value="{ToAirline/email}" type="Email" liveChange=".fnEmailValidation" />
+						  </HBox>								
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>website}">
+							<f:fields>
+								<HBox alignItems="Center"
+								renderType="Bare">
+						  <core:Icon src="sap-icon://internet-browser"
+								  size="1em"
+								  width="1.5em"/>
+								  <Input id="oWebsite" value="{ToAirline/website}" type="Url" liveChange=".fnUrlValidation"/>
+						  </HBox>								
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement>
+							<f:fields>
+								<Button id="CompanyQuickView2" text="{i18n>viewmore}" 
+                                    icon = "sap-icon://display-more"
+                                    press=".fnOpenCompanyInfoQuickView"
+                                    class="sapUiSmallMarginBottom"
+                                    width = "60%"
+                                    ariaHasPopup="Dialog"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+
+                <f:FormContainer title="{i18n>operation}">
+					<f:formElements>
+						<f:FormElement label="{i18n>status}">
+							<f:fields>
+								<Input id="oStatus" value="{ToAirline/status}" type="Text" />
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>maxSeat}">
+							<f:fields>
+								<Input id="oHub" value="{ToAirline/MaxSeatCap}" type="Number" />
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>maxWeight}">
+							<f:fields>
+								<Input id="oSize" value="{ToAirline/MaxWeight}" type="Text"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>engType}">
+							<f:fields>
+								<Input id="oType" value="{ToAirline/EngineType}" type="Text"/>
+							</f:fields>
+						</f:FormElement>
+                        <f:FormElement label="{i18n>numCrew}">
+							<f:fields>
+								<Input id="oCapacity" value="{ToAirline/CrewNum}" type="Number"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>SafetyRating}">
+							<f:fields>
+                                <RatingIndicator id="safetyrating" maxValue="5" 
+                                class="sapUiSmallMarginBottom" 
+                                value="{ToAirline/SafetyRate}"
+                                tooltip="Safety Rating" />
+							</f:fields>
+						</f:FormElement>
+                </f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+	</VBox>
+</core:FragmentDefinition>

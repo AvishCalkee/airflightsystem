@@ -101,7 +101,41 @@
 				 </subSections>
 
 			</ObjectPageSection>
-		
+
+			<!-- Section : Airline -->
+			<ObjectPageSection id="AirlineSection" title="{i18n>sectionairline}">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<m:VBox>
+							<!--	<m:VBox visible="{= ${UIModel>/modifMode} === 'false' ? true : false }"> -->
+								<m:VBox visible="true">
+									<core:Fragment id="AirlineSectionFragment" fragmentName="fiori.bootcamp.airflightsystem.view.fragment.AirlineSec" type="XML"/>
+								</m:VBox>
+							<!--	<m:VBox visible="{= ${UIMOdel>/modifMode} === 'true' ? true : false }"> -->
+								<m:VBox visible="true">
+									<core:Fragment id="AirlineSectionChangeFragment" fragmentName="fiori.bootcamp.airflightsystem.view.fragment.AirlineSecChange" type="XML"/>
+								</m:VBox>
+							</m:VBox>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+			<!-- Section : Passenger -->
+			<ObjectPageSection id="PassengerSection"  title="{i18n>passenger}">
+				<subSections>
+				   <ObjectPageSubSection >
+					  <blocks>
+						<mvc:XMLView id="PassengersSection" viewName="fiori.bootcamp.airflightsystem.view.PassengerSection"/>
+					  </blocks>
+				   </ObjectPageSubSection>
+				
+				</subSections>
+
+		   </ObjectPageSection>
+
+
 		</sections>
 
 		
