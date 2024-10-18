@@ -12,8 +12,9 @@
                 <f:content>
 						<sfb:SmartFilterBar
 							id="smartFilterBar"
-							entitySet="Flight"
-							search="onSearch">
+							entitySet="FlightSet"
+							search="onSearch"
+							useDateRangeType="true">
 							<sfb:controlConfiguration>
 								<sfb:ControlConfiguration index="1" key="FlightId" label="{i18n>flightId}">
 									<sfb:customControl>
@@ -22,23 +23,21 @@
 								</sfb:ControlConfiguration>
 								<sfb:ControlConfiguration index="2" key="FlightStatus" label="{i18n>Statut}">
 									<sfb:customControl>
-										<m:Select id="flightStatusId">
-											<core:Item key="1" text="On Time"/>
-                                            <core:Item key="2" text="Delayed"/>
-                                            <core:Item key="3" text="Cancel"/>
+										<m:Select id="flightStatusId" items="{ path:'/FlightStatus', templateShareable:false, sorter:{path:'text'} }">
+											<core:Item key="{key}" text="{text}"/>
 										</m:Select>
 									</sfb:customControl>
 								</sfb:ControlConfiguration>
-								<sfb:ControlConfiguration index="3" key="ArrivalDateTime" label="{i18n>arrivalTime}">
+								<!--<sfb:ControlConfiguration index="3" key="ArrivalDateTime" label="{i18n>arrivalDate}">
 									<sfb:customControl>
 										<m:DatePicker/>
 									</sfb:customControl>
-								</sfb:ControlConfiguration>
-								<sfb:ControlConfiguration index="4" key="DepartureDateTime" label="{i18n>departureTime}">
+								</sfb:ControlConfiguration> -->
+								<!--<sfb:ControlConfiguration index="4" key="DepartureDateTime" label="{i18n>departureDate}">
 									<sfb:customControl>
 										<m:DatePicker/>
 									</sfb:customControl>
-								</sfb:ControlConfiguration>
+								</sfb:ControlConfiguration>-->
 								<sfb:ControlConfiguration index="5" key="DestinationAirportCode" label="{i18n>DestAirportCode}">
 									<sfb:customControl>
 										<m:Input id="oDestAirportCodeFilter" />
@@ -54,11 +53,11 @@
 										<m:Input id="oAirlineIdFilter" />
 									</sfb:customControl>
 								</sfb:ControlConfiguration>
-								<sfb:ControlConfiguration index="8" key="FlightDuration" label="{i18n>flightDuration}">
+								<!--<sfb:ControlConfiguration index="8" key="FlightDuration" label="{i18n>flightDuration}">
 									<sfb:customControl>
 										<m:Input id="oFlightDuration" />
 									</sfb:customControl>
-								</sfb:ControlConfiguration>
+								</sfb:ControlConfiguration>-->
 							</sfb:controlConfiguration>
 						</sfb:SmartFilterBar>
                         </f:content>
@@ -71,7 +70,7 @@
 					smartFilterId="smartFilterBar"
 					entitySet="FlightSet"
 					beforeRebindTable="onBeforeRebindTable"
-					tableType="Table"
+					tableType="ResponsiveTable"
 					enableAutoColumnWidth="true"
 					useTablePersonalisation="true"
 					showRowCount="true"
@@ -81,10 +80,10 @@
 					justifyContent="Start" 
 					placeToolbarInTable="true"
 					requestAtLeastFields="ToCrew/LastName"
+					header="{i18n>airFlight}"
 					>
 					<smartTable:customToolbar>
 						<m:OverflowToolbar>
-							<m:Title text="{i18n>airFlight}"/>
 							<m:ToolbarSpacer/>
 							<m:Button id="newBookingId" text="{i18n>bookingButton}" press="fnOnBookingNewFlight"/>
 						</m:OverflowToolbar>

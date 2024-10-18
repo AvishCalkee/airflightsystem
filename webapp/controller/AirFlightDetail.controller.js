@@ -12,6 +12,11 @@ function (Controller,Formatter,Fragment) {
 
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("AirFlightDetail").attachPatternMatched(this.fnObjectMatched,this);
+
+            /**var oViewModel = new JSONModel({
+                modifMode: "false"
+            });
+            this.getView().setModel(oViewModel, "ViewMode");**/
         },
 
         fnObjectMatched: async function (oEvent){
@@ -53,22 +58,31 @@ function (Controller,Formatter,Fragment) {
         fnOpenCompanyInfoQuickView: function (oEvent) {
         var oButton = oEvent.getSource(),
         oView = this.getView();
+        if (!this._pQuickView) {
+            this._pQuickView = Fragment.load({
+                id: oView.getId(),
+                name: "fiori.bootcamp.airflightsystem.view.fragment.CompanyDetails",
+                controller: this
+            }).then(function (oQuickView) {
+                oQuickView.setModel(this.oModel);
+                oView.addDependent(oQuickView);
+                return oQuickView;
+            }.bind(this));
+        }
+        this._pQuickView.then(function(oQuickView) {
+            oQuickView.openBy(oButton);
+        });
+        },
+        onPressEdit: function(oEvent) {
+            this.getView().getModel("ViewMode").setProperty("/modifMode", true);
+        },
 
-    if (!this._pQuickView) {
-        this._pQuickView = Fragment.load({
-            id: oView.getId(),
-            name: "fiori.bootcamp.airflightsystem.view.fragment.CompanyDetails",
-            controller: this
-        }).then(function (oQuickView) {
-            oQuickView.setModel(this.oModel);
-            oView.addDependent(oQuickView);
-            return oQuickView;
-        }.bind(this));
-    }
-    this._pQuickView.then(function(oQuickView) {
-        oQuickView.openBy(oButton);
-    });
-},
+        fnOnModif: function(oEvent){
+            this.getView().getModel("UIModel").setProperty("/modifMode", true);
+        },
+        fnOnCancel: function(oEvent){
+            this.getView().getModel("UIModel").setProperty("/modifMode", false);
+        },
 
 fnEmailValidation: function(oEvent) {
    var sEmail = oEvent.getParameter("value"),

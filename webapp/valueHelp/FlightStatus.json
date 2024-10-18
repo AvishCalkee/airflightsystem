@@ -1,0 +1,24 @@
+{
+    "FlightStatus": [
+        {
+            "key": "",
+            "text": ""
+        },
+        {
+            "key": "G",
+            "text": "Delayed"
+        },
+        {
+            "key": "A",
+            "text": "On Time"
+        },
+        {
+            "key": "D",
+            "text": "Diverted"
+        },
+        {
+            "key": "X",
+            "text": "Cancelled"
+        }
+    ]
+}

@@ -20,10 +20,14 @@
         "uri": "/sap/opu/odata/sap/ZGW_ZD_FLIGHTSYSTEM_SRV/",
         "type": "OData",
         "settings": {
-          "annotations": [],
+          "annotations": ["annotation0"],
           "localUri": "localService/metadata.xml",
           "odataVersion": "2.0"
         }
+      },
+      "FlightStatus_json_model_data_source":{
+        "uri": "valueHelp/FlightStatus.json",
+        "type": "JSON"
       }
     }
   },
@@ -73,7 +77,9 @@
         "dataSource": "mainService",
         "preload": true,
         "settings": {
-          "defaultCountMode":"Request",
+          "defaultOperationMode": "Server",
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode":"Inline",
           "useBatch": true
         }
       },
@@ -82,6 +88,10 @@
         "type": "sap.ui.model.json.JSONModel",
         "uri" : "model/UIModel.json",
         "preload": false
+      },
+      "flightStatus_global_json_model":{
+        "type": "sap.ui.model.json.JSONModel",
+        "dataSource": "FlightStatus_json_model_data_source"
       }
     },
     "resources": {

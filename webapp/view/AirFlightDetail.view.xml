@@ -12,7 +12,8 @@
 		showTitleInHeaderContent="true"
 		showEditHeaderButton="true"
 		editHeaderButtonPress="handleEditBtnPress"
-		upperCaseAnchorBar="false">
+		upperCaseAnchorBar="false"
+		showFooter="true">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle>
 				<breadcrumbs>
@@ -49,14 +50,14 @@
 				</snappedTitleOnMobile>
 
 				<actions>
-					<m:OverflowToolbarButton icon="sap-icon://edit" text="edit header" type="Emphasized" tooltip="edit">
-						<m:layoutData>
-							<m:OverflowToolbarLayoutData priority="NeverOverflow"/>
-						</m:layoutData>
-					</m:OverflowToolbarButton>
-					<m:OverflowToolbarButton icon="sap-icon://pull-down" text="show section" type="Emphasized" tooltip="pull-down"/>
-					<m:OverflowToolbarButton icon="sap-icon://show" text="show state" tooltip="show"/>
-					<m:Button text="Toggle Footer" press="toggleFooter"/>
+					<m:Button 
+					id='btnEdit'
+					text="Edit"
+					icon="sap-icon://edit"
+					type="Emphasized"
+					visible="{=!${UIModel>/modifMode}}"
+					press="fnOnModif"
+					></m:Button>
 				</actions>
 			</ObjectPageDynamicHeaderTitle>
 		</headerTitle>
@@ -108,12 +109,10 @@
 					<ObjectPageSubSection>
 						<blocks>
 							<m:VBox>
-							<!--	<m:VBox visible="{= ${UIModel>/modifMode} === 'false' ? true : false }"> -->
-								<m:VBox visible="true">
+							<m:VBox visible="{=!${UIModel>/modifMode}}"> 
 									<core:Fragment id="AirlineSectionFragment" fragmentName="fiori.bootcamp.airflightsystem.view.fragment.AirlineSec" type="XML"/>
 								</m:VBox>
-							<!--	<m:VBox visible="{= ${UIMOdel>/modifMode} === 'true' ? true : false }"> -->
-								<m:VBox visible="true">
+							<m:VBox visible="{=${UIModel>/modifMode}}"> 
 									<core:Fragment id="AirlineSectionChangeFragment" fragmentName="fiori.bootcamp.airflightsystem.view.fragment.AirlineSecChange" type="XML"/>
 								</m:VBox>
 							</m:VBox>
@@ -137,6 +136,38 @@
 
 
 		</sections>
+
+		<footer>
+		
+		<m:OverflowToolbar
+		id="ovrFTDetail"
+		active="true"
+		visible="{UIModel>/modifMode}"
+		>
+        <m:ToolbarSpacer/>
+
+		<m:Button
+		id="btnSave"
+		type="Emphasized"
+		text="Save"
+		visible="{UIModel>/modifMode}">
+			<m:layoutData>
+				<m:OverflowToolbarLayoutData priority="NeverOverflow"/>
+			</m:layoutData>
+		</m:Button>
+
+		<m:Button
+		id="btnCancel"
+		type="Default"
+		text="Cancel"
+		visible="{UIModel>/modifMode}"
+		press="fnOnCancel">
+			<m:layoutData>
+				<m:OverflowToolbarLayoutData priority="NeverOverflow"/>
+			</m:layoutData>
+		</m:Button>
+		</m:OverflowToolbar>
+		</footer>
 
 		
 	</ObjectPageLayout>
