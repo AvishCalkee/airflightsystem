@@ -62,7 +62,8 @@
 			columnsXL="3"
 			columnsL="2"
 			columnsM="2"
-			singleContainerFullSize="false" >
+			singleContainerFullSize="false" 
+			visible="{=!${UIModel>/modifMode}}">
 			<f:content>
 				<core:Title text="Departure Airport" />
 				<Label text="Airport Code" />
@@ -108,7 +109,8 @@
 			columnsXL="3"
 			columnsL="2"
 			columnsM="2"
-			singleContainerFullSize="false" >
+			singleContainerFullSize="false"
+			visible="{UIModel>/modifMode}">
 			<f:content>
 				<core:Title text="Departure Airport" />
 				<Label text="Airport Code" labelFor="inputAirportCode"/>

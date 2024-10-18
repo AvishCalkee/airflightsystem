@@ -11,8 +11,9 @@
 	xmlns:smartForm="sap.ui.comp.smartform"
 	xmlns:smartField="sap.ui.comp.smartfield"
 	xmlns:smartTable="sap.ui.comp.smarttable"
-	xmlns:html="http://www.w3.org/1999/xhtml">
-	<uxap:ObjectPageLayout id="idObjectPageLayout" showTitleInHeaderContent="false" upperCaseAnchorBar="false" backgroundDesignAnchorBar="Translucent">
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:tnt="sap.tnt">
+	<uxap:ObjectPageLayout id="idObjectPageLayout" showFooter="true" upperCaseAnchorBar="false" backgroundDesignAnchorBar="Translucent">
 		<uxap:headerTitle>
 			<uxap:ObjectPageHeader id="idNewBookingHeader" objectTitle="New Booking"></uxap:ObjectPageHeader>
 		</uxap:headerTitle>
@@ -61,32 +62,70 @@
 								<Label text="Booking ID"/>
 								<Text text="-"/>
 
-								<Label text="Booking Date" required="true"/>
-								<DatePicker id="idBookingDate" value="{ 'path':'Booking>/BookingDate', 'type':'sap.ui.model.type.Date' }" change="onHandleDateChange" class="sapUiSmallMarginBottom" liveChange="onLiveChange"/>
+								<Label text="Creation Date" required="true"/>
+								<DatePicker id="dpCreationDate" value="{ 'path':'CreationDate', 'type':'sap.ui.model.type.Date' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/>
+
+								<Label text="Status"/>
+								<tnt:InfoLabel id="ilStatus" text="{FlightStatut}" renderMode="Narrow" colorScheme="2"/>
 
 								<core:Title text=""/>
 								<Label text="Airline Id" required="true"/>
-								<Input id="idAirlineId" value="{Booking>/AirlineId}" showValueHelp="true" valueHelpRequest="onRequestAirline" change="onChangeFlight" visible="true" liveChange="onLiveChange"/>
+								<Input id="idAirlineId" value="{AirlineId}" showValueHelp="true" valueHelpRequest="onRequestAirline" change="onChangeFlight" visible="true"/>
 
 								<Label text="Airline Name" required="true"/>
-								<Input id="idAirlinename" value="{Booking>/AirlineName}" liveChange="onLiveChange"/>
+								<Input id="idAirlinename" value="{AirlineName}" />
 
-								<Label text="Flight Id" required="true"/>
-								<Input id="idFlightId" value="{Booking>/FlightId}" showValueHelp="true" valueHelpRequest="onRequestFlight" visible="true" liveChange="onLiveChange"/>
+								<Label text="Plane Id" required="true"/>
+								<Input id="inptPlaneId" value="{FlightNo}" showValueHelp="true" valueHelpRequest="onRequestFlight" visible="true"/>
+                                
+								<Label text="Arrival Airport Code" required="true"/>
+								<Input value="{ArrivalAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
 
-								<Label text="Flight Number" required="true"/>
-								<Input id="idFlightNumber" value="{Booking>/FlightNo}" liveChange="onLiveChange"/>
+								<Label text="Arrival Airport Name" required="true"/>
+								<Input value="{ArrivalAirportName}"/>
 
 								<core:Title text=""/>
-								<Label text="Airport Code" required="true"/>
-								<Input id="idAirportCode" value="{Booking>/AirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true" liveChange="onLiveChange"/>
+								<Label text="Des Airport Code" required="true"/>
+								<Input value="{DepartureAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
 
-								<Label text="Airport Name" required="true"/>
-								<Input id="idAirportName" value="{Booking>/AirportName}" liveChange="onLiveChange"/>
+								<Label text="Des Airport Name" required="true"/>
+								<Input value="{DepartureAirportName}"/>
 
-								<Label text="Flight Date" required="true"/>
-								<DatePicker id="idFlighteDateTime" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom" liveChange="onLiveChange"/>
+								<Label text="Depature Date" required="true"/>
+								<!--><DatePicker id="idFlighteDateTime" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/><-->
+                                
+                                <DateTimePicker
+								id="dpDepatrueDate"
+								showCurrentDateButton="true"
+								showCurrentTimeButton="true"
+								value= "{
+		                             'path': '/DepartureDateTime',
+									'type': 'sap.ui.model.type.DateTime',
+									'formatOptions': {
+										'style': 'long'
+									}
+								}"
+								change="handleChange"
+								class="sapUiSmallMarginBottom"/>
 
+								<Label text="Arrival Date" required="true"/>
+								<DateTimePicker
+								id="dpArrivalDate"
+								showCurrentDateButton="true"
+								showCurrentTimeButton="true"
+								value= "{
+		                            'path': '/ArrivalDateTime',
+									'type': 'sap.ui.model.type.DateTime',
+									'formatOptions': {
+										'style': 'long'
+									}
+								}"
+								change="handleChange"
+								class="sapUiSmallMarginBottom"/>
+
+								<Label text="Duration"/>
+								<tnt:InfoLabel id="ilDuration" icon="sap-icon://fob-watch" text="Standby" renderMode="Narrow" colorScheme="7"/>
+								<!--><DatePicker id="dpArrivalDate" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/><!-->
 							</f:content>
 						</f:SimpleForm>
 					</uxap:ObjectPageSubSection>
@@ -122,7 +161,7 @@
 							<items>
 								<ColumnListItem vAlign="Middle">
 									<cells>
-										<Input id="idCrewId" value="{CrewModel>CrewId}" showValueHelp="true" valueHelpRequest="onRequestCrew" liveChange="onLiveChange"/>
+										<Input id="idCrewId" value="{CrewModel>CrewId}" showValueHelp="true" valueHelpRequest="onRequestCrew"/>
 										<Input id="idRole" value="{CrewModel>Role}"/>
 										<Input id="idLastName" value="{CrewModel>LastName}"/>
 										<Input id="idFirstName" value="{CrewModel>FirstName}"/>
