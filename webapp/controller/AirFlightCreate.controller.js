@@ -1,9 +1,10 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
-	"sap/m/MessageBox"
+	"sap/m/MessageBox",
+	'sap/ui/core/date/UI5Date'
 ],
-function (Controller, JSONModel, MessageBox) {
+function (Controller, JSONModel, MessageBox,UI5Date) {
     "use strict";
 
     return Controller.extend("fiori.bootcamp.airflightsystem.controller.AirFlightCreate", {
@@ -13,7 +14,75 @@ function (Controller, JSONModel, MessageBox) {
 			oView.setModel(oBookingModel, "Booking");
 			var oCrewModel = new JSONModel([]);
 			oView.setModel(oCrewModel, "CrewModel");
+
+
+			
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouter.getRoute("AirFlightCreate").attachPatternMatched(this.fnIntModel, this);
 		},
+
+         fnIntModel: function (oEvent){
+            
+			var oModel =  new JSONModel({
+                Destination:"",
+				Departure:"",
+				CreationDate:UI5Date.getInstance(),
+				FlightStatut:"In creation",
+				AirlineId:"",
+				FlightId:"",
+				ArrivalAirportCode:"",
+				DepartureAirportCode:"",
+				DepartureDateTime:UI5Date.getInstance(),
+				ArrivalDateTime:"",
+				FlightDuration:""
+
+			});
+
+			this.getView().setModel(oModel);
+			this.getView().bindElement({path: "/"});
+
+		 },
+
+		 fnSave: function (oEvent){
+			var oModel = this.getOwnerComponent().getModel();
+			oModel.setUseBatch(true);
+			oModel.setDeferredGroups(["creationGroup"]);
+			oModel.setChangeGroups({
+				"*": {
+					groupId: "creationGroup",
+					changeSetId: "FlightCreate"
+				}
+			});
+
+
+			var oFlightData = this.getView().getModel().getData(),
+            	FlightEntity = JSON.parse(JSON.stringify(oFlightData));
+
+				
+			oModel.create("/Flight", FlightEntity, {
+				groupId: "creationGroup"
+			});
+
+
+			var savePromises = [new Promise(function (resolve, reject) {
+				oModel.submitChanges({
+					groupId: "creationGroup",
+					success: resolve,
+					error: reject
+				});
+			})];
+
+			Promise.all(savePromises).then(function (oSuccess) {
+				var acteurResponse = "",
+					newActeurId = "";
+			   
+		   }.bind(this),
+		   function (oError) {
+			  
+		   }.bind(this));
+
+		 },
+
 		/*handle date change - formatting*/
 		onHandleDateChange: function (oEvent) {
 			
@@ -21,7 +90,7 @@ function (Controller, JSONModel, MessageBox) {
 		/*Airline valuehelp*/
 		onRequestAirline: function (oEvent) {
 			this.oInput = oEvent.getSource();
-			var oModel = this.getView().getModel();
+			var oModel = this.getOwnerComponent().getModel();
 			this.getView().setBusy(true);
 			oModel.read("/AirlineSet", {
 				success: jQuery.proxy(this.getAirlineList, this),
@@ -212,7 +281,7 @@ function (Controller, JSONModel, MessageBox) {
 		/*Flight valuehelp*/
 		onRequestFlight: function (oEvent) {
 			this.oInput = oEvent.getSource();
-			var oModel = this.getView().getModel();
+			var oModel = this.getOwnerComponent().getModel();
 			this.getView().setBusy(true);
 			oModel.read("/FlightSet", {
 				success: jQuery.proxy(this.getFlightList, this),
@@ -297,7 +366,6 @@ function (Controller, JSONModel, MessageBox) {
 					});
 				});
 			}
-
 			FlightValueHelp.open();
 
 			//Filter bar creation
@@ -414,7 +482,7 @@ function (Controller, JSONModel, MessageBox) {
 		/*Airport code valuehelp*/
 		onRequestAirportCode: function (oEvent) {
 			this.oInput = oEvent.getSource();
-			var oModel = this.getView().getModel();
+			var oModel = this.getOwnerComponent().getModel();
 			this.getView().setBusy(true);
 			oModel.read("/AirportSet", {
 				success: jQuery.proxy(this.getAirportList, this),
@@ -615,7 +683,7 @@ function (Controller, JSONModel, MessageBox) {
 		
 		onRequestCrew: function (oEvent) {
 			this.oInput = oEvent.getSource();
-			var oModel = this.getView().getModel();
+			var oModel = this.getOwnerComponent().getModel();
 			this.getView().setBusy(true);
 			oModel.read("/CrewSet", {
 				success: jQuery.proxy(this.getCrewList, this),
