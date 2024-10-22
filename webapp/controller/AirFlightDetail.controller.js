@@ -12,11 +12,6 @@ function (Controller,Formatter,Fragment) {
 
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("AirFlightDetail").attachPatternMatched(this.fnObjectMatched,this);
-
-            /**var oViewModel = new JSONModel({
-                modifMode: "false"
-            });
-            this.getView().setModel(oViewModel, "ViewMode");**/
         },
 
         fnObjectMatched: async function (oEvent){
