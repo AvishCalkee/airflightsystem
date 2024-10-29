@@ -41,6 +41,14 @@ function (Controller, JSONModel, MessageBox,UI5Date) {
 			this.getView().setModel(oModel);
 			this.getView().bindElement({path: "/"});
 
+			var oDestinationModel = new JSONModel();
+			oDestinationModel.setData(this.getOwnerComponent().getModel("flightDestination_global_json_model").getData());
+			this.getView().setModel(oDestinationModel);
+
+			var oCreationDate = this.getView().byId("dpCreationDate");
+			oCreationDate.setValue(new Date());
+			oCreationDate.setEditable(false);
+
 		 },
 
 		 fnSave: function (oEvent){
@@ -936,6 +944,45 @@ function (Controller, JSONModel, MessageBox,UI5Date) {
 			oCrewModel.setData(aCrewData);
 			oCrewModel.refresh();
 			
+		},
+		handleChange: function (oEvent) {
+			var oDateTimePicker1 = this.getView().byId("dpDepatrueDate");
+            var oDateTimePicker2 = this.getView().byId("dpArrivalDate");
+            
+            var oDate1 = oDateTimePicker1.getDateValue();
+            var oDate2 = oDateTimePicker2.getDateValue();
+            
+            if (oDate1 && oDate2) {
+                var diffInMs = Math.abs(oDate2 - oDate1);
+               
+                var diffInMinutes = Math.floor(diffInMs / (1000 * 60)); // Difference in minutes
+                var diffInHours = Math.floor(diffInMs / (1000 * 60 * 60)); // Difference in hours
+                var diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24)); // Difference in days
+
+                var oResultText = this.getView().byId("idDurationTxt");
+                oResultText.setText(diffInHours + " hours");
+            } else {
+                MessageToast.show("Please select both dates.");
+            }
+		},
+		onChangeDestination: function () {
+            var oComboBoxFrom = this.getView().byId("idDepartureFrom");
+            var oComboBoxTo = this.getView().byId("idDepartureTo");
+
+            var sCountryFrom = oComboBoxFrom.getSelectedKey();
+            var sCountryTo = oComboBoxTo.getSelectedKey();
+
+            if (sCountryFrom && sCountryTo && sCountryFrom === sCountryTo) {
+                // Display error message
+                MessageBox.error("Destination From and Destination To cannot be the same.");
+
+                // Set value state to Error
+                oComboBoxFrom.setValueState("Error");
+                oComboBoxTo.setValueState("Error");
+            } else {
+                oComboBoxFrom.setValueState("None");
+                oComboBoxTo.setValueState("None");
+            }
 		}
     });
 });
