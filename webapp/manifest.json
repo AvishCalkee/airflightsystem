@@ -28,6 +28,10 @@
       "FlightStatus_json_model_data_source":{
         "uri": "valueHelp/FlightStatus.json",
         "type": "JSON"
+      },
+      "FlightDestination_json_model_data_source":{
+        "uri": "valueHelp/DestinationCountries.json",
+        "type": "JSON"
       }
     }
   },
@@ -92,6 +96,10 @@
       "flightStatus_global_json_model":{
         "type": "sap.ui.model.json.JSONModel",
         "dataSource": "FlightStatus_json_model_data_source"
+      },
+      "flightDestination_global_json_model":{
+        "type": "sap.ui.model.json.JSONModel",
+        "dataSource": "FlightDestination_json_model_data_source"
       }
     },
     "resources": {

@@ -1,0 +1,24 @@
+{
+    "DestinationCountries": [
+        {
+            "key": "1",
+            "text": "Mauritius"
+        },
+        {
+            "key": "2",
+            "text": "Paris"
+        },
+        {
+            "key": "3",
+            "text": "Rome"
+        },
+        {
+            "key": "4",
+            "text": "Dubai"
+        },
+        {
+            "key": "5",
+            "text": "Istanbul"
+        }
+    ]
+}
