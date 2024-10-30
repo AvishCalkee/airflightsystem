@@ -19,6 +19,7 @@ function (Controller, JSONModel, MessageBox,UI5Date) {
 			
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.getRoute("AirFlightCreate").attachPatternMatched(this.fnIntModel, this);
+			
 		},
 
          fnIntModel: function (oEvent){
@@ -27,11 +28,11 @@ function (Controller, JSONModel, MessageBox,UI5Date) {
                 Destination:"",
 				Departure:"",
 				CreationDate:UI5Date.getInstance(),
-				FlightStatut:"In creation",
+				FlightStatus:"In creation",
 				AirlineId:"",
 				FlightId:"",
-				ArrivalAirportCode:"",
-				DepartureAirportCode:"",
+				DestinationAirportCode:"",
+				OriginAirportCode:"",
 				DepartureDateTime:UI5Date.getInstance(),
 				ArrivalDateTime:"",
 				FlightDuration:""
@@ -40,6 +41,27 @@ function (Controller, JSONModel, MessageBox,UI5Date) {
 
 			this.getView().setModel(oModel);
 			this.getView().bindElement({path: "/"});
+
+			var oModel = this.getOwnerComponent().getModel();
+			this.getView().byId("cbxFrom").setBusy(true);
+			this.getView().byId("cbxTo").setBusy(true);
+			oModel.read("/AirportSet", {
+				
+				method: "GET",
+				success: function (data, textStatus, jqXHR) {
+					var oModelList =  new JSONModel();
+					oModelList.setData(data.results);
+					this.getView().setModel(oModelList, "oAirPort");
+					this.getView().byId("cbxFrom").setBusy(false);
+					this.getView().byId("cbxTo").setBusy(false);
+				}.bind(this),
+				error: function (data, textStatus, jqXHR) {
+				    this.getView().byId("cbxFrom").setBusy(false);
+					this.getView().byId("cbxTo").setBusy(false);
+				}.bind(this)
+		});
+
+			
 
 		 },
 
@@ -57,9 +79,15 @@ function (Controller, JSONModel, MessageBox,UI5Date) {
 
 			var oFlightData = this.getView().getModel().getData(),
             	FlightEntity = JSON.parse(JSON.stringify(oFlightData));
+				FlightEntity.FlightStatus="01";
+				delete FlightEntity.Departure;
+				delete FlightEntity.Destination;
+				delete FlightEntity.OriginAirportName;
+				delete FlightEntity.CreationDate;
+				delete FlightEntity.DestinationAirportName;
 
 				
-			oModel.create("/Flight", FlightEntity, {
+			oModel.create("/FlightSet", FlightEntity, {
 				groupId: "creationGroup"
 			});
 

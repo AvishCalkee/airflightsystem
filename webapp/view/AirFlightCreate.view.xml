@@ -32,21 +32,15 @@
 							<f:content>
 								<core:Title text="Destination Details"/>
 								<Label text="From" required="true"/>
-								<ComboBox id="idDepartureFrom" selectionChange="customFieldChange">
-									<core:Item key="1" text="Mauritius"/>
-									<core:Item key="2" text="Paris"/>
-									<core:Item key="3" text="Rome"/>
-									<core:Item key="4" text="Dubai"/>
-									<core:Item key="5" text="Istanbul"/>
+								<ComboBox id="cbxFrom"
+								 items="{path:'oAirPort>/'}">
+								    <core:Item key="{oAirPort>AirportCode}" text="{oAirPort>Country}"/>
 								</ComboBox>
 								<core:Title text=""/>
 								<Label text="To" required="true"/>
-								<ComboBox id="idDepartureTo" selectionChange="customFieldChange">
-									<core:Item key="1" text="Mauritius"/>
-									<core:Item key="2" text="Paris"/>
-									<core:Item key="3" text="Rome"/>
-									<core:Item key="4" text="Dubai"/>
-									<core:Item key="5" text="Istanbul"/>
+								<ComboBox id="cbxTo"
+								items="{path:'oAirPort>/'}">
+								    <core:Item key="{oAirPort>AirportCode}" text="{oAirPort>Country}"/>
 								</ComboBox>
 							</f:content>
 						</f:SimpleForm>
@@ -66,7 +60,7 @@
 								<DatePicker id="dpCreationDate" value="{ 'path':'CreationDate', 'type':'sap.ui.model.type.Date' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/>
 
 								<Label text="Status"/>
-								<tnt:InfoLabel id="ilStatus" text="{FlightStatut}" renderMode="Narrow" colorScheme="2"/>
+								<tnt:InfoLabel id="ilStatus" text="{FlightStatus}" renderMode="Narrow" colorScheme="2"/>
 
 								<core:Title text=""/>
 								<Label text="Airline Id" required="true"/>
@@ -79,17 +73,17 @@
 								<Input id="inptPlaneId" value="{FlightNo}" showValueHelp="true" valueHelpRequest="onRequestFlight" visible="true"/>
                                 
 								<Label text="Arrival Airport Code" required="true"/>
-								<Input value="{ArrivalAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
+								<Input value="{DestinationAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
 
 								<Label text="Arrival Airport Name" required="true"/>
-								<Input value="{ArrivalAirportName}"/>
+								<Input value="{DestinationAirportName}"/>
 
 								<core:Title text=""/>
 								<Label text="Des Airport Code" required="true"/>
-								<Input value="{DepartureAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
+								<Input value="{OriginAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
 
 								<Label text="Des Airport Name" required="true"/>
-								<Input value="{DepartureAirportName}"/>
+								<Input value="{OriginAirportName}"/>
 
 								<Label text="Depature Date" required="true"/>
 								<!--><DatePicker id="idFlighteDateTime" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/><-->
@@ -176,7 +170,7 @@
 		<uxap:footer>
 			<OverflowToolbar>
 				<ToolbarSpacer />
-				<Button type="Emphasized" press="onPressSaveBooking" text="Save" />
+				<Button type="Emphasized" press="fnSave" text="Save" />
 				<Button press="onPressCancelBooking" text="Cancel" />
 			</OverflowToolbar>
 		</uxap:footer>
