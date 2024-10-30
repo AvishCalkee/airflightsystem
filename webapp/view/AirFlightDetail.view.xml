@@ -151,7 +151,8 @@
 		id="btnSave"
 		type="Emphasized"
 		text="Save"
-		visible="{UIModel>/modifMode}">
+		visible="{UIModel>/modifMode}"
+		press="fnSave">
 			<m:layoutData>
 				<m:OverflowToolbarLayoutData priority="NeverOverflow"/>
 			</m:layoutData>

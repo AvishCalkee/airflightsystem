@@ -32,20 +32,15 @@
 							<f:content>
 								<core:Title text="Destination Details"/>
 								<Label text="From" required="true"/>
-								<ComboBox id="idDepartureFrom" change="onChangeDestination">
-									<core:Item key="1" text="Mauritius"/>
-									<core:Item key="2" text="Paris"/>
-									<core:Item key="3" text="Rome"/>
-									<core:Item key="4" text="Dubai"/>
-									<core:Item key="5" text="Istanbul"/>
+								<ComboBox id="cbxFrom"
+								 items="{path:'oAirPort>/'}">
+								    <core:Item key="{oAirPort>AirportCode}" text="{oAirPort>Country}"/>
 								</ComboBox>
 								<core:Title text=""/>
 								<Label text="To" required="true"/>
-								<ComboBox id="idDepartureTo" items="{
-										path: '/DestinationCountries',
-										sorter: { path: 'text' }
-										}" change="onChangeDestination">
-									<core:Item key="{key}" text="{text}"/>
+								<ComboBox id="cbxTo"
+								items="{path:'oAirPort>/'}">
+								    <core:Item key="{oAirPort>AirportCode}" text="{oAirPort>Country}"/>
 								</ComboBox>
 							</f:content>
 						</f:SimpleForm>
@@ -62,115 +57,122 @@
 								<Text text="-"/>
 
 								<Label text="Creation Date" required="true"/>
-								<DatePicker id="dpCreationDate" value="{ 'path':'/CreationDate', 'type':'sap.ui.model.type.Date' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/>
+								<DatePicker id="dpCreationDate" value="{ 'path':'CreationDate', 'type':'sap.ui.model.type.Date' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/>
 
 								<Label text="Status"/>
-								<tnt:InfoLabel id="ilStatus" text="{FlightStatut}" renderMode="Narrow" colorScheme="2"/>
+								<tnt:InfoLabel id="ilStatus" text="{FlightStatus}" renderMode="Narrow" colorScheme="2"/>
 
 								<core:Title text=""/>
 								<Label text="Airline Id" required="true"/>
-								<Input id="idAirlineId" value="{/AirlineId}" showValueHelp="true" valueHelpRequest="onRequestAirline" change="onChangeFlight" visible="true"/>
+								<Input id="idAirlineId" value="{AirlineId}" showValueHelp="true" valueHelpRequest="onRequestAirline" change="onChangeFlight" visible="true"/>
 
 								<Label text="Airline Name" required="true"/>
-								<Input id="idAirlinename" value="{/AirlineName}" />
+								<Input id="idAirlinename" value="{AirlineName}" />
 
 								<Label text="Plane Id" required="true"/>
-								<Input id="inptPlaneId" value="{/FlightNo}" showValueHelp="true" valueHelpRequest="onRequestFlight" visible="true"/>
-
+								<Input id="inptPlaneId" value="{FlightNo}" showValueHelp="true" valueHelpRequest="onRequestFlight" visible="true"/>
+                                
 								<Label text="Arrival Airport Code" required="true"/>
-								<Input value="{/ArrivalAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
+								<Input value="{DestinationAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
 
 								<Label text="Arrival Airport Name" required="true"/>
-								<Input value="{/ArrivalAirportName}"/>
+								<Input value="{DestinationAirportName}"/>
 
 								<core:Title text=""/>
 								<Label text="Des Airport Code" required="true"/>
-								<Input value="{/DepartureAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
+								<Input value="{OriginAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
 
 								<Label text="Des Airport Name" required="true"/>
-								<Input value="{/DepartureAirportName}"/>
+								<Input value="{OriginAirportName}"/>
 
 								<Label text="Depature Date" required="true"/>
-								<!-->
-								<DatePicker id="idFlighteDateTime" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/>
-								<-->
-
-									<DateTimePicker id="dpDepatrueDate" showCurrentDateButton="true" showCurrentTimeButton="true" value= "{
+								<!--><DatePicker id="idFlighteDateTime" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/><-->
+                                
+                                <DateTimePicker
+								id="dpDepatrueDate"
+								showCurrentDateButton="true"
+								showCurrentTimeButton="true"
+								value= "{
 		                             'path': '/DepartureDateTime',
 									'type': 'sap.ui.model.type.DateTime',
 									'formatOptions': {
 										'style': 'long'
 									}
-								}" change="handleChange" class="sapUiSmallMarginBottom"/>
+								}"
+								change="handleChange"
+								class="sapUiSmallMarginBottom"/>
 
-									<Label text="Arrival Date" required="true"/>
-									<DateTimePicker id="dpArrivalDate" showCurrentDateButton="true" showCurrentTimeButton="true" value= "{
+								<Label text="Arrival Date" required="true"/>
+								<DateTimePicker
+								id="dpArrivalDate"
+								showCurrentDateButton="true"
+								showCurrentTimeButton="true"
+								value= "{
 		                            'path': '/ArrivalDateTime',
 									'type': 'sap.ui.model.type.DateTime',
 									'formatOptions': {
 										'style': 'long'
 									}
-								}" change="handleChange" class="sapUiSmallMarginBottom"/>
+								}"
+								change="handleChange"
+								class="sapUiSmallMarginBottom"/>
 
-									<Label text="Duration"/>
-									<tnt:InfoLabel id="ilDuration" icon="sap-icon://fob-watch" text="Standby" renderMode="Narrow" colorScheme="7"/>
-									<Text id="idDurationTxt" text="{'path': '/FlightDuration'}" class="sapUiNoMarginBegin"/>
-									<!-->
-									<DatePicker id="dpArrivalDate" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/>
-									<!-->
-								</f:content>
-							</f:SimpleForm>
-						</uxap:ObjectPageSubSection>
-					</uxap:subSections>
-				</uxap:ObjectPageSection>
-				<uxap:ObjectPageSection id="idCrewSection2" title="Crew Details">
-					<uxap:subSections>
-						<uxap:ObjectPageSubSection id="idCrewSubSection" title="Crew Details">
-							<Table id="idCrewTable" mode="SingleSelect" items="{ path: 'CrewModel>/'}">
-								<headerToolbar>
-									<OverflowToolbar>
-										<content>
-											<ToolbarSpacer/>
-											<Button id="idAddCrewbtn" text="Add" press="onAddCrew" type="Transparent" visible="true" enabled="true"/>
-											<Button id="idDeleteCrewbtn" text="Delete" press="onDeleteCrew" type="Transparent" visible="true" enabled="true"/>
-										</content>
-									</OverflowToolbar>
-								</headerToolbar>
-								<columns>
-									<Column width="auto">
-										<Text text="Crew Id"/>
-									</Column>
-									<Column width="auto">
-										<Text text="Role"/>
-									</Column>
-									<Column width="auto">
-										<Text text="Last Name"/>
-									</Column>
-									<Column width="auto">
-										<Text text="First Name"/>
-									</Column>
-								</columns>
-								<items>
-									<ColumnListItem vAlign="Middle">
-										<cells>
-											<Input id="idCrewId" value="{CrewModel>CrewId}" showValueHelp="true" valueHelpRequest="onRequestCrew"/>
-											<Input id="idRole" value="{CrewModel>Role}"/>
-											<Input id="idLastName" value="{CrewModel>LastName}"/>
-											<Input id="idFirstName" value="{CrewModel>FirstName}"/>
-										</cells>
-									</ColumnListItem>
-								</items>
-							</Table>
-						</uxap:ObjectPageSubSection>
-					</uxap:subSections>
-				</uxap:ObjectPageSection>
-			</uxap:sections>
-			<uxap:footer>
-				<OverflowToolbar>
-					<ToolbarSpacer />
-					<Button type="Emphasized" press="onPressSaveBooking" text="Save" />
-					<Button press="onPressCancelBooking" text="Cancel" />
-				</OverflowToolbar>
-			</uxap:footer>
-		</uxap:ObjectPageLayout>
-	</mvc:View>
+								<Label text="Duration"/>
+								<tnt:InfoLabel id="ilDuration" icon="sap-icon://fob-watch" text="Standby" renderMode="Narrow" colorScheme="7"/>
+								<!--><DatePicker id="dpArrivalDate" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/><!-->
+							</f:content>
+						</f:SimpleForm>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection id="idCrewSection2" title="Crew Details">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection id="idCrewSubSection" title="Crew Details">
+						<Table id="idCrewTable" mode="SingleSelect" items="{ path: 'CrewModel>/'}">
+							<headerToolbar>
+								<OverflowToolbar>
+									<content>
+										<ToolbarSpacer/>
+										<Button id="idAddCrewbtn" text="Add" press="onAddCrew" type="Transparent" visible="true" enabled="true"/>
+										<Button id="idDeleteCrewbtn" text="Delete" press="onDeleteCrew" type="Transparent" visible="true" enabled="true"/>
+									</content>
+								</OverflowToolbar>
+							</headerToolbar>
+							<columns>
+								<Column width="auto">
+									<Text text="Crew Id"/>
+								</Column>
+								<Column width="auto">
+									<Text text="Role"/>
+								</Column>
+								<Column width="auto">
+									<Text text="Last Name"/>
+								</Column>
+								<Column width="auto">
+									<Text text="First Name"/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem vAlign="Middle">
+									<cells>
+										<Input id="idCrewId" value="{CrewModel>CrewId}" showValueHelp="true" valueHelpRequest="onRequestCrew"/>
+										<Input id="idRole" value="{CrewModel>Role}"/>
+										<Input id="idLastName" value="{CrewModel>LastName}"/>
+										<Input id="idFirstName" value="{CrewModel>FirstName}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+		</uxap:sections>
+		<uxap:footer>
+			<OverflowToolbar>
+				<ToolbarSpacer />
+				<Button type="Emphasized" press="fnSave" text="Save" />
+				<Button press="onPressCancelBooking" text="Cancel" />
+			</OverflowToolbar>
+		</uxap:footer>
+	</uxap:ObjectPageLayout>
+</mvc:View>
