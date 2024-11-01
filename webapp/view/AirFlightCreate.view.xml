@@ -15,7 +15,7 @@
 	xmlns:tnt="sap.tnt">
 	<uxap:ObjectPageLayout id="idObjectPageLayout" showFooter="true" upperCaseAnchorBar="false" backgroundDesignAnchorBar="Translucent">
 		<uxap:headerTitle>
-			<uxap:ObjectPageHeader id="idNewBookingHeader" objectTitle="New Booking"></uxap:ObjectPageHeader>
+			<uxap:ObjectPageHeader id="idNewBookingHeader" objectTitle="{i18n>newBbooking}"></uxap:ObjectPageHeader>
 		</uxap:headerTitle>
 		<uxap:headerContent>
 			<FlexBox wrap="Wrap" fitContainer="true" alignItems="Stretch">
@@ -25,19 +25,19 @@
 			</FlexBox>
 		</uxap:headerContent>
 		<uxap:sections>
-			<uxap:ObjectPageSection id="section1" title="Destination Details">
+			<uxap:ObjectPageSection id="section1" title="{i18n>destinationDetails}">
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection id="idDestinationSection">
 						<f:SimpleForm id="idDestinationDet" editable="false" layout="ResponsiveGridLayout" labelSpanXL="5" labelSpanL="5" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="3" singleContainerFullSize="false" visible="true">
 							<f:content>
-								<core:Title text="Destination Details"/>
-								<Label text="From" required="true"/>
+								<core:Title text="{i18n>destinationDetails}"/>
+								<Label text="{i18n>destinationFrom}" required="true"/>
 								<ComboBox id="cbxFrom"
 								 items="{path:'oAirPort>/'}">
 								    <core:Item key="{oAirPort>AirportCode}" text="{oAirPort>Country}"/>
 								</ComboBox>
-								<core:Title text=""/>
-								<Label text="To" required="true"/>
+								<core:Title/>
+								<Label text="{i18n>destinationTo}" required="true"/>
 								<ComboBox id="cbxTo"
 								items="{path:'oAirPort>/'}">
 								    <core:Item key="{oAirPort>AirportCode}" text="{oAirPort>Country}"/>
@@ -47,45 +47,45 @@
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
 			</uxap:ObjectPageSection>
-			<uxap:ObjectPageSection id="idBookingSection" title="Booking">
+			<uxap:ObjectPageSection id="idBookingSection" title="{i18n>booking}">
 				<uxap:subSections>
-					<uxap:ObjectPageSubSection id="idBookingSubSection" title="Flight Details">
+					<uxap:ObjectPageSubSection id="idBookingSubSection" title="{i18n>flightDetails}">
 						<f:SimpleForm id="idBookingDet" editable="false" layout="ResponsiveGridLayout" labelSpanXL="5" labelSpanL="5" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="3" singleContainerFullSize="false" visible="true">
 							<f:content>
-								<core:Title text="Flight Info"/>
-								<Label text="Booking ID"/>
+								<core:Title text="{i18n>flightInfo}"/>
+								<Label text="{i18n>bookingID}"/>
 								<Text text="-"/>
 
-								<Label text="Creation Date" required="true"/>
+								<Label text="{i18n>creationDate}" required="true"/>
 								<DatePicker id="dpCreationDate" value="{ 'path':'CreationDate', 'type':'sap.ui.model.type.Date' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/>
 
-								<Label text="Status"/>
+								<Label text="{i18n>Status}"/>
 								<tnt:InfoLabel id="ilStatus" text="{FlightStatus}" renderMode="Narrow" colorScheme="2"/>
 
 								<core:Title text=""/>
-								<Label text="Airline Id" required="true"/>
+								<Label text="{i18n>airlineID}" required="true"/>
 								<Input id="idAirlineId" value="{AirlineId}" showValueHelp="true" valueHelpRequest="onRequestAirline" change="onChangeFlight" visible="true"/>
 
-								<Label text="Airline Name" required="true"/>
+								<Label text="{i18n>airlineName}" required="true"/>
 								<Input id="idAirlinename" value="{AirlineName}" />
 
-								<Label text="Plane Id" required="true"/>
+								<Label text="{i18n>planeID}" required="true"/>
 								<Input id="inptPlaneId" value="{FlightNo}" showValueHelp="true" valueHelpRequest="onRequestFlight" visible="true"/>
                                 
-								<Label text="Arrival Airport Code" required="true"/>
+								<Label text="{i18n>arrivalAirportCode}" required="true"/>
 								<Input value="{DestinationAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
 
-								<Label text="Arrival Airport Name" required="true"/>
+								<Label text="{i18n>arrivalAirportName}" required="true"/>
 								<Input value="{DestinationAirportName}"/>
 
 								<core:Title text=""/>
-								<Label text="Des Airport Code" required="true"/>
+								<Label text="{i18n>desAirportCode}" required="true"/>
 								<Input value="{OriginAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
 
-								<Label text="Des Airport Name" required="true"/>
+								<Label text="{i18n>desAirportName}" required="true"/>
 								<Input value="{OriginAirportName}"/>
 
-								<Label text="Depature Date" required="true"/>
+								<Label text="{i18n>departureDate}" required="true"/>
 								<!--><DatePicker id="idFlighteDateTime" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/><-->
                                 
                                 <DateTimePicker
@@ -102,7 +102,7 @@
 								change="handleChange"
 								class="sapUiSmallMarginBottom"/>
 
-								<Label text="Arrival Date" required="true"/>
+								<Label text="{i18n>arrivalDate}" required="true"/>
 								<DateTimePicker
 								id="dpArrivalDate"
 								showCurrentDateButton="true"
@@ -117,7 +117,7 @@
 								change="handleChange"
 								class="sapUiSmallMarginBottom"/>
 
-								<Label text="Duration"/>
+								<Label text="{i18n>flightDuration}"/>
 								<tnt:InfoLabel id="ilDuration" icon="sap-icon://fob-watch" text="Standby" renderMode="Narrow" colorScheme="7"/>
 								<!--><DatePicker id="dpArrivalDate" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/><!-->
 							</f:content>
@@ -125,31 +125,31 @@
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
 			</uxap:ObjectPageSection>
-			<uxap:ObjectPageSection id="idCrewSection2" title="Crew Details">
+			<uxap:ObjectPageSection id="idCrewSection2" title="{i18n>crewDetails}">
 				<uxap:subSections>
-					<uxap:ObjectPageSubSection id="idCrewSubSection" title="Crew Details">
+					<uxap:ObjectPageSubSection id="idCrewSubSection" title="{i18n>crewDetails}">
 						<Table id="idCrewTable" mode="SingleSelect" items="{ path: 'CrewModel>/'}">
 							<headerToolbar>
 								<OverflowToolbar>
 									<content>
 										<ToolbarSpacer/>
-										<Button id="idAddCrewbtn" text="Add" press="onAddCrew" type="Transparent" visible="true" enabled="true"/>
-										<Button id="idDeleteCrewbtn" text="Delete" press="onDeleteCrew" type="Transparent" visible="true" enabled="true"/>
+										<Button id="idAddCrewbtn" text="{i18n>add}" press="onAddCrew" type="Transparent" visible="true" enabled="true"/>
+										<Button id="idDeleteCrewbtn" text="{i18n>delete}" press="onDeleteCrew" type="Transparent" visible="true" enabled="true"/>
 									</content>
 								</OverflowToolbar>
 							</headerToolbar>
 							<columns>
 								<Column width="auto">
-									<Text text="Crew Id"/>
+									<Text text="{i18n>crewId}"/>
 								</Column>
 								<Column width="auto">
-									<Text text="Role"/>
+									<Text text="{i18n>crewRole}"/>
 								</Column>
 								<Column width="auto">
-									<Text text="Last Name"/>
+									<Text text="{i18n>crewLastName}"/>
 								</Column>
 								<Column width="auto">
-									<Text text="First Name"/>
+									<Text text="{i18n>crewFirstName}"/>
 								</Column>
 							</columns>
 							<items>
@@ -170,8 +170,8 @@
 		<uxap:footer>
 			<OverflowToolbar>
 				<ToolbarSpacer />
-				<Button type="Emphasized" press="fnSave" text="Save" />
-				<Button press="onPressCancelBooking" text="Cancel" />
+				<Button type="Emphasized" press="fnSave" text="{i18n>save}" />
+				<Button press="onPressCancelBooking" text="{i18n>cancel}" />
 			</OverflowToolbar>
 		</uxap:footer>
 	</uxap:ObjectPageLayout>

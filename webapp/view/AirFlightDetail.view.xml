@@ -17,14 +17,14 @@
 		showFooter="true">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle>
-				<breadcrumbs>
+				<!-- <breadcrumbs>
 					<m:Breadcrumbs id="breadcrumbsId" currentLocationText="Object Page Example" >
 						<m:Link text="Page 1 a very long link" press="handleLink1Press"/>
 						<m:Link text="Page 2 long link" press="handleLink2Press"/>
 					</m:Breadcrumbs>
-				</breadcrumbs>
+				</breadcrumbs> -->
 
-				<expandedHeading>
+				<!-- <expandedHeading>
 					<m:HBox>
 						<m:Title text="Paris France" wrapping="true"/>
 						<m:ObjectMarker type="Favorite" class="sapUiTinyMarginBegin"/>
@@ -48,12 +48,12 @@
 
 				<snappedTitleOnMobile>
 					<m:Title text="charles de gaulle"/>
-				</snappedTitleOnMobile>
+				</snappedTitleOnMobile> -->
 
 				<actions>
 					<m:Button 
 					id='btnEdit'
-					text="Edit"
+					text="{i18n>edit}"
 					icon="sap-icon://edit"
 					type="Emphasized"
 					visible="{=!${UIModel>/modifMode}}"
@@ -92,7 +92,7 @@
 		</headerContent>
 
 		<sections>
-			<ObjectPageSection id="oPSAirport" title="Airport">
+			<ObjectPageSection id="oPSAirport" title="{i18n>airport}">
                  <subSections>
 				    <ObjectPageSubSection >
 					   <blocks>
@@ -150,7 +150,7 @@
 		<m:Button
 		id="btnSave"
 		type="Emphasized"
-		text="Save"
+		text="{i18n>save}"
 		visible="{UIModel>/modifMode}"
 		press="fnSave">
 			<m:layoutData>
@@ -161,7 +161,7 @@
 		<m:Button
 		id="btnCancel"
 		type="Default"
-		text="Cancel"
+		text="{i18n>cancel}"
 		visible="{UIModel>/modifMode}"
 		press="fnOnCancel">
 			<m:layoutData>
