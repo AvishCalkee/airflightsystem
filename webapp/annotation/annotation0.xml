@@ -18,8 +18,10 @@
                         <PropertyPath>FlightDuration</PropertyPath>
 					</Collection>
 				</Annotation>
-                </Annotations>
-			
+            </Annotations>
+			<Annotations Target="Metadata.Flight/FlightDuration">
+				<Annotation Term="UI.HiddenFilter" Bool="true"/>
+			</Annotations>
 			
 						
 				

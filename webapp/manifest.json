@@ -32,7 +32,14 @@
       "FlightDestination_json_model_data_source":{
         "uri": "valueHelp/DestinationCountries.json",
         "type": "JSON"
-      }
+      },
+      "annotation0": {
+				"type": "ODataAnnotation",
+				"uri": "annotation/annotation0.xml",
+				"settings": {
+					"localUri": "annotation/annotation0.xml"
+				}
+			}
     }
   },
   "sap.ui": {

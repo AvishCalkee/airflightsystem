@@ -64,7 +64,7 @@
 
 								<core:Title text=""/>
 								<Label text="Airline Id" required="true"/>
-								<Input id="idAirlineId" value="{AirlineId}" showValueHelp="true" valueHelpRequest="onRequestAirline" change="onChangeFlight" visible="true"/>
+								<Input id="idAirlineId" value="{AirlineId}" showValueHelp="true" valueHelpRequest="onRequestAirline" change="onChangeAirlineID" visible="true"/>
 
 								<Label text="Airline Name" required="true"/>
 								<Input id="idAirlinename" value="{AirlineName}" />
@@ -96,7 +96,8 @@
 		                             'path': '/DepartureDateTime',
 									'type': 'sap.ui.model.type.DateTime',
 									'formatOptions': {
-										'style': 'long'
+										'style': 'medium',
+										UTC: true
 									}
 								}"
 								change="handleChange"
@@ -111,7 +112,8 @@
 		                            'path': '/ArrivalDateTime',
 									'type': 'sap.ui.model.type.DateTime',
 									'formatOptions': {
-										'style': 'long'
+										'style': 'medium',
+										UTC: true
 									}
 								}"
 								change="handleChange"
