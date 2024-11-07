@@ -85,7 +85,7 @@
 					<smartTable:customToolbar>
 						<m:OverflowToolbar>
 							<m:ToolbarSpacer/>
-							<m:Button id="newBookingId" text="{i18n>bookingButton}" press="fnOnBookingNewFlight"/>
+							<m:Button id="newBookingId" text="{i18n>newBbooking}" press="fnOnBookingNewFlight"/>
 						</m:OverflowToolbar>
 					</smartTable:customToolbar>
 					<m:Table
