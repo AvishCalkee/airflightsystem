@@ -25,7 +25,7 @@
 								<Text text="{ path:'ToAirline/YManufactured', type:'sap.ui.model.type.Date', formatOptions: { style: 'short' } }" />
 							</f:fields>
 						</f:FormElement>
-                        <f:FormElement label="{i18n>lstMaintDate}">
+						<f:FormElement label="{i18n>lstMaintDate}">
 							<f:fields>
 								<Text text="{ path:'ToAirline/LMaintenaceDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'short' } }" />
 							</f:fields>
@@ -33,7 +33,7 @@
 					</f:formElements>
 				</f:FormContainer>
 
-                <f:FormContainer title="{i18n>contactinfo}">
+				<f:FormContainer title="{i18n>contactinfo}">
 					<f:formElements>
 						<f:FormElement label="{i18n>address}">
 							<f:fields>
@@ -42,51 +42,39 @@
 						</f:FormElement>
 						<f:FormElement label="{i18n>number}">
 							<f:fields>
-								<HBox alignItems="Center"
-									  renderType="Bare">
-								<core:Icon src="sap-icon://call"
-										size="1em"
-										width="1.5em"/>
-										<Text text="{ToAirline/Tel}" />
-								</HBox>								
+								<HBox alignItems="Center" renderType="Bare">
+									<core:Icon src="sap-icon://call" size="1em" width="1.5em"/>
+									<Text text="{ToAirline/Tel}" />
+								</HBox>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>email}">
 							<f:fields>
-								<HBox alignItems="Center"
-								renderType="Bare">
-						  <core:Icon src="sap-icon://email"
-								  size="1em"
-								  width="1.5em"/>
-								  <Text text="{ToAirline/email}" />
-						  </HBox>
+								<HBox alignItems="Center" renderType="Bare">
+									<core:Icon src="sap-icon://email" size="1em" width="1.5em"/>
+									<Text text="{ToAirline/email}" />
+								</HBox>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>website}">
 							<f:fields>
-								<HBox alignItems="Center"
-								renderType="Bare">
-						  <core:Icon src="sap-icon://internet-browser"
-								  size="1em"
-								  width="1.5em"/>
-								  <Link text="{ToAirline/website}" />
-						  </HBox>	
+								<HBox alignItems="Center" renderType="Bare">
+									<core:Icon src="sap-icon://internet-browser" size="1em" width="1.5em"/>
+									<Link text="{ToAirline/website}" />
+								</HBox>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement>
 							<f:fields>
 								<Button id="CompanyQuickView" text="{i18n>viewmore}" 
-                                    icon = "sap-icon://display-more"
-                                    press=".fnOpenCompanyInfoQuickView"
-                                    class="sapUiSmallMarginBottom"
-                                    width = "60%"
-                                    ariaHasPopup="Dialog"/>
+                                    icon = "sap-icon://display-more" press=".fnOpenCompanyInfoQuickView" class="sapUiSmallMarginBottom"
+                                    width = "60%" ariaHasPopup="Dialog"/>
 							</f:fields>
 						</f:FormElement>
 					</f:formElements>
 				</f:FormContainer>
 
-                <f:FormContainer title="{i18n>operation}">
+				<f:FormContainer title="{i18n>operation}">
 					<f:formElements>
 						<f:FormElement label="{i18n>status}">
 							<f:fields>
@@ -108,21 +96,17 @@
 								<Text text="{ToAirline/EngineType}" />
 							</f:fields>
 						</f:FormElement>
-                        <f:FormElement label="{i18n>numCrew}">
+						<f:FormElement label="{i18n>numCrew}">
 							<f:fields>
 								<Text text="{ToAirline/CrewNum}" />
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>SafetyRating}">
 							<f:fields>
-                                <RatingIndicator id="Safetyrating" maxValue="5" 
-                                class="sapUiSmallMarginBottom" 
-                                value="{ToAirline/SafetyRate}"  
-                                tooltip="Safety Rating" 
-                                enabled="false"/>
+								<RatingIndicator id="Safetyrating" maxValue="5" class="sapUiSmallMarginBottom" value="{ToAirline/SafetyRate}" tooltip="Safety Rating" enabled="false"/>
 							</f:fields>
 						</f:FormElement>
-                </f:formElements>
+					</f:formElements>
 				</f:FormContainer>
 			</f:formContainers>
 		</f:Form>

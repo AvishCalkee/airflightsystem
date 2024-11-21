@@ -1,0 +1,28 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    
+        <Table id="idBaggageTable" items="{BaggageModel>/items}">
+            <columns>
+                <Column>
+                    <Text text="{i18n>BagWeight}"/>
+                </Column>
+                <Column>
+                    <Text text="{i18n>PassengerId}"/>
+                </Column>
+                <Column>
+                    <Text text="{i18n>BaggageId}"/>
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem>
+                    <cells>
+                        <Text text="{BaggageModel>BagWeight}"/>
+                        <Text text="{BaggageModel>PassengerId}"/>
+                        <Text text="{BaggageModel>BaggageId}"/>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    
+</core:FragmentDefinition>

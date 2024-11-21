@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns:m="sap.m">
+    <m:Dialog id="crewDialog" title="Crew Members" afterClose="onDialogClose">
+        <m:List items="{crewModel>/items}" headerText="Crew Members">
+            <m:ObjectListItem title="{crewModel>FirstName} {crewModel>LastName}" type="Active" press="onCrewItemPress">
+                <m:firstStatus>
+                    <m:ObjectStatus text="{crewModel>Role}" state="Success"/>
+                </m:firstStatus>
+                <m:ObjectAttribute text="{crewModel>FlightId}" />
+            </m:ObjectListItem>
+        </m:List>
+        <m:buttons>
+            <m:Button text="Close" press="onDialogClose" />
+        </m:buttons>
+    </m:Dialog>
+</core:FragmentDefinition>

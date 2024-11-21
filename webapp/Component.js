@@ -30,6 +30,9 @@ sap.ui.define([
                 // set the device model
                 this.setModel(models.createDeviceModel(), "device");
                 models.fnInitCustomizing(this.getModel("UIModel"),this);
+
+                this.setModel(models.createBaggageModel(), "BaggageModel");
+                this.setModel(models.createViewCrewModel(), "crewModel");
             }
         });
     }

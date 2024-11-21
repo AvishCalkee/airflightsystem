@@ -1,212 +1,144 @@
 <mvc:View xmlns:table="sap.ui.table" id="AirFlightList" controllerName="fiori.bootcamp.airflightsystem.controller.AirFlightList"
-    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns:m="sap.m"
+	xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	xmlns:m="sap.m"
 	xmlns:core="sap.ui.core"
 	xmlns:f="sap.f"
 	xmlns:smartTable="sap.ui.comp.smarttable"
-    xmlns:sfb="sap.ui.comp.smartfilterbar"
+	xmlns:sfb="sap.ui.comp.smartfilterbar"
 	xmlns:svm="sap.ui.comp.smartvariants">
-    <f:DynamicPage id="AirFlightListPageId">
-			<f:header>
-				<f:DynamicPageHeader id="pageheaderID">
-                <f:content>
-						<sfb:SmartFilterBar
-							id="smartFilterBar"
-							entitySet="FlightSet"
-							search="onSearch"
-							useDateRangeType="true">
-							<sfb:controlConfiguration>
-								<sfb:ControlConfiguration index="1" key="FlightId" label="{i18n>flightId}">
-									<sfb:customControl>
-										<m:Input id="oFlightIdFilter"/>
-									</sfb:customControl>
-								</sfb:ControlConfiguration>
-								<sfb:ControlConfiguration index="2" key="FlightStatus" label="{i18n>Statut}">
-									<sfb:customControl>
-										<m:Select id="flightStatusId" items="{ path:'/FlightStatus', templateShareable:false, sorter:{path:'text'} }">
-											<core:Item key="{key}" text="{text}"/>
-										</m:Select>
-									</sfb:customControl>
-								</sfb:ControlConfiguration>
-								<!--<sfb:ControlConfiguration index="3" key="ArrivalDateTime" label="{i18n>arrivalDate}">
-									<sfb:customControl>
-										<m:DatePicker/>
-									</sfb:customControl>
-								</sfb:ControlConfiguration> -->
-								<!--<sfb:ControlConfiguration index="4" key="DepartureDateTime" label="{i18n>departureDate}">
-									<sfb:customControl>
-										<m:DatePicker/>
-									</sfb:customControl>
-								</sfb:ControlConfiguration>-->
-								<sfb:ControlConfiguration index="5" key="DestinationAirportCode" label="{i18n>DestAirportCode}">
-									<sfb:customControl>
-										<m:Input id="oDestAirportCodeFilter" />
-									</sfb:customControl>
-								</sfb:ControlConfiguration>
-								<sfb:ControlConfiguration index="6" key="OriginAirportCode" label="{i18n>OriginAirportCode}">
-									<sfb:customControl>
-										<m:Input id="oOriginAirportCodeFilter" />
-									</sfb:customControl>
-								</sfb:ControlConfiguration>
-								<sfb:ControlConfiguration index="7" key="AirlineId" label="{i18n>AirlineID}">
-									<sfb:customControl>
-										<m:Input id="oAirlineIdFilter" />
-									</sfb:customControl>
-								</sfb:ControlConfiguration>
-								<!--<sfb:ControlConfiguration index="8" key="FlightDuration" label="{i18n>flightDuration}">
-									<sfb:customControl>
-										<m:Input id="oFlightDuration" />
-									</sfb:customControl>
-								</sfb:ControlConfiguration>-->
-							</sfb:controlConfiguration>
-						</sfb:SmartFilterBar>
-                        </f:content>
-				</f:DynamicPageHeader>
-			</f:header>
-			<f:content>
-				<smartTable:SmartTable
-					id="smartTable"
-					smartVariant="PageVariantId"
-					smartFilterId="smartFilterBar"
-					entitySet="FlightSet"
-					beforeRebindTable="onBeforeRebindTable"
-					tableType="ResponsiveTable"
-					enableAutoColumnWidth="true"
-					useTablePersonalisation="true"
-					showRowCount="true"
-					enableExport="true"
-					enableAutoBinding="true"
-					class='sapUiResponsiveContentPadding'
-					justifyContent="Start" 
-					placeToolbarInTable="true"
-					requestAtLeastFields="ToCrew/LastName"
-					header="{i18n>airFlight}"
-					>
-					<smartTable:customToolbar>
-						<m:OverflowToolbar>
-							<m:ToolbarSpacer/>
-							<m:Button id="newBookingId" text="{i18n>newBbooking}" press="fnOnBookingNewFlight"/>
-						</m:OverflowToolbar>
-					</smartTable:customToolbar>
-					<m:Table
-						id="flightTableId"
-						growing="true"
-						growingScrollToLoad="true"
-						sticky="ColumnHeaders,HeaderToolbar"
-						fixedLayout="false"
-						popinLayout="GridSmall"
-						alternateRowColors="true"
-						itemPress="fnOnItemPress">
-						<m:columns>
-							<m:Column id="FlightIdCol" hAlign="Begin">
-								<m:Text text="{i18n>flightId}"/>
-									<m:customData>
-										<core:CustomData id="dataFlightId"
-											key="p13nData"
-											value='\{
+	<f:DynamicPage id="AirFlightListPageId">
+		<f:header>
+			<f:DynamicPageHeader id="pageheaderID">
+				<f:content>
+					<sfb:SmartFilterBar id="smartFilterBar" entitySet="FlightSet" search="onSearch" useDateRangeType="true">
+						<sfb:controlConfiguration>
+							<sfb:ControlConfiguration index="1" key="FlightId" label="{i18n>flightId}">
+								<sfb:customControl>
+									<m:Input id="oFlightIdFilter"/>
+								</sfb:customControl>
+							</sfb:ControlConfiguration>
+							<sfb:ControlConfiguration index="2" key="FlightStatus" label="{i18n>Statut}">
+								<sfb:customControl>
+									<m:Select id="flightStatusId" items="{ path:'/FlightStatus', templateShareable:false, sorter:{path:'text'} }">
+										<core:Item key="{key}" text="{text}"/>
+									</m:Select>
+								</sfb:customControl>
+							</sfb:ControlConfiguration>
+							
+							<sfb:ControlConfiguration index="5" key="DestinationAirportCode" label="{i18n>DestAirportCode}">
+								<sfb:customControl>
+									<m:Input id="oDestAirportCodeFilter" />
+								</sfb:customControl>
+							</sfb:ControlConfiguration>
+							<sfb:ControlConfiguration index="6" key="OriginAirportCode" label="{i18n>OriginAirportCode}">
+								<sfb:customControl>
+									<m:Input id="oOriginAirportCodeFilter" />
+								</sfb:customControl>
+							</sfb:ControlConfiguration>
+							<sfb:ControlConfiguration index="7" key="AirlineId" label="{i18n>AirlineID}">
+								<sfb:customControl>
+									<m:Input id="oAirlineIdFilter" />
+								</sfb:customControl>
+							</sfb:ControlConfiguration>
+							
+						</sfb:controlConfiguration>
+					</sfb:SmartFilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<smartTable:SmartTable id="smartTable" smartVariant="PageVariantId" smartFilterId="smartFilterBar" entitySet="FlightSet" beforeRebindTable="onBeforeRebindTable" tableType="ResponsiveTable" enableAutoColumnWidth="true" useTablePersonalisation="true" showRowCount="true" enableExport="true" enableAutoBinding="true" class='sapUiResponsiveContentPadding' justifyContent="Start" placeToolbarInTable="true" requestAtLeastFields="ToCrew/LastName" header="{i18n>airFlight}">
+				<smartTable:customToolbar>
+					<m:OverflowToolbar>
+						<m:ToolbarSpacer/>
+						<m:Button id="newBookingId" text="{i18n>newBbooking}" press="fnOnBookingNewFlight"/>
+					</m:OverflowToolbar>
+				</smartTable:customToolbar>
+				<m:Table id="flightTableId" growing="true" growingScrollToLoad="true" sticky="ColumnHeaders,HeaderToolbar" fixedLayout="false" popinLayout="GridSmall" alternateRowColors="true" itemPress="fnOnItemPress">
+					<m:columns>
+						<m:Column id="FlightIdCol" hAlign="Begin">
+							<m:Text text="{i18n>flightId}"/>
+							<m:customData>
+								<core:CustomData id="dataFlightId" key="p13nData" value='\{
 												"columnIndex": "0",
 												"leadingProperty": "FlightId",
 												"columnKey": "FlightId"
 											}'/>
-								</m:customData>
-							</m:Column>
-							<m:Column id="ArrivalDateTimeCol" hAlign="Begin">
-								<m:Text text="{i18n>arrivalTime}"/>
-									<m:customData>
-										<core:CustomData id="ArrivalDateTimeId"
-												key="p13nData"
-												value='\{
+							</m:customData>
+						</m:Column>
+						<m:Column id="ArrivalDateTimeCol" hAlign="Begin">
+							<m:Text text="{i18n>arrivalTime}"/>
+							<m:customData>
+								<core:CustomData id="ArrivalDateTimeId" key="p13nData" value='\{
 													"columnIndex": "1",
 													"leadingProperty": "ArrivalDateTime",
 													"columnKey": "ArrivalDateTime"
 												}'/>
-									</m:customData>
-							</m:Column>
-							<m:Column id="DepartureDateTimeCol" hAlign="Begin">
-								<m:Text text="{i18n>departureTime}"/>
-									<m:customData>
-										<core:CustomData id="DepartureDateTimeId"
-												key="p13nData"
-												value='\{
+							</m:customData>
+						</m:Column>
+						<m:Column id="DepartureDateTimeCol" hAlign="Begin">
+							<m:Text text="{i18n>departureTime}"/>
+							<m:customData>
+								<core:CustomData id="DepartureDateTimeId" key="p13nData" value='\{
 													"columnIndex": "2",
 													"leadingProperty": "DepartureDateTime",
 													"columnKey": "DepartureDateTime"
 												}'/>
-									</m:customData>
-							</m:Column>
-							<m:Column id="FlightStatusCol" hAlign="Begin">
-								<m:Text text="{i18n>Statut}"/>
-									<m:customData>
-										<core:CustomData id="flightStatusDataId"
-											key="p13nData"
-											value='\{
+							</m:customData>
+						</m:Column>
+						<m:Column id="FlightStatusCol" hAlign="Begin">
+							<m:Text text="{i18n>Statut}"/>
+							<m:customData>
+								<core:CustomData id="flightStatusDataId" key="p13nData" value='\{
 												"columnIndex": "3",
 												"leadingProperty": "FlightStatus",
 												"columnKey": "FlightStatus"
 											}'/>
-										</m:customData>
-							</m:Column>
-							<m:Column id="FlightDurationCol" hAlign="Begin">
-								<m:Text text="{i18n>flightDuration}"/>
-									<m:customData>
-										<core:CustomData id="flightDurationDataId"
-												key="p13nData"
-												value='\{
+							</m:customData>
+						</m:Column>
+						<m:Column id="FlightDurationCol" hAlign="Begin">
+							<m:Text text="{i18n>flightDuration}"/>
+							<m:customData>
+								<core:CustomData id="flightDurationDataId" key="p13nData" value='\{
 													"columnIndex": "4",
 													"leadingProperty": "FlightDuration",
 													"columnKey": "FlightDuration"
 												}'/>
-									</m:customData>
-							</m:Column>
-							<m:Column id="FlightCap" hAlign="Begin" width="20%">
-								<m:Text text="{i18n>lblTeam}"/>
-								<m:customData>
-										<core:CustomData id="flightCrew"
-												key="p13nData"
-												value='\{
+							</m:customData>
+						</m:Column>
+						<m:Column id="FlightCap" hAlign="Begin" width="20%">
+							<m:Text text="{i18n>lblTeam}"/>
+							<m:customData>
+								<core:CustomData id="flightCrew" key="p13nData" value='\{
 													"columnIndex": "5",
 													"leadingProperty": "ToCrew",
 													"columnKey": "ToCrew"
 												}'/>
-									</m:customData>
-							</m:Column>
-						</m:columns>
-						<m:items>
-							<m:ColumnListItem type="Navigation">
+							</m:customData>
+						</m:Column>
+					</m:columns>
+					<m:items>
+						<m:ColumnListItem type="Navigation">
 							<m:cells>
-							       <m:HBox alignItems="Center">
-								<m:Avatar
-									src="sap-icon://flight"
-									class="sapUiTinyMarginEnd"
-									displaySize="S"
-									backgroundColor="Accent7"/>
-								        <m:Text text="{FlightId}" />
-								   </m:HBox>
-									
-									<m:Text	text="{ path:'ArrivalDateTime', formatter: '.formatter.fnFormatDate'}" />
-									<m:Text	text="{ path:'DepartureDateTime', formatter: '.formatter.fnFormatDate'}" />
-									<m:ObjectStatus
-										text="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatus' }"
-										state="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatusState' }"
-										icon="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatusIcon' }"/>
-									<m:Text	text="{path: 'FlightDuration', formatter: '.formatter.fnFlightDuration'}" />
-									<!--<m:HBox alignItems="Center">
-									<m:Avatar
-									src="sap-icon://da"
-									class="sapUiTinyMarginEnd"
-									displaySize="S"
-									backgroundColor="Accent7"/>
-									 <m:Text text="{path : 'ToCrew',formatter: '.formatter.fnGetCap'}" />
-								   </m:HBox> -->
-								   <m:Tokenizer width='100%' tokens="{path : 'ToCrew',templateShareable: true}">
-								       <m:Token editable="false" text="{LastName}" tooltip="{Role}" class='tokenizerToLeft'>
-									   </m:Token>
-								   </m:Tokenizer>
-								   </m:cells>
-							</m:ColumnListItem>
-						</m:items>
-					</m:Table>
-				</smartTable:SmartTable>
-			</f:content>
-		</f:DynamicPage>
+								<m:HBox alignItems="Center">
+									<m:Avatar src="sap-icon://flight" class="sapUiTinyMarginEnd" displaySize="S" backgroundColor="Accent7"/>
+									<m:Text text="{FlightId}" />
+								</m:HBox>
+
+								<m:Text text="{ path:'ArrivalDateTime', formatter: '.formatter.fnFormatDate'}" />
+								<m:Text text="{ path:'DepartureDateTime', formatter: '.formatter.fnFormatDate'}" />
+								<m:ObjectStatus text="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatus' }" state="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatusState' }" icon="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatusIcon' }"/>
+								<m:Text text="{path: 'FlightDuration', formatter: '.formatter.fnFlightDuration'}" />
+								
+								<m:Tokenizer width='100%' tokens="{path : 'ToCrew',templateShareable: true}">
+									<m:Token editable="false" text="{LastName}" tooltip="{Role}" class='tokenizerToLeft'>
+									</m:Token>
+								</m:Tokenizer>
+							</m:cells>
+						</m:ColumnListItem>
+					</m:items>
+				</m:Table>
+			</smartTable:SmartTable>
+		</f:content>
+	</f:DynamicPage>
 </mvc:View>

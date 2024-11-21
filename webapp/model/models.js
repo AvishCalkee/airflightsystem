@@ -21,6 +21,21 @@ function (JSONModel, Device) {
                 resolve();
             }))
 
+        },
+        createBaggageModel : function (){
+            let oBaggageDetails = {
+                "items": []
+            };
+            let oModel = new JSONModel(oBaggageDetails);
+            return oModel;
+        },
+        createViewCrewModel : function (){
+            let oCrewDetails = {
+                selectedFlightId: null,
+                "items": []
+            };
+            let oModel = new JSONModel(oCrewDetails);
+            return oModel;
         }
     };
 
