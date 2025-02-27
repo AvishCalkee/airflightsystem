@@ -17,7 +17,11 @@ server:
           url: https://ui5.sap.com
         backend:
           - path: /sap
+            url: http://10.0.2.107:8000
+          - path: /sap
             url: http://10.0.1.206:8000
+          - path: /sap/opu/odata/sap/ZDFLIGHTSYSTEM_SRV
+            url: http://10.0.2.107:8000
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:

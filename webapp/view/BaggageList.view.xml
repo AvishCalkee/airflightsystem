@@ -1,0 +1,92 @@
+<mvc:View xmlns:table="sap.ui.table" 
+    id="BaggageList" 
+    controllerName="fiori.bootcamp.airflightsystem.controller.BaggageList"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:m="sap.m"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:l='sap.ui.layout'
+	xmlns:core="sap.ui.core"
+	>
+	<l:VerticalLayout class='sapUiNoContentPadding' width='100%'>
+			<smartTable:SmartTable id="sTBaggage"  
+			entitySet="BaggageSet" 
+			beforeRebindTable="onBeforeRebindTable" 
+			tableType="ResponsiveTable" 
+			useTablePersonalisation="true" 
+			showRowCount="true" 
+			enableExport="true" 
+			enableAutoBinding="true" 
+			class='sapUiResponsiveContentPadding'
+			placeToolbarInTable="true" 
+			header="{i18n>Baggage}"
+			alignItems="Stretch"
+			alignContent="Stretch"
+			demandPopin="true"
+			initiallyVisibleFields="BaggageId,PassengerId"
+			requestAtLeastFields="Weight"
+			persistencyKey="STBaggageKey"
+			showTablePersonalisation="false"
+			>
+				<smartTable:customToolbar>
+					<m:OverflowToolbar>
+						<m:ToolbarSpacer/>
+						<m:Button id="bBaggageRefresh" icon="sap-icon://refresh" tooltip="{i18n>refresh}" press="onRefreshTableContent"/>
+					</m:OverflowToolbar>
+				</smartTable:customToolbar>
+				<m:Table id="tBaggage" 
+				growing="true" 
+				growingScrollToLoad="true" 
+				sticky="ColumnHeaders,HeaderToolbar" 
+				fixedLayout="false" 
+				popinLayout="GridSmall" 
+				alternateRowColors="true">
+
+                  <m:columns>
+
+				   <!-- <m:Column hAlign="Begin" id="colBaggageId">
+				   <m:Text text="Baggage Id" maxLines="1">
+                        <m:customData>
+                            <core:CustomData key="p13nData" value='\{"columnKey":"key1","leadingProperty":"BaggageId","columnIndex":"1"}'/>
+                        </m:customData>
+                      </m:Text>
+				   </m:Column>
+                  
+				   <m:Column hAlign="Begin" id="colPassengerId">
+				   <m:Text text="Passenger Id" maxLines="1">
+                        <m:customData>
+                            <core:CustomData key="p13nData" value='\{"columnKey":"key2","leadingProperty":"PassengerId","columnIndex":"3"}'/>
+                        </m:customData>
+                      </m:Text>
+				   </m:Column> -->
+				  
+				    <m:Column hAlign="Begin" id="colWeight">
+                      <m:Text text="Weight" maxLines="1">
+                        <m:customData>
+                            <core:CustomData key="p13nData" value="\{'columnKey': 'key3', 'leadingProperty': ['Weight'],'columnIndex' : '3'}"/>
+							<!-- <core:CustomData key="p13nData" value='\{"columnKey":"Weight","leadingProperty":"Weight","columnIndex":"3"}'/> -->
+                        </m:customData>
+                      </m:Text>
+                   </m:Column>
+                </m:columns>
+                <m:items>
+                   <m:ColumnListItem>
+                      <m:cells>
+						<!-- <m:Text text="{BaggageId}"></m:Text>
+						<m:Text text="{PassengerId}"></m:Text> -->
+						<m:ObjectNumber
+						number="{Weight}"
+						unit="KG"
+						state="{
+							parts: [
+								{path: 'Weight'}
+							],
+							formatter: '.formatter.fnWeightState'
+						}" />
+                      </m:cells>
+                   </m:ColumnListItem>
+                </m:items>
+
+				</m:Table>
+			</smartTable:SmartTable>
+</l:VerticalLayout>		
+</mvc:View>

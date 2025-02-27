@@ -1,6 +1,6 @@
 <mvc:View controllerName="fiori.bootcamp.airflightsystem.controller.AirFlightApp"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m">
-    <App id="AirFlightAppId">
+    <App id="AirFlightAppId" busy='{UIModel>/appBusy}'>
     </App>
 </mvc:View>

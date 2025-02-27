@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog
+		id="selectDialog"
+		title="Airports"
+		items="{/AirportSet}"
+		search=" fnOnValueHelpSearch"
+		confirm="fnOnValueHelpClose"
+		cancel="fnOnValueHelpClose">
+		<StandardListItem
+			icon="sap-icon://globe"
+			iconDensityAware="false"
+			iconInset="false"
+			title="{Country}"
+			description="{AirportName}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

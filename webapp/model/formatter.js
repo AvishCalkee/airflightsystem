@@ -70,6 +70,27 @@ function (JSONModel, DateFormat) {
             var formattedTime = hours + "hrs " + minutes + "mins";
         
             return formattedTime;
+        },
+
+        fnWeightState : function (iWeight){
+            if (iWeight > 1){
+                return 'Warning';
+            }
+            return 'Success';
+            
+        },
+        fnFlightDuration: function (dDepartureTime, dArrivalTime){
+            var start = new Date(dDepartureTime);
+            var end = new Date(dArrivalTime);
+
+            var durationMs = end - start; // Duration in milliseconds
+
+            var seconds = Math.floor((durationMs / 1000) % 60);
+            var minutes = Math.floor((durationMs / (1000 * 60)) % 60);
+            var hours = Math.floor((durationMs / (1000 * 60 * 60)) % 24);
+            var days = Math.floor(durationMs / (1000 * 60 * 60 * 24));
+
+            return `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
         }
     };
 

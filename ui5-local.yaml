@@ -31,7 +31,11 @@ server:
         ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
         backend:
           - path: /sap
+            url: http://10.0.2.107:8000
+          - path: /sap
             url: http://10.0.1.206:8000
+          - path: /sap/opu/odata/sap/ZDFLIGHTSYSTEM_SRV
+            url: http://10.0.2.107:8000
     - name: sap-fe-mockserver
       beforeMiddleware: csp
       configuration:

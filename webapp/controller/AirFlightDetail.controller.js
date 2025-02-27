@@ -4,8 +4,11 @@ sap.ui.define([
     "sap/ui/core/Fragment",
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/format/DateFormat",
+    "sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
+    "sap/m/MessageBox",
 ],
-    function (Controller, Formatter, Fragment, JSONModel, DateFormat) {
+    function (Controller, Formatter, Fragment, JSONModel, DateFormat,Filter,FilterOperator,MessageBox) {
         "use strict";
 
         return Controller.extend("fiori.bootcamp.airflightsystem.controller.AirFlightDetail", {
@@ -25,30 +28,17 @@ sap.ui.define([
                 await this.fnRestoreUIModel();
                 oView.bindElement({
                     path: sFlightId,
-                    parameters: { expand: "ToDepartureAiport,ToDestinationAirport,ToAirline" },
+                    parameters: { expand: "ToDepartureAirport,ToDestinationAirport,ToAirline,ToPassenger" },
                     events: {
                         dataRequested: function () {
                             oView.setBusy(true);
                         },
                         dataReceived: function (result) {
                             let oFlightData = result.getParameter("data");
+                            this.fnFlightOccupation(result.getParameter("data").ToAirline.MaxSeatcap,result.getParameter("data").ToPassenger.length);
                             // Safely check if FlightDuration exists and has milliseconds
-                            let flightDurationMs = oFlightData.FlightDuration && oFlightData.FlightDuration.ms ? oFlightData.FlightDuration.ms : 0;
-
-                            let oData = {
-                                FlightStatus: oFlightData.FlightStatus,
-                                FlightDuration: this._fnConvertMsToTime(flightDurationMs),
-                                ArrivalDateTime: oFlightData.ArrivalDateTime,
-                                DepartureDateTime: oFlightData.DepartureDateTime,
-                                DestinationAirportCode: oFlightData.DestinationAirportCode,
-                                OriginAirportCode: oFlightData.OriginAirportCode,
-                                AirlineId: oFlightData.AirlineId,
-                                FlightNo: oFlightData.FlightNo,
-                                FlightId: oFlightData.FlightId
-                            };
-
-                            let Model = new JSONModel(oData);
-                            this.getView().setModel(Model, "FlightDetailsModel");
+                            //let flightDurationMs = oFlightData.FlightDuration && oFlightData.FlightDuration.ms ? oFlightData.FlightDuration.ms : 0;
+                            
                             oView.setBusy(false);
                         }.bind(this),
                         change: function (oData) {
@@ -59,9 +49,21 @@ sap.ui.define([
 
                 });
 
-                this._fnCallBaggageSet();
+                //this._fnCallBaggageSet();
                 
             },
+
+            fnFlightOccupation : function (iMaxSeat,iTotalPassenger){
+                var iPercentageBook = iTotalPassenger * (100/iMaxSeat);
+                if(iPercentageBook>50){
+                    this.getView().getModel("UIModel").setProperty("/sOccupationStatus", "Success");
+                }else{
+                    this.getView().getModel("UIModel").setProperty("/sOccupationStatus", "Warning");
+                }
+                this.getView().getModel("UIModel").setProperty("/bVisibleFlightOccup", true);
+                this.getView().getModel("UIModel").setProperty("/iOccupationPercentage", iPercentageBook);
+            },
+
             _fnConvertMsToTime: function (duration) {
 
                 let seconds = Math.floor((duration / 1000) % 60),
@@ -115,9 +117,11 @@ sap.ui.define([
 
             fnOnModif: function (oEvent) {
                 this.getView().getModel("UIModel").setProperty("/modifMode", true);
+                this.getOwnerComponent().getEventBus().publish("channelAirFlight", "PopulateEditPassengerTable", this);
             },
             fnOnCancel: function (oEvent) {
                 this.getView().getModel("UIModel").setProperty("/modifMode", false);
+                this.getOwnerComponent().getEventBus().publish("channelAirFlight", "PopulateEditPassengerTable", this);
             },
 
             fnEmailValidation: function (oEvent) {
@@ -209,7 +213,11 @@ sap.ui.define([
                     sChangeSet = "saveDeepChangeSet",
                     oView = this.getView(),
                     oI18n = this.getOwnerComponent().getModel("i18n");
-
+                
+                    if(this.getView().getModel().getProperty(this.getView().getBindingContext().getPath()+'/OriginAirportCode') === this.getView().getModel().getProperty(this.getView().getBindingContext().getPath()+'/DestinationAirportCode')){
+                        MessageBox.error(oI18n.getProperty("msgDiffAirport"));
+                        return;
+                    }
 
                 oModel.setDeferredGroups(oModel.getDeferredGroups().concat([sBatchGroup]));
                 /* Détermination de changements */
@@ -231,7 +239,7 @@ sap.ui.define([
                 /* Effectuer la sauvegarde dans le backend ou ne rien faire. */
                 if (bIsChanged) {
                     let aSavePromises = [];
-                    oView.setBusy(true);
+                    this.getView().getModel("UIModel").setProperty("/appBusy", true);
                     // Changement present : lancer la sauvegarde du document par $batch
                     aSavePromises.push(new Promise(function (resolve, reject) {
                         oModel.submitChanges({
@@ -344,6 +352,64 @@ sap.ui.define([
                 if (this._crewDialog) {
                     this._crewDialog.close();
                 }
-            }
+            },
+            fnOnValueHelpRequest: function (oEvent) {
+                var sInputValue = oEvent.getSource().getValue(),
+                    oView = this.getView();
+            
+                if (!this._pValueHelpDialog) {
+                    this._pValueHelpDialog = Fragment.load({
+                        id: oView.getId(),
+                        name: "fiori.bootcamp.airflightsystem.view.fragment.AirportValueHelp",
+                        controller: this,
+                        oInput: sInputValue,
+                    }).then(function (oDialog) {
+                        oView.addDependent(oDialog);
+                        return oDialog;
+                    });
+                }
+                this._pValueHelpDialog.oInput = oEvent.getSource();
+                this._pValueHelpDialog.then(function(oDialog) {
+                    // Create a filter for the binding
+                    oDialog.getBinding("items").filter([new Filter("AirportName", FilterOperator.Contains, sInputValue)]);
+                    // Open ValueHelpDialog filtered by the input's value
+                    oDialog.open(sInputValue);
+                });
+             },
+            
+             fnOnValueHelpSearch: function (oEvent) {
+                var sValue = oEvent.getParameter("value");
+                var oFilter = new Filter("AirportName", FilterOperator.Contains, sValue);
+            
+                oEvent.getSource().getBinding("items").filter([oFilter]);
+            },
+            
+            fnOnValueHelpClose: function (oEvent) {
+                var oSelectedItem = oEvent.getParameter("selectedItem");
+                oEvent.getSource().getBinding("items").filter([]);
+            
+                if (!oSelectedItem) {
+                    return;
+                }
+                var sPath = oSelectedItem.getBindingContext().getPath();
+                var sSelectedData = oSelectedItem.getBindingContext().getModel().getProperty(sPath);
+            
+                if(!this._pValueHelpDialog.oInput.getId().includes('inputDepartureAirportCode')){
+                    this.getView().getModel().setProperty(this.getView().getBindingContext().getPath()+'/DestinationAirportCode',sSelectedData.AirportCode);
+                    this.getView().getModel().setProperty(this.getView().getBindingContext().getPath()+'/ToDestinationAirport/AirportCode',sSelectedData.AirportCode);
+                    this.getView().getModel().setProperty(this.getView().getBindingContext().getPath()+'/ToDestinationAirport/AirportName',sSelectedData.AirportName);
+                    this.getView().getModel().setProperty(this.getView().getBindingContext().getPath()+'/ToDestinationAirport/City',sSelectedData.City);
+                    this.getView().getModel().setProperty(this.getView().getBindingContext().getPath()+'/ToDestinationAirport/Country',sSelectedData.Country);
+                }else{
+                    this.getView().getModel().setProperty(this.getView().getBindingContext().getPath()+'/OriginAirportCode',sSelectedData.AirportCode);
+                    this.getView().getModel().setProperty(this.getView().getBindingContext().getPath()+'/ToDepartureAirport/AirportCode',sSelectedData.AirportCode);
+                    this.getView().getModel().setProperty(this.getView().getBindingContext().getPath()+'/ToDepartureAirport/AirportName',sSelectedData.AirportName);
+                    this.getView().getModel().setProperty(this.getView().getBindingContext().getPath()+'/ToDepartureAirport/City',sSelectedData.City);
+                    this.getView().getModel().setProperty(this.getView().getBindingContext().getPath()+'/ToDepartureAirport/Country',sSelectedData.Country);
+            
+                }
+                
+            },
+
         });
     });

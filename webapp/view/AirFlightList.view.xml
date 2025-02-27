@@ -47,14 +47,39 @@
 			</f:DynamicPageHeader>
 		</f:header>
 		<f:content>
-			<smartTable:SmartTable id="smartTable" smartVariant="PageVariantId" smartFilterId="smartFilterBar" entitySet="FlightSet" beforeRebindTable="onBeforeRebindTable" tableType="ResponsiveTable" enableAutoColumnWidth="true" useTablePersonalisation="true" showRowCount="true" enableExport="true" enableAutoBinding="true" class='sapUiResponsiveContentPadding' justifyContent="Start" placeToolbarInTable="true" requestAtLeastFields="ToCrew/LastName" header="{i18n>airFlight}">
+			<smartTable:SmartTable id="smartTable" 
+			smartVariant="PageVariantId" 
+			smartFilterId="smartFilterBar" 
+			entitySet="FlightSet" 
+			beforeRebindTable="onBeforeRebindTable" 
+			tableType="ResponsiveTable" 
+			enableAutoColumnWidth="true" 
+			useTablePersonalisation="true" 
+			showRowCount="true" 
+			enableExport="true" 
+			enableAutoBinding="true" 
+			class='sapUiResponsiveContentPadding' 
+			justifyContent="Start" 
+			placeToolbarInTable="true" 
+			requestAtLeastFields="ToCrew/LastName" 
+			header="{i18n>airFlight}"
+			alignItems="Stretch"
+			alignContent="Stretch"
+			demandPopin="true">
 				<smartTable:customToolbar>
 					<m:OverflowToolbar>
 						<m:ToolbarSpacer/>
 						<m:Button id="newBookingId" text="{i18n>newBbooking}" press="fnOnBookingNewFlight"/>
 					</m:OverflowToolbar>
 				</smartTable:customToolbar>
-				<m:Table id="flightTableId" growing="true" growingScrollToLoad="true" sticky="ColumnHeaders,HeaderToolbar" fixedLayout="false" popinLayout="GridSmall" alternateRowColors="true" itemPress="fnOnItemPress">
+				<m:Table id="flightTableId" 
+				growing="true" 
+				growingScrollToLoad="true" 
+				sticky="ColumnHeaders,HeaderToolbar" 
+				fixedLayout="false" 
+				popinLayout="GridSmall" 
+				alternateRowColors="true" 
+				itemPress="fnOnItemPress">
 					<m:columns>
 						<m:Column id="FlightIdCol" hAlign="Begin">
 							<m:Text text="{i18n>flightId}"/>

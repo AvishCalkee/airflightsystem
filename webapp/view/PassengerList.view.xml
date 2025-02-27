@@ -1,11 +1,14 @@
-<core:FragmentDefinition
-    xmlns:l="sap.ui.layout"
-    xmlns:mvc="sap.ui.core.mvc"
-    xmlns:m="sap.m"
-    xmlns:core="sap.ui.core"
-    xmlns:smartTable="sap.ui.comp.smarttable">
-<!-- 
-        <smartTable:SmartTable id="stPassengerList" header="{i18n>lpassenger}" enableAutoBinding="true" entitySet="PassengerSet" tableBindingPath="ToPassenger" 
+<mvc:View xmlns:core="sap.ui.core" xmlns:table="sap.ui.table" 
+    id="PassengerList" 
+    controllerName="fiori.bootcamp.airflightsystem.controller.PassengerList"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:m="sap.m"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:l='sap.ui.layout'
+	>
+	<l:VerticalLayout class='sapUiNoContentPadding' width='100%'>
+			
+        <smartTable:SmartTable id="stPassengerList" header="{i18n>lpassenger}" enableAutoBinding="true" entitySet="PassengerSet"
             placeToolbarInTable="true" tableType="ResponsiveTable" enableExport="true" 
             initiallyVisibleFields="PassengerId,FirstName,LastName,Email,PassportNumber,Nationality,SeatNumber" 
             useTablePersonalisation="true" showVariantManagement="true" noData="{i18n>noData}" showRowCount="true" 
@@ -22,6 +25,6 @@
                 growingTriggerText="{i18n>load}" fixedLayout="false" popinLayout="GridSmall">
             </m:Table>
 
-        </smartTable:SmartTable> -->
-    
-</core:FragmentDefinition>
+        </smartTable:SmartTable>
+</l:VerticalLayout>		
+</mvc:View>
