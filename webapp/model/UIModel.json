@@ -6,6 +6,10 @@
     "sOccupationStatus":"None",
     "count": {
 		"Passengers" : ""
+	},
+    "passengerTableBtn":{
+		"addEnable":true,
+		"deleteDisable":false
 	}
 
 }

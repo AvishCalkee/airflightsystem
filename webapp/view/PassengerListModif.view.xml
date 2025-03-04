@@ -25,7 +25,7 @@ xmlns:form="sap.ui.layout.form"
 												<m:Title text="{i18n>Passengers} {UIConfig>/count/Passengers}"/>
 												<m:ToolbarSpacer/>
 												<m:Button id="btnDeletePassenger" type="Transparent" press=".fnDeletePassenger" icon="sap-icon://delete"
-													tooltip="{i18n>DeletePassenger}" enabled="true"/>
+													tooltip="{i18n>DeletePassenger}" enabled="{UIConfig>/passengerTableBtn/deleteDisable}"/>
 												<m:Button id="btnAddPassenger" type="Transparent" press=".fnAddPassenger" icon="sap-icon://add"
 													tooltip="{i18n>AddPassenger}" enabled="true"/>
 											</m:OverflowToolbar>

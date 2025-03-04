@@ -79,9 +79,9 @@ sap.ui.define(
 
                                     /*Delete Button Handling*/
                                     if (this.getView().byId("stPassengerListModif").getItems().length === 0) {
-                                        oConfigModel.setProperty("/pecTableBtn/deleteDisable", false);
+                                        oConfigModel.setProperty("/passengerTableBtn/deleteDisable", false);
                                     } else {
-                                        oConfigModel.setProperty("/pecTableBtn/deleteDisable", true);
+                                        oConfigModel.setProperty("/passengerTableBtn/deleteDisable", true);
                                     }
                                 } else if (oAction === sap.m.MessageBox.Action.CANCEL) {
                                     this.getView().byId("stPassengerListModif").removeSelections(true);
@@ -97,6 +97,98 @@ sap.ui.define(
                 var oConfigModel = oView.getModel("UIConfig"),
                 sCount = this.getView().byId("stPassengerListModif").getItems().length;;
                 oConfigModel.setProperty("count/Passengers", " (" + sCount + ")");
+            },
+
+            fnSave: function (sBatchGroup, sChangeSet, oView) {
+                /* Conversion du JSONModel dans le oDataModel v2 */
+    
+                var bHasChanges = false,
+                    oCreatePEC,
+                    oModifiedPEC,
+                    oODataModel = oView.getModel(),
+                    oEditPassengerModel = this.getView().getModel("EditPassengerList");
+    
+                /* Collecter l'image originale des PEC (issu du OData Modèle sans nom */
+                var smartTableItems = oView.byId("viewPassengerList").getController().byId("stPassengerList").getTable().getItems(),
+                    oDataModelElements = [];
+    
+                for (var i = 0; i < smartTableItems.length; i++) {
+                    var item = oODataModel.getObject(smartTableItems[i].getBindingContextPath());
+                    oDataModelElements.push(item);
+                }
+    
+                /* Collecter l'image modifiée des PEC (issu du JSON Modèle 'PEC' */
+                var aModifiPassengerList = oView.byId("viewPassengerListModif").getController().byId("stPassengerListModif").getItems();
+    
+                /*Tentative creation*/
+                for (var j = 0; j < aModifiPassengerList.length; j++) {
+                    var oPassengerEditModel = oEditPassengerModel.getObject(aModifiPassengerList[j].getBindingContextPath());
+                    
+                    var oPassenger = oDataModelElements.find(function (oEl) {
+                        return oEl.PassengerId === oPassengerEditModel[j].PassengerId;
+                    });
+
+                    if (!oPassenger) {
+                        /*  Création d'un nouvel PEC */
+                        
+                        oCreatePassenger = {
+                            FlightId: this.getView().getBindingContext().getObject().FlightId,
+                            PassengerId: oPassengerEditModel.PassengerId,
+                            FirstName: oPassengerEditModel.FirstName,
+                            LastName: oPassengerEditModel.LastName, 
+                            Email: oPassengerEditModel.Email,
+                            PassportNum: oPassengerEditModel.PassportNum,
+                            Nationality: oPassengerEditModel.Nationality,
+                            SeatNum:oPassengerEditModel.SeatNum,
+                            DOB:oPassengerEditModel.DOB,
+                        };
+                        oODataModel.create("/Passenger", oCreatePassenger, {
+                            urlParameters: {
+                                DocumentType: "Flight",
+                                DocumentId: this.getView().getBindingContext().getObject().FlightId
+                            },
+                            groupId: sBatchGroup,
+                            changeSetId: sChangeSet
+                        });
+                        bHasChanges = true;
+                    }else{
+                           /* Passenger  MJA*/
+                        var bModelChanged = this.fnHasChanges(oPassengerEditModel, oPassenger);
+                        if(bModelChanged){
+                            var sPath = "/Passengers(PassengerId='" + oPassengerEditModel.PassengerId + "',FlightID='" + this.getView().getBindingContext().getObject().FlightId + "')";
+                        oModifiedPassenger = {
+                            FlightId: this.getView().getBindingContext().getObject().FlightId,
+                            PassengerId: oPassengerEditModel.PassengerId,
+                            FirstName: oPassengerEditModel.FirstName,
+                            LastName: oPassengerEditModel.LastName, 
+                            Email: oPassengerEditModel.Email,
+                            PassportNum: oPassengerEditModel.PassportNum,
+                            Nationality: oPassengerEditModel.Nationality,
+                            SeatNum:oPassengerEditModel.SeatNum,
+                            DOB:oPassengerEditModel.DOB,
+                        };
+    
+                        oODataModel.update(sPath, oModifiedPassenger, {
+                            groupId: "saveDeepGroup"
+                        });
+                        bHasChanges = true;
+                        }
+                    }
+                }
+   
+                return bHasChanges;
+            }, 
+
+            fnHasChanges: function (editModelPassenger, originalModelPassenger) {
+                var aKeys = Object.keys(editModelPassenger);
+                for (var i = 0; i < aKeys.length; i++) {
+                    if (editModelPassenger[aKeys[i]] !== originalModelPassenger[aKeys[i]] && (aKeys[i] !== "__metadata")) {
+                        return editModelPassenger[aKeys[i]];
+                    }
+    
+                    
+                }
+                return ;
             }
       });
     }

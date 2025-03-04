@@ -110,7 +110,7 @@
 									<mvc:XMLView id="viewPassengerList" viewName="fiori.bootcamp.airflightsystem.view.PassengerList"/>
 								</m:VBox>
 								<m:VBox visible="{=${UIModel>/modifMode}}">
-									<mvc:XMLView viewName="fiori.bootcamp.airflightsystem.view.PassengerListModif"/>
+									<mvc:XMLView id="viewPassengerListModif" viewName="fiori.bootcamp.airflightsystem.view.PassengerListModif"/>
 								</m:VBox>
 							</m:VBox>
 							<!-- <core:Fragment id="Passenger" fragmentName="fiori.bootcamp.airflightsystem.view.fragment.Passenger" type="XML"/> -->
