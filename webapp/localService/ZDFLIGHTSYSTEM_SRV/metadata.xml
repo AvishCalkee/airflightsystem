@@ -86,13 +86,13 @@
                 </Key>
                 <Property Name="PassengerId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Passenger ID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="FlightId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Flight ID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="FirstName" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="c" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="LastName" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="c" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="DateOfBirth" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="PassportNumber" Type="Edm.String" Nullable="false" MaxLength="9" sap:unicode="false" sap:label="CHAR9" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Nationality" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="c" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="SeatNumber" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="INT2" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Email" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="c" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="FirstName" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Firstname" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LastName" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="LastName" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DateOfBirth" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="DOB" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PassportNumber" Type="Edm.String" Nullable="false" MaxLength="9" sap:unicode="false" sap:label="Passport Num" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Nationality" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Nationality" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SeatNumber" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Seat Num" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Email" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Email" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
             <EntityType Name="Seat" sap:content-version="1">
                 <Key>
@@ -118,26 +118,10 @@
             <Association Name="Flight_DepAirport" sap:content-version="1">
                 <End Type="ZDFLIGHTSYSTEM_SRV.Flight" Multiplicity="1" Role="FromRole_Flight_DepAirport"/>
                 <End Type="ZDFLIGHTSYSTEM_SRV.Airport" Multiplicity="0..1" Role="ToRole_Flight_DepAirport"/>
-                <ReferentialConstraint>
-                    <Principal Role="FromRole_Flight_DepAirport">
-                        <PropertyRef Name="FlightId"/>
-                    </Principal>
-                    <Dependent Role="ToRole_Flight_DepAirport">
-                        <PropertyRef Name="AirportCode"/>
-                    </Dependent>
-                </ReferentialConstraint>
             </Association>
             <Association Name="Flight_DestAirport" sap:content-version="1">
                 <End Type="ZDFLIGHTSYSTEM_SRV.Flight" Multiplicity="1" Role="FromRole_Flight_DestAirport"/>
                 <End Type="ZDFLIGHTSYSTEM_SRV.Airport" Multiplicity="0..1" Role="ToRole_Flight_DestAirport"/>
-                <ReferentialConstraint>
-                    <Principal Role="FromRole_Flight_DestAirport">
-                        <PropertyRef Name="FlightId"/>
-                    </Principal>
-                    <Dependent Role="ToRole_Flight_DestAirport">
-                        <PropertyRef Name="AirportCode"/>
-                    </Dependent>
-                </ReferentialConstraint>
             </Association>
             <Association Name="Flight_Passenger" sap:content-version="1">
                 <End Type="ZDFLIGHTSYSTEM_SRV.Flight" Multiplicity="1" Role="FromRole_Flight_Passenger"/>

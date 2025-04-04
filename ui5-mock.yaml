@@ -31,12 +31,8 @@ server:
       configuration:
         mountPath: /
         services:
-          - urlPath: /sap/opu/odata/sap/ZFLA_PO_DETAILS_SRV
-            metadataPath: ./webapp/localService/metadata.xml
-            generateMockData: true
-            mockdataRootPath: ./webapp/localService/data
           - urlPath: /sap/opu/odata/sap/ZDFLIGHTSYSTEM_SRV
-            metadataPath: ./webapp/localService/metadata.xml
-            mockdataPath: ./webapp/localService/mockdata
+            metadataPath: ./webapp/localService/ZDFLIGHTSYSTEM_SRV/metadata.xml
+            mockdataPath: ./webapp/localService/ZDFLIGHTSYSTEM_SRV/data
             generateMockData: true
         annotations: []

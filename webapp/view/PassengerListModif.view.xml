@@ -1,4 +1,5 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" 
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+controllerName="fiori.bootcamp.airflightsystem.controller.PassengerListModif" 
 xmlns:m="sap.m" 
 xmlns:core="sap.ui.core" 
 xmlns:f="sap.ui.layout.form" 
@@ -32,30 +33,30 @@ xmlns:form="sap.ui.layout.form"
 										</m:headerToolbar>
 										<m:columns>
 											<m:Column hAlign="Begin">
-												<m:Label text="{i18n>ColPassengerId}"/>
+												<m:Label text="{/#Passenger/PassengerId/@sap:label}"/>
 											</m:Column>
 											<m:Column hAlign="Begin">
-												<m:Label text="{i18n>ColFirstName}"/>
+												<m:Label text="{/#Passenger/FirstName/@sap:label}"/>
 											</m:Column>
 											<m:Column hAlign="Begin">
-												<m:Label text="{i18n>ColLastName}"/>
+												<m:Label text="{/#Passenger/LastName/@sap:label}"/>
 											</m:Column>
 											<!--Début DEFI 1029 - MJU(+)-->
 											<m:Column hAlign="Begin">
-												<m:Label text="{i18n>Email}"/>
+												<m:Label text="{/#Passenger/Email/@sap:label}"/>
 											</m:Column>
 											<!--Fin DEFI 1029 - MJU(+)-->
 											<m:Column hAlign="Begin">
-												<m:Label text="{i18n>PassportNum}"/>
+												<m:Label text="{/#Passenger/PassportNumber/@sap:label}"/>
 											</m:Column>
 											<m:Column hAlign="Begin">
-												<m:Label text="{i18n>ColNationality}"/>
+												<m:Label text="{/#Passenger/Nationality/@sap:label}"/>
 											</m:Column>
 											<m:Column hAlign="Begin">
-												<m:Label text="{i18n>ColSeatNum}"/>
+												<m:Label text="{/#Passenger/SeatNumber/@sap:label}"/>
 											</m:Column>
 											<m:Column hAlign="Begin">
-												<m:Label text="{i18n>ColDOB}"/>
+												<m:Label text="{/#Passenger/DateOfBirth/@sap:label}"/>
 											</m:Column>
 										</m:columns>
 										<m:items>
@@ -90,7 +91,7 @@ xmlns:form="sap.ui.layout.form"
 														<m:DatePicker
 															id="DPDOB"
 															value="{
-																'path':'EditPassengerList>SeatNum',
+																'path':'EditPassengerList>DOB',
 																'type':'sap.ui.model.type.Date',
 																'formatOptions': {
 																	'pattern': 'yyyy-MM-dd'

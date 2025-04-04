@@ -1,9 +1,10 @@
 sap.ui.define(
     [
         "sap/ui/core/mvc/Controller",
-        "../model/formatter"
+        "../model/formatter",
+        "sap/m/MessageBox"
     ],
-    function(BaseController,Formatter) {
+    function(BaseController,Formatter,MessageBox) {
       "use strict";
   
       return BaseController.extend("fiori.bootcamp.airflightsystem.controller.PassengerListModif", {
@@ -39,7 +40,7 @@ sap.ui.define(
 		},
 
         fnAddPassenger: function () {
-				this.getModel("EditPassengerList").setProperty("/", this.getModel("EditPassengerList").getProperty("/").concat({
+				this.getView().getModel("EditPassengerList").setProperty("/", this.getView().getModel("EditPassengerList").getProperty("/").concat({
 					"PassengerId": "",
 					"FirstName": "",
 					"LastName": "",
@@ -54,37 +55,39 @@ sap.ui.define(
             },
 
             fnDeletePassenger: function (oEvent) {
-                var that = this;
-                var i18n = this.getOwnerComponent().getModel("i18n");
-                var oConfigModel = this.getView().getModel("UIConfig");
+                var that = this,
+                    i18n = this.getOwnerComponent().getModel("i18n"),
+                    oConfigModel = this.getView().getModel("UIModel"),
+                    oView = this.getView();
     
-                var oSelectedContexts = this.getView().byId("EditPassengerList").getSelectedItems();
+                var oSelectedContexts = this.getView().byId("stPassengerListModif").getSelectedItems();
                 if (oSelectedContexts.length === 0) {
-                    sap.m.MessageBox.error(i18n.getProperty("NoSelection"));
+                    MessageBox.error(i18n.getProperty("NoSelection"));
                 } else {
-                    sap.m.MessageBox.confirm(
+                    MessageBox.confirm(
                         i18n.getProperty("confirmDelete"), {
                             onClose: (function (oAction) {
-                                if (oAction === sap.m.MessageBox.Action.OK) {
+                                if (oAction === MessageBox.Action.OK) {
                                     var bPECSaved = false;
                                     oSelectedContexts.forEach(function (oItemToDelete) {
                                         var sPath = oItemToDelete.getBindingContext("EditPassengerList").getPath();
-                                        var sId = that.getModel("EditPassengerList").getProperty(sPath + "/PassengerId");
-                                        if (sId === "") {
+                                        var sId = oView.getModel("EditPassengerList").getProperty(sPath + "/PassengerId");
+                                        if (sId === "" || sId === undefined) {
                                             var iIndex = sPath.substr(1);
-                                            that.getModel("EditPassengerList").getData().splice(that.getView().byId("stPassengerListModif").getItems().length - 1, 1); 
-                                            that.getModel("EditPassengerList").updateBindings(); 
+                                            oView.getModel("EditPassengerList").getData().splice(oView.byId("stPassengerListModif").getItems().length - 1, 1); 
+                                            oView.getModel("EditPassengerList").updateBindings();
                                         } 
                                     });
+                                     
 
                                     /*Delete Button Handling*/
-                                    if (this.getView().byId("stPassengerListModif").getItems().length === 0) {
+                                    if (oView.byId("stPassengerListModif").getItems().length === 0) {
                                         oConfigModel.setProperty("/passengerTableBtn/deleteDisable", false);
                                     } else {
                                         oConfigModel.setProperty("/passengerTableBtn/deleteDisable", true);
                                     }
-                                } else if (oAction === sap.m.MessageBox.Action.CANCEL) {
-                                    this.getView().byId("stPassengerListModif").removeSelections(true);
+                                } else if (oAction === MessageBox.Action.CANCEL) {
+                                    oView.byId("stPassengerListModif").removeSelections(true);
                                 }
                                 this.fnUpdatePassengerCount();
                             }).bind(this)
@@ -94,9 +97,10 @@ sap.ui.define(
             },
 
             fnUpdatePassengerCount: function (){
-                var oConfigModel = oView.getModel("UIConfig"),
-                sCount = this.getView().byId("stPassengerListModif").getItems().length;;
-                oConfigModel.setProperty("count/Passengers", " (" + sCount + ")");
+                var oView = this.getView(),
+                    oConfigModel = oView.getModel("UIModel"),
+                    sCount = oView.byId("stPassengerListModif").getItems().length;
+                    oConfigModel.setProperty("count/Passengers", " (" + sCount + ")");
             },
 
             fnSave: function (sBatchGroup, sChangeSet, oView) {
@@ -131,7 +135,7 @@ sap.ui.define(
                     if (!oPassenger) {
                         /*  Création d'un nouvel PEC */
                         
-                        oCreatePassenger = {
+                        var oCreatePassenger = {
                             FlightId: this.getView().getBindingContext().getObject().FlightId,
                             PassengerId: oPassengerEditModel.PassengerId,
                             FirstName: oPassengerEditModel.FirstName,
@@ -156,7 +160,7 @@ sap.ui.define(
                         var bModelChanged = this.fnHasChanges(oPassengerEditModel, oPassenger);
                         if(bModelChanged){
                             var sPath = "/Passengers(PassengerId='" + oPassengerEditModel.PassengerId + "',FlightID='" + this.getView().getBindingContext().getObject().FlightId + "')";
-                        oModifiedPassenger = {
+                       var  oModifiedPassenger = {
                             FlightId: this.getView().getBindingContext().getObject().FlightId,
                             PassengerId: oPassengerEditModel.PassengerId,
                             FirstName: oPassengerEditModel.FirstName,

@@ -10,6 +10,7 @@
     "passengerTableBtn":{
 		"addEnable":true,
 		"deleteDisable":false
-	}
+	},
+  "TravelState":"None"
 
 }

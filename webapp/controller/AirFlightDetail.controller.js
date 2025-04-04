@@ -17,6 +17,8 @@ sap.ui.define([
 
                 let oRouter = this.getOwnerComponent().getRouter();
                 oRouter.getRoute("AirFlightDetail").attachPatternMatched(this.fnObjectMatched, this);
+
+                this.getView().setModel(new JSONModel(),'EditPassengerList');
             },
 
             fnObjectMatched: async function (oEvent) {
@@ -212,7 +214,11 @@ sap.ui.define([
                     sBatchGroup = "saveDeepGroup",
                     sChangeSet = "saveDeepChangeSet",
                     oView = this.getView(),
-                    oI18n = this.getOwnerComponent().getModel("i18n");
+                    oI18n = this.getOwnerComponent().getModel("i18n"),
+                    bPassengerChanges = false;
+
+                    
+                    bPassengerChanges = this.getView().byId('viewPassengerListModif').getController().fnSave(sBatchGroup,sChangeSet,oView);
                 
                     if(this.getView().getModel().getProperty(this.getView().getBindingContext().getPath()+'/OriginAirportCode') === this.getView().getModel().getProperty(this.getView().getBindingContext().getPath()+'/DestinationAirportCode')){
                         MessageBox.error(oI18n.getProperty("msgDiffAirport"));

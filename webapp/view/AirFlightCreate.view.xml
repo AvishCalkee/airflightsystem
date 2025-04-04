@@ -33,13 +33,20 @@
 								<core:Title text="{i18n>destinationDetails}"/>
 								<Label text="{i18n>destinationFrom}" required="true"/>
 								<ComboBox id="cbxFrom"
-								 items="{path:'oAirPort>/'}">
+								 items="{path:'oAirPort>/'}"
+								 selectedKey="{OriginAirportCode}"
+								 change="fnTrackChange"
+								 valueState="{UIModel>/TravelState}">
 								    <core:Item key="{oAirPort>AirportCode}" text="{oAirPort>Country}"/>
 								</ComboBox>
 								<core:Title/>
 								<Label text="{i18n>destinationTo}" required="true"/>
 								<ComboBox id="cbxTo"
-								items="{path:'oAirPort>/'}">
+								items="{path:'oAirPort>/'}"
+								selectedKey="{DestinationAirportCode}"
+								change="fnTrackChange"
+								valueState="{UIModel>/TravelState}"
+								>
 								    <core:Item key="{oAirPort>AirportCode}" text="{oAirPort>Country}"/>
 								</ComboBox>
 							</f:content>
@@ -73,17 +80,17 @@
 								<Input id="inptPlaneId" value="{FlightNo}" showValueHelp="true" valueHelpRequest="onRequestFlight" visible="true"/>
                                 
 								<Label text="{i18n>arrivalAirportCode}" required="true"/>
-								<Input value="{DestinationAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
+								<Input value="{OriginAirportCode}" valueState="{UIModel>/TravelState}" showValueHelp="true" valueHelpRequest="onRequestAirportCode"  change="fnTrackChange" visible="true"/>
 
 								<Label text="{i18n>arrivalAirportName}" required="true"/>
-								<Input value="{DestinationAirportName}"/>
+								<Input value="{OriginAirportName}"/>
 
 								<core:Title text=""/>
 								<Label text="{i18n>desAirportCode}" required="true"/>
-								<Input value="{OriginAirportCode}" showValueHelp="true" valueHelpRequest="onRequestAirportCode" change="onChangeAirportCode" visible="true"/>
+								<Input value="{DestinationAirportCode}" valueState="{UIModel>/TravelState}"  showValueHelp="true" showSuggestion="true" valueHelpRequest="onRequestAirportCode"  change="fnTrackChange" visible="true"/>
 
 								<Label text="{i18n>desAirportName}" required="true"/>
-								<Input value="{OriginAirportName}"/>
+								<Input value="{DestinationAirportName}"/>
 
 								<Label text="{i18n>departureDate}" required="true"/>
 								<!--><DatePicker id="idFlighteDateTime" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/><-->
