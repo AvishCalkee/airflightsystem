@@ -1,7 +1,8 @@
 <mvc:View id="AirFlightDetail"
 	xmlns="sap.uxap"
 	xmlns:layout="sap.ui.layout" controllerName="fiori.bootcamp.airflightsystem.controller.AirFlightDetail"
-	xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true"
 	xmlns:m="sap.m"
 	xmlns:core="sap.ui.core"
 	xmlns:f="sap.f"
@@ -12,9 +13,12 @@
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle>
 			<expandedHeading>
-					<m:HBox>
-						<m:Title text="Flight: {FlightDetailsModel>/AirlineId} - {FlightDetailsModel>/FlightNo}" wrapping="true"/>
-					</m:HBox>
+					<m:VBox>
+						<m:Title text="{FlightId}" wrapping="true"/>
+						<m:GenericTag text="Flight Occupation" visible="{UIModel>/bVisibleFlightOccup}"  design="StatusIconHidden" status="{UIModel>/sOccupationStatus}" class="sapUiSmallMarginBottom">
+						<m:ObjectNumber state="{UIModel>/sOccupationStatus}" emphasized="false" number="{UIModel>/iOccupationPercentage}" unit="%" />
+					</m:GenericTag>
+					</m:VBox>
 				</expandedHeading>
 				<actions>
 					<m:Button id='btnEdit' text="{i18n>edit}" icon="sap-icon://edit" type="Emphasized" visible="{=!${UIModel>/modifMode}}" press="fnOnModif"></m:Button>
@@ -25,25 +29,42 @@
 
 		<headerContent>
 			<m:FlexBox wrap="Wrap" alignContent="End" alignItems="Stretch">
-				<m:Avatar class="sapUiSmallMarginEnd" src="./image/Air-Mauritius.png"  displaySize="L" />
+				<m:Avatar class="sapUiSmallMarginEnd" src="sap-icon://travel-itinerary"  displaySize="L" />
 
 				<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-					<m:Label text="Flight Status : {FlightDetailsModel>/FlightStatus}" design="Bold"/>
-					<!-- <m:Link text="AirLine : {FlightDetailsModel>/AirlineId}" press="onPressGoToAirportWebsite" /> -->
-				</layout:VerticalLayout>
-				
-				<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-					<m:VBox>
-						<m:Label text="Departure From: {FlightDetailsModel>/OriginAirportCode}" design="Bold"/>
-						<tnt:InfoLabel  text="Departure Datetime: { path:'FlightDetailsModel>/DepartureDateTime', formatter: '.formatter.fnFormatDate'}"  colorScheme="6" width = "auto"/>
-					</m:VBox>
+					<m:Label text="Status :" design="Bold"/>
+					<m:ObjectStatus text="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatus' }" state="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatusState' }" icon="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatusIcon' }"/>
 				</layout:VerticalLayout>
 
 				<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-					<m:VBox>
-						<m:Label text="Arrival Destination: {FlightDetailsModel>/DestinationAirportCode}" design="Bold"/>	
-						<tnt:InfoLabel  text="Arrival Datetime : { path:'FlightDetailsModel>/ArrivalDateTime', formatter: '.formatter.fnFormatDate'}"  colorScheme="6" width = "auto"/>	
-					</m:VBox>
+				    <m:Label text="Tel :" design="Bold"/>
+					<!-- <m:Link text="{ToAirline/Tel}"/> -->
+					<m:Label text="{ToAirline/Tel}"/>
+					<m:Label text="Email :" design="Bold"/>
+					<m:Label text="{ToAirline/Email}"/>
+					<!-- <m:Link text="{ToAirline/Email}"/> -->
+				</layout:VerticalLayout>
+
+				<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+					<tnt:InfoLabel id="il8" text="Website :" colorScheme="6" icon="sap-icon://internet-browser" />
+					<m:Link text="{ToAirline/Website}"/>
+
+					<m:Label text="Flight duration :" design="Bold"/>
+					<m:Label text="{ parts:['DepartureDateTime','ArrivalDateTime'], formatter: '.formatter.fnFlightDuration'}" design="Standard"/>
+				</layout:VerticalLayout>
+
+				<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+				<layout:HorizontalLayout class="sapUiSmallMarginBeginEnd">
+					    <tnt:InfoLabel  text="{ToDepartureAirport/AirportName} :" colorScheme="6" icon="sap-icon://home" />
+						<m:Label text="{ path:'DepartureDateTime', formatter: '.formatter.fnFormatDate'}" design="Bold"/>
+						<!-- <tnt:InfoLabel class="sapUiTinyMarginBeginEnd"  text="{ path:'DepartureDateTime', formatter: '.formatter.fnFormatDate'}"  colorScheme="6" width = "auto"/> -->
+				</layout:HorizontalLayout>
+
+				<layout:HorizontalLayout class="sapUiSmallMarginBeginEnd sapUiTinyMarginTopBottom">
+						<tnt:InfoLabel  text="{ToDestinationAirport/Country} :" colorScheme="6" icon="sap-icon://map" />
+						<m:Label text="{ path:'ArrivalDateTime', formatter: '.formatter.fnFormatDate'}" design="Bold"/>
+						<!-- <tnt:InfoLabel class="sapUiTinyMarginBeginEnd"  text="{ path:'ArrivalDateTime', formatter: '.formatter.fnFormatDate'}"  colorScheme="6" width = "auto"/> -->
+				</layout:HorizontalLayout>
 				</layout:VerticalLayout>
 			</m:FlexBox>
 		</headerContent>
@@ -84,11 +105,29 @@
 				<subSections>
 					<ObjectPageSubSection >
 						<blocks>
-							<!-- <mvc:XMLView viewName="fiori.bootcamp.airflightsystem.view.Passenger"/> -->
-							<core:Fragment id="Passenger" fragmentName="fiori.bootcamp.airflightsystem.view.fragment.Passenger" type="XML"/>
+							 <m:VBox>
+								<m:VBox visible="{=!${UIModel>/modifMode}}">
+									<mvc:XMLView id="viewPassengerList" viewName="fiori.bootcamp.airflightsystem.view.PassengerList"/>
+								</m:VBox>
+								<m:VBox visible="{=${UIModel>/modifMode}}">
+									<mvc:XMLView id="viewPassengerListModif" viewName="fiori.bootcamp.airflightsystem.view.PassengerListModif"/>
+								</m:VBox>
+							</m:VBox>
+							<!-- <core:Fragment id="Passenger" fragmentName="fiori.bootcamp.airflightsystem.view.fragment.Passenger" type="XML"/> -->
+								<!-- Section : Passenger 
+								<ObjectPageSection id="PassengerSection"  title="{i18n>passenger}">
+									<subSections>
+									<ObjectPageSubSection >
+										<blocks>
+											<mvc:XMLView viewName="fiori.bootcamp.airflightsystem.view.Passenger"/>
+										</blocks>
+									</ObjectPageSubSection>
+									
+									</subSections>
+
+							</ObjectPageSection>-->
 						</blocks>
 					</ObjectPageSubSection>
-
 				</subSections>
 			</ObjectPageSection>
 
@@ -97,8 +136,8 @@
 				<subSections>
 					<ObjectPageSubSection >
 						<blocks>
-							<!-- <mvc:XMLView viewName="fiori.bootcamp.airflightsystem.view.Passenger"/> -->
-							<core:Fragment id="Baggage" fragmentName="fiori.bootcamp.airflightsystem.view.fragment.Baggage" type="XML"/>
+							<mvc:XMLView viewName="fiori.bootcamp.airflightsystem.view.BaggageList"/>
+							<!-- <core:Fragment id="Baggage" fragmentName="fiori.bootcamp.airflightsystem.view.fragment.Baggage" type="XML"/> -->
 						</blocks>
 					</ObjectPageSubSection>
 

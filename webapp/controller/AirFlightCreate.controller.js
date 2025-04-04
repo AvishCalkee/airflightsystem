@@ -72,7 +72,16 @@ sap.ui.define([
 			},
 
 			fnSave: function (oEvent) {
-				var oModel = this.getOwnerComponent().getModel();
+				var oModel = this.getOwnerComponent().getModel(),
+				    oFlightData = this.getView().getModel().getData(),
+					FlightEntity = JSON.parse(JSON.stringify(oFlightData)),
+					aCrew = this.getView().getModel("CrewModel").getData();
+
+				if (this.fnBRequiredFields(FlightEntity)){
+					MessageBox.error("Required fields missing");
+					return;
+				}
+				
 				oModel.setUseBatch(true);
 				oModel.setDeferredGroups(["creationGroup"]);
 				oModel.setChangeGroups({
@@ -83,8 +92,7 @@ sap.ui.define([
 				});
 
 
-				var oFlightData = this.getView().getModel().getData(),
-					FlightEntity = JSON.parse(JSON.stringify(oFlightData));
+				
 				FlightEntity.FlightStatus = "A";
 				delete FlightEntity.Departure;
 				delete FlightEntity.Destination;
@@ -95,9 +103,11 @@ sap.ui.define([
 				delete FlightEntity.AirlineName;
 
 				//Remove offset errors
+				if(FlightEntity.ArrivalDateTime != undefined && FlightEntity.DepartureDateTime != undefined0){
 				FlightEntity.ArrivalDateTime = FlightEntity.ArrivalDateTime.slice(1, -5);
 				FlightEntity.DepartureDateTime = FlightEntity.DepartureDateTime.slice(1, -5);
-
+			} 
+			    FlightEntity.crew = aCrew;
 				this.getView().setBusy(true);
 
 				oModel.create("/FlightSet", FlightEntity, {
@@ -559,7 +569,7 @@ sap.ui.define([
 					descriptionKey: "AirportName",
 					ok: jQuery.proxy(function (oControlEvent) {
 						this.oInput.setValue(oControlEvent.getParameter("tokens")[0].getKey());
-
+                        this.oInput.fireChange();
 						AirportValueHelp.close();
 					}, this),
 					cancel: function (oControlEvent) {
@@ -938,7 +948,7 @@ sap.ui.define([
 					title: "Error"
 				});
 			},
-			/*Save Booking*/
+			/*Save Booking
 			onPressSaveBooking: function (oEvent) {
 				var that = this;
 				this.getView().setBusy(true);
@@ -958,22 +968,13 @@ sap.ui.define([
 					}.bind(that)
 				});
 
-			},
+			},*/
 			/*Cancel Booking - clear booking screen*/
-			onPressCancelBooking: function (oEvent) {
-				/*debugger;
-				var oBookingModel = this.getView().getModel("Booking");
-				var oCrewModel = this.getView().getModel("CrewModel");
-				oBookingModel.setData({});
-				oBookingModel.refresh();
-
-				oCrewModel.setData([]);
-				oCrewModel.refresh();*/
-
-				//The history contains a previous entry
+			/*onPressCancelBooking: function (oEvent) {
+				
 				window.history.go(-1);
 
-			},
+			},*/
 			onAddCrew: function (oEvent) {
 				var oCrewModel = this.getView().getModel("CrewModel");
 				var aCrewData = oCrewModel.getData();
@@ -1018,7 +1019,7 @@ sap.ui.define([
 					MessageToast.show("Please select both dates.");
 				}
 			},
-			onChangeDestination: function () {
+			/*onChangeDestination: function () {
 				var oComboBoxFrom = this.getView().byId("idDepartureFrom");
 				var oComboBoxTo = this.getView().byId("idDepartureTo");
 
@@ -1036,11 +1037,62 @@ sap.ui.define([
 					oComboBoxFrom.setValueState("None");
 					oComboBoxTo.setValueState("None");
 				}
-			},
+			},*/
 			fnNavigateToDetailPage: function (newFlightId) {
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-				oRouter.navTo("AirFlightDetail",{DetailPath: "FlightSet('" + newFlightId + "')"});
-				
+				oRouter.navTo("AirFlightDetail",{DetailPath: "FlightSet('" + newFlightId + "')"});	
 			},
+
+			fnBRequiredFields : function (oEntity) {
+				if (oEntity.CreationDate === '' || oEntity.CreationDate != undefined){
+                  return true;
+				}else if (oEntity.AirlineId === '' || oEntity.AirlineId === undefined){
+					return true;
+				}else if (oEntity.AirlineName === '' || oEntity.AirlineName === undefined){
+					return true;
+				}else if (oEntity.FlightNo === '' || oEntity.FlightNo === undefined){
+					return true;
+				}else if (oEntity.DestinationAirportCode === '' || oEntity.DestinationAirportCode === undefined){
+					return true;
+				}else if (oEntity.DestinationAirportName === '' || oEntity.DestinationAirportName === undefined){
+					return true;
+				}else if (oEntity.OriginAirportCode === '' || oEntity.OriginAirportCode === undefined){
+					return true;
+				}else if (oEntity.OriginAirportName === '' || oEntity.OriginAirportName === undefined){
+					return true;
+				}else if (oEntity.DepartureDateTime === '' || oEntity.DepartureDateTime === undefined){
+					return true;
+				}else if (oEntity.ArrivalDateTime === '' || oEntity.ArrivalDateTime === undefined){
+					return true;
+				}
+				return false;
+			},
+
+			fnTrackChange : function (oEvent){
+				var oView = this.getView(),
+					oModel = oView.getModel(),
+				    sSelectedKeyFrom = oModel.getProperty('/DestinationAirportCode'),
+					sSelectedKeyTo = oModel.getProperty('/OriginAirportCode'),
+					aAirport = this.getView().getModel("oAirPort").getProperty("/"),
+					sSelectedObjFrom = '',
+					sSelectedObjTo = '',
+					oI18n = this.getOwnerComponent().getModel("i18n");
+				  
+				if (sSelectedKeyTo === sSelectedKeyFrom) {
+					// Display error message
+					MessageBox.error(oI18n.getProperty("msgErrorSameDesAndArrival"));
+					oView.getModel("UIModel").setProperty("/TravelState", "Error");
+				} else {
+					oView.getModel("UIModel").setProperty("/TravelState", "None");
+					sSelectedObjFrom = aAirport.find(obj => obj.AirportCode === sSelectedKeyFrom);
+					sSelectedObjTo = aAirport.find(obj => obj.AirportCode === sSelectedKeyTo);
+					if(sSelectedObjFrom !== undefined){
+					oModel.setProperty("/DestinationAirportName", sSelectedObjFrom.AirportName);
+				  } 
+				  if(sSelectedObjTo !== undefined){
+					oModel.setProperty("/OriginAirportName", sSelectedObjTo.AirportName);
+				}
+				}
+			}
 		});
 	});

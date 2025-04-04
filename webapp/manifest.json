@@ -5,7 +5,7 @@
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
-      "version": "0.0.24"
+      "version": "0.0.27"
     },
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
@@ -17,29 +17,31 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "/sap/opu/odata/sap/ZGW_ZD_FLIGHTSYSTEM_SRV/",
+        "uri": "/sap/opu/odata/sap/ZDFLIGHTSYSTEM_SRV/",
         "type": "OData",
         "settings": {
-          "annotations": ["annotation0"],
-          "localUri": "localService/metadata.xml",
+          "annotations": [
+            "annotation0"
+          ],
+          "localUri": "localService/ZDFLIGHTSYSTEM_SRV/metadata.xml",
           "odataVersion": "2.0"
         }
       },
-      "FlightStatus_json_model_data_source":{
+      "FlightStatus_json_model_data_source": {
         "uri": "valueHelp/FlightStatus.json",
         "type": "JSON"
       },
-      "FlightDestination_json_model_data_source":{
+      "FlightDestination_json_model_data_source": {
         "uri": "valueHelp/DestinationCountries.json",
         "type": "JSON"
       },
       "annotation0": {
-				"type": "ODataAnnotation",
-				"uri": "annotation/annotation0.xml",
-				"settings": {
-					"localUri": "annotation/annotation0.xml"
-				}
-			}
+        "type": "ODataAnnotation",
+        "uri": "annotation/annotation0.xml",
+        "settings": {
+          "localUri": "annotation/annotation0.xml"
+        }
+      }
     }
   },
   "sap.ui": {
@@ -71,7 +73,8 @@
         "sap.ui.generic.app": {},
         "sap.ui.table": {},
         "sap.ushell": {}
-      }
+      },
+      "components": {}
     },
     "contentDensities": {
       "compact": true,
@@ -90,24 +93,23 @@
         "settings": {
           "defaultOperationMode": "Server",
           "defaultBindingMode": "TwoWay",
-          "defaultCountMode":"Inline",
+          "defaultCountMode": "Inline",
           "useBatch": true
         }
       },
-
-      "UIModel":{
+      "UIModel": {
         "type": "sap.ui.model.json.JSONModel",
-        "uri" : "model/UIModel.json",
+        "uri": "model/UIModel.json",
         "preload": false
       },
-      "flightStatus_global_json_model":{
+      "flightStatus_global_json_model": {
         "type": "sap.ui.model.json.JSONModel",
         "dataSource": "FlightStatus_json_model_data_source"
       },
-      "flightDestination_global_json_model":{
+      "flightDestination_global_json_model": {
         "type": "sap.ui.model.json.JSONModel",
         "dataSource": "FlightDestination_json_model_data_source"
-      }
+      } 
     },
     "resources": {
       "css": [
@@ -150,7 +152,6 @@
             "TargetAirFlightDetail"
           ]
         }
-
       ],
       "targets": {
         "TargetAirFlightList": {

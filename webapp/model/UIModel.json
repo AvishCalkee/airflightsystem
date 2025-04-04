@@ -1,3 +1,16 @@
 {
-    "modifMode": false
+    "modifMode": false,
+    "appBusy":false,
+    "bVisibleFlightOccup":false,
+    "iOccupationPercentage":0,
+    "sOccupationStatus":"None",
+    "count": {
+		"Passengers" : ""
+	},
+    "passengerTableBtn":{
+		"addEnable":true,
+		"deleteDisable":false
+	},
+  "TravelState":"None"
+
 }
