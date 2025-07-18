@@ -71,7 +71,7 @@
 
 								<core:Title text=""/>
 								<Label text="{i18n>airlineID}" required="true"/>
-								<Input id="idAirlineId" value="{AirlineId}" showValueHelp="true" valueHelpRequest="onRequestAirline" change="onChangeFlight" visible="true"/>
+								<Input id="idAirlineId" value="{AilineId}" showValueHelp="true" valueHelpRequest="onRequestAirline" change="onChangeFlight" visible="true"/>
 
 								<Label text="{i18n>airlineName}" required="true"/>
 								<Input id="idAirlinename" value="{AirlineName}" />
@@ -137,7 +137,7 @@
 			<uxap:ObjectPageSection id="idCrewSection2" title="{i18n>crewDetails}">
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection id="idCrewSubSection" title="{i18n>crewDetails}">
-						<Table id="idCrewTable" mode="SingleSelect" items="{ path: 'CrewModel>/'}">
+						<Table id="idCrewTable" mode="SingleSelect" items="{CrewModel>/}">
 							<headerToolbar>
 								<OverflowToolbar>
 									<content>

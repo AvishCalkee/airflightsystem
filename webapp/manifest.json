@@ -16,17 +16,6 @@
       "toolsId": "27969db4-c796-41d1-b4c4-059ded711782"
     },
     "dataSources": {
-      "mainService": {
-        "uri": "/sap/opu/odata/sap/ZDFLIGHTSYSTEM_SRV/",
-        "type": "OData",
-        "settings": {
-          "annotations": [
-            "annotation0"
-          ],
-          "localUri": "localService/ZDFLIGHTSYSTEM_SRV/metadata.xml",
-          "odataVersion": "2.0"
-        }
-      },
       "FlightStatus_json_model_data_source": {
         "uri": "valueHelp/FlightStatus.json",
         "type": "JSON"
@@ -40,6 +29,15 @@
         "uri": "annotation/annotation0.xml",
         "settings": {
           "localUri": "annotation/annotation0.xml"
+        }
+      },
+      "mainService": {
+        "uri": "/sap/opu/odata/sap/ZDFLIGHTSYSTEM_SRV/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
         }
       }
     }
@@ -87,16 +85,6 @@
           "bundleName": "fiori.bootcamp.airflightsystem.i18n.i18n"
         }
       },
-      "": {
-        "dataSource": "mainService",
-        "preload": true,
-        "settings": {
-          "defaultOperationMode": "Server",
-          "defaultBindingMode": "TwoWay",
-          "defaultCountMode": "Inline",
-          "useBatch": true
-        }
-      },
       "UIModel": {
         "type": "sap.ui.model.json.JSONModel",
         "uri": "model/UIModel.json",
@@ -109,7 +97,17 @@
       "flightDestination_global_json_model": {
         "type": "sap.ui.model.json.JSONModel",
         "dataSource": "FlightDestination_json_model_data_source"
-      } 
+      },
+      "mainService": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
+      }
     },
     "resources": {
       "css": [

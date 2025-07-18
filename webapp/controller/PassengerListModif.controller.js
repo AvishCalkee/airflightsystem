@@ -44,12 +44,12 @@ sap.ui.define(
 					"PassengerId": "",
 					"FirstName": "",
 					"LastName": "",
-					"PassportNum": "",
+					"PassportNumber": '0',
 					"Email": "",
 					"Nationality": "",
-					"DOB": "",
+					"DateOfBirth": new Date(),
 					"FlightId": "",
-					"SeatNum": "",
+					"SeatNumber": 0,
 					
 				}));
             },
@@ -72,7 +72,7 @@ sap.ui.define(
                                     oSelectedContexts.forEach(function (oItemToDelete) {
                                         var sPath = oItemToDelete.getBindingContext("EditPassengerList").getPath();
                                         var sId = oView.getModel("EditPassengerList").getProperty(sPath + "/PassengerId");
-                                        if (sId === "" || sId === undefined) {
+                                        if (sId !== undefined) {
                                             var iIndex = sPath.substr(1);
                                             oView.getModel("EditPassengerList").getData().splice(oView.byId("stPassengerListModif").getItems().length - 1, 1); 
                                             oView.getModel("EditPassengerList").updateBindings();
@@ -118,6 +118,7 @@ sap.ui.define(
     
                 for (var i = 0; i < smartTableItems.length; i++) {
                     var item = oODataModel.getObject(smartTableItems[i].getBindingContextPath());
+                    item.bindingContextPath = smartTableItems[i].getBindingContextPath();
                     oDataModelElements.push(item);
                 }
     
@@ -129,7 +130,7 @@ sap.ui.define(
                     var oPassengerEditModel = oEditPassengerModel.getObject(aModifiPassengerList[j].getBindingContextPath());
                     
                     var oPassenger = oDataModelElements.find(function (oEl) {
-                        return oEl.PassengerId === oPassengerEditModel[j].PassengerId;
+                        return oEl.PassengerId === oPassengerEditModel.PassengerId;
                     });
 
                     if (!oPassenger) {
@@ -141,12 +142,12 @@ sap.ui.define(
                             FirstName: oPassengerEditModel.FirstName,
                             LastName: oPassengerEditModel.LastName, 
                             Email: oPassengerEditModel.Email,
-                            PassportNum: oPassengerEditModel.PassportNum,
+                            PassportNumber: oPassengerEditModel.PassportNumber,
                             Nationality: oPassengerEditModel.Nationality,
-                            SeatNum:oPassengerEditModel.SeatNum,
-                            DOB:oPassengerEditModel.DOB,
+                            SeatNumber:oPassengerEditModel.SeatNumber,
+                            DateOfBirth:oPassengerEditModel.DateOfBirth,
                         };
-                        oODataModel.create("/Passenger", oCreatePassenger, {
+                        oODataModel.create("/PassengerSet", oCreatePassenger, {
                             urlParameters: {
                                 DocumentType: "Flight",
                                 DocumentId: this.getView().getBindingContext().getObject().FlightId
@@ -159,17 +160,18 @@ sap.ui.define(
                            /* Passenger  MJA*/
                         var bModelChanged = this.fnHasChanges(oPassengerEditModel, oPassenger);
                         if(bModelChanged){
-                            var sPath = "/Passengers(PassengerId='" + oPassengerEditModel.PassengerId + "',FlightID='" + this.getView().getBindingContext().getObject().FlightId + "')";
+                            var sPath = "/PassengerSet(PassengerId='" + oPassengerEditModel.PassengerId + "')";
+                            //var sPath = "/Passengers(PassengerId='" + oPassengerEditModel.PassengerId + "',FlightID='" + this.getView().getBindingContext().getObject().FlightId + "')";
                        var  oModifiedPassenger = {
                             FlightId: this.getView().getBindingContext().getObject().FlightId,
                             PassengerId: oPassengerEditModel.PassengerId,
                             FirstName: oPassengerEditModel.FirstName,
                             LastName: oPassengerEditModel.LastName, 
                             Email: oPassengerEditModel.Email,
-                            PassportNum: oPassengerEditModel.PassportNum,
+                            PassportNumber: oPassengerEditModel.PassportNumber,
                             Nationality: oPassengerEditModel.Nationality,
-                            SeatNum:oPassengerEditModel.SeatNum,
-                            DOB:oPassengerEditModel.DOB,
+                            SeatNumber:oPassengerEditModel.SeatNumber,
+                            DateOfBirth:oPassengerEditModel.DateOfBirth,
                         };
     
                         oODataModel.update(sPath, oModifiedPassenger, {
@@ -177,6 +179,22 @@ sap.ui.define(
                         });
                         bHasChanges = true;
                         }
+                    }
+                }
+
+                for (var k = 0; k < oDataModelElements.length; k++) {
+                    var oPassengerModel = aModifiPassengerList.find(function (oEl) {
+                        var oPassengerEditModel = oEditPassengerModel.getObject(oEl.getBindingContextPath());
+                        return (oPassengerEditModel.PassengerId === oDataModelElements[k].PassengerId);
+                    });
+                    if (!oPassengerModel) {
+                        // Le passager du oDataModel n'a pas été trouvée dans le dirty model => il s'agit d'une suppression
+                        var sSuppPath = oDataModelElements[k].bindingContextPath;
+                        oODataModel.remove(sSuppPath, {
+                            context: this.getView().getBindingContext(),
+                            groupId: "saveDeepGroup"
+                        });
+                        bHasChanges = true;
                     }
                 }
    

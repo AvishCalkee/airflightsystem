@@ -3,9 +3,10 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageBox",
 	'sap/ui/core/date/UI5Date',
-	"sap/m/MessageToast"
+	"sap/m/MessageToast",
+	"sap/ui/model/Filter"
 ],
-	function (Controller, JSONModel, MessageBox, UI5Date, MessageToast) {
+	function (Controller, JSONModel, MessageBox, UI5Date, MessageToast,Filter) {
 		"use strict";
 
 		return Controller.extend("fiori.bootcamp.airflightsystem.controller.AirFlightCreate", {
@@ -28,7 +29,7 @@ sap.ui.define([
 					Departure: "",
 					CreationDate: UI5Date.getInstance(),
 					FlightStatus: "In creation",
-					AirlineId: "",
+					AilineId: "",
 					FlightId: "",
 					DestinationAirportCode: "",
 					OriginAirportCode: "",
@@ -73,15 +74,15 @@ sap.ui.define([
 
 			fnSave: function (oEvent) {
 				var oModel = this.getOwnerComponent().getModel(),
-				    oFlightData = this.getView().getModel().getData(),
+					oFlightData = this.getView().getModel().getData(),
 					FlightEntity = JSON.parse(JSON.stringify(oFlightData)),
 					aCrew = this.getView().getModel("CrewModel").getData();
 
-				if (this.fnBRequiredFields(FlightEntity)){
+				if (this.fnBRequiredFields(FlightEntity)) {
 					MessageBox.error("Required fields missing");
 					return;
 				}
-				
+
 				oModel.setUseBatch(true);
 				oModel.setDeferredGroups(["creationGroup"]);
 				oModel.setChangeGroups({
@@ -92,7 +93,7 @@ sap.ui.define([
 				});
 
 
-				
+
 				FlightEntity.FlightStatus = "A";
 				delete FlightEntity.Departure;
 				delete FlightEntity.Destination;
@@ -103,16 +104,22 @@ sap.ui.define([
 				delete FlightEntity.AirlineName;
 
 				//Remove offset errors
-				if(FlightEntity.ArrivalDateTime != undefined && FlightEntity.DepartureDateTime != undefined0){
-				FlightEntity.ArrivalDateTime = FlightEntity.ArrivalDateTime.slice(1, -5);
-				FlightEntity.DepartureDateTime = FlightEntity.DepartureDateTime.slice(1, -5);
-			} 
-			    FlightEntity.crew = aCrew;
+				if (FlightEntity.ArrivalDateTime != undefined && FlightEntity.DepartureDateTime != undefined0) {
+					FlightEntity.ArrivalDateTime = FlightEntity.ArrivalDateTime.slice(1, -5);
+					FlightEntity.DepartureDateTime = FlightEntity.DepartureDateTime.slice(1, -5);
+				}
+				//FlightEntity.crew = aCrew;
 				this.getView().setBusy(true);
 
 				oModel.create("/FlightSet", FlightEntity, {
 					groupId: "creationGroup"
 				});
+
+				aCrew.forEach(function (objCrew) {
+					oModel.create("/CrewSet", objCrew, {
+						groupId: "creationGroup"
+					});
+				}.bind(this));
 
 
 				var savePromises = [new Promise(function (resolve, reject) {
@@ -126,7 +133,7 @@ sap.ui.define([
 				Promise.all(savePromises).then(function (oSuccess) {
 					var flightResponse = "",
 						newFlightId = "";
-					
+
 					//If there were no exceptions, get the id of the created flight
 					if (Object.keys(oSuccess[0].__batchResponses[0])[0] === "__changeResponses") {
 						//We got responses to our batch request, get the one related to the 
@@ -145,9 +152,9 @@ sap.ui.define([
 					this.fnNavigateToDetailPage(newFlightId);
 
 				}.bind(this),
-				function (oError) {
-					MessageToast.error("Error occured");
-				}.bind(this));
+					function (oError) {
+						MessageToast.error("Error occured");
+					}.bind(this));
 
 			},
 
@@ -192,24 +199,30 @@ sap.ui.define([
 
 				AirlineValueHelp.setRangeKeyFields([{
 					label: "Airline Id",
-					key: "AirlineId"
+					key: "AilineId"
 				}, {
 					label: "Airline Name",
-					key: "AirlineName"
-				}]);
+					key: "HrtbAirportname"
+
+				},{
+					label: "Country Name",
+					key: "CountryName"
+				},
+			
+			]);
 
 				var airlineF4ColModel = new sap.ui.model.json.JSONModel();
 				airlineF4ColModel.setData({
 					cols: [{
 						label: "Airline Id",
-						template: "AirlineId"
+						template: "AilineId"
 					}, {
 						label: "Airline Name",
-						template: "AirlineName"
+						template: "HrtbAirportname"
 
 					}, {
 						label: "Operating Country",
-						template: "OperatingCountry"
+						template: "CountryName"
 
 					}]
 				});
@@ -250,19 +263,19 @@ sap.ui.define([
 					filterGroupItems: [
 						new sap.ui.comp.filterbar.FilterGroupItem({
 							groupName: "Airline",
-							name: "AirlineId",
+							name: "AilineId",
 							label: "Airline Id",
 							control: new sap.m.Input()
 						}),
 						new sap.ui.comp.filterbar.FilterGroupItem({
 							groupName: "Airline",
-							name: "AirlineName",
+							name: "HrtbAirportname",
 							label: "Airline Name",
 							control: new sap.m.Input()
 						}),
 						new sap.ui.comp.filterbar.FilterGroupItem({
 							groupName: "Airline",
-							name: "OperatingCountry",
+							name: "CountryName",
 							label: "Operating Country",
 							control: new sap.m.Input()
 						})
@@ -280,20 +293,20 @@ sap.ui.define([
 						let oFilter = {};
 						let aFilter = [];
 						if (aSelectionSet[0].getValue() !== "") {
-							let oFilterCode = new sap.ui.model.Filter("AirlineId", sap.ui.model.FilterOperator.Contains, aSelectionSet[0].getValue());
+							let oFilterCode = new Filter("AilineId", sap.ui.model.FilterOperator.Contains, aSelectionSet[0].getValue());
 							aFilterItems.push(oFilterCode);
 							bAllFieldsEmpty = false;
 						}
 						if (aSelectionSet[1].getValue() !== "") {
-							let oFilterName = new sap.ui.model.Filter("AirlineName", sap.ui.model.FilterOperator.Contains, aSelectionSet[1].getValue());
+							let oFilterName = new Filter("HrtbAirportname", sap.ui.model.FilterOperator.Contains, aSelectionSet[1].getValue());
 							aFilterItems.push(oFilterName);
 							bAllFieldsEmpty = false;
 						}
 						if (sap.ui.getCore().byId("AirlineBasicSearch").getValue() !== "") {
-							let oFilterCode = new sap.ui.model.Filter("AirlineId", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
+							let oFilterCode = new Filter("AilineId", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
 								"AirlineBasicSearch").getValue());
 							aFilterItems.push(oFilterCode);
-							let oFilterName = new sap.ui.model.Filter("AirlineName", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
+							let oFilterName = new Filter("HrtbAirportname", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
 								"AirlineBasicSearch").getValue());
 							aFilterItems.push(oFilterName);
 							bAllFieldsEmpty = false;
@@ -324,13 +337,13 @@ sap.ui.define([
 								} else if (AirlineValueHelp.theTable.getBinding("items")) {
 									oBinding = AirlineValueHelp.theTable.getBinding("items");
 								}
-								let oFilterCode = new sap.ui.model.Filter("AirlineId", sap.ui.model.FilterOperator.Contains,
+								let oFilterCode = new Filter("AilineId", sap.ui.model.FilterOperator.Contains,
 									airlineBasicSearchText);
 								aFilterItems.push(oFilterCode);
-								let oFilterName = new sap.ui.model.Filter("AirlineName", sap.ui.model.FilterOperator.Contains,
+								let oFilterName = new Filter("HrtbAirportname", sap.ui.model.FilterOperator.Contains,
 									airlineBasicSearchText);
 								aFilterItems.push(oFilterName);
-								oFilter = new sap.ui.model.Filter(aFilterItems, false);
+								oFilter = new Filter(aFilterItems, false);
 								aFilter.push(oFilter);
 								oBinding.filter(aFilter);
 							}
@@ -480,26 +493,26 @@ sap.ui.define([
 						let oFilter = {};
 						let aFilter = [];
 						if (aSelectionSet[0].getValue() !== "") {
-							let oFilterCode = new sap.ui.model.Filter("FlightId", sap.ui.model.FilterOperator.Contains, aSelectionSet[0].getValue());
+							let oFilterCode = new Filter("FlightId", sap.ui.model.FilterOperator.Contains, aSelectionSet[0].getValue());
 							aFilterItems.push(oFilterCode);
 							bAllFieldsEmpty = false;
 						}
 						if (aSelectionSet[1].getValue() !== "") {
-							let oFilterName = new sap.ui.model.Filter("FlightNo", sap.ui.model.FilterOperator.Contains, aSelectionSet[1].getValue());
+							let oFilterName = new Filter("FlightNo", sap.ui.model.FilterOperator.Contains, aSelectionSet[1].getValue());
 							aFilterItems.push(oFilterName);
 							bAllFieldsEmpty = false;
 						}
 						if (sap.ui.getCore().byId("FlightBasicSearch").getValue() !== "") {
-							let oFilterCode = new sap.ui.model.Filter("FlightId", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
+							let oFilterCode = new Filter("FlightId", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
 								"FlightBasicSearch").getValue());
 							aFilterItems.push(oFilterCode);
-							let oFilterName = new sap.ui.model.Filter("FlightNo", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
+							let oFilterName = new Filter("FlightNo", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
 								"FlightBasicSearch").getValue());
 							aFilterItems.push(oFilterName);
 							bAllFieldsEmpty = false;
 						}
 						if (!bAllFieldsEmpty) {
-							oFilter = new sap.ui.model.Filter(aFilterItems, false);
+							oFilter = new Filter(aFilterItems, false);
 							aFilter.push(oFilter);
 						}
 						oBinding.filter(aFilter);
@@ -524,13 +537,13 @@ sap.ui.define([
 								} else if (FlightValueHelp.theTable.getBinding("items")) {
 									oBinding = FlightValueHelp.theTable.getBinding("items");
 								}
-								let oFilterCode = new sap.ui.model.Filter("FlightId", sap.ui.model.FilterOperator.Contains,
+								let oFilterCode = new Filter("FlightId", sap.ui.model.FilterOperator.Contains,
 									flightBasicSearchText);
 								aFilterItems.push(oFilterCode);
-								let oFilterName = new sap.ui.model.Filter("FlightNo", sap.ui.model.FilterOperator.Contains,
+								let oFilterName = new Filter("FlightNo", sap.ui.model.FilterOperator.Contains,
 									flightBasicSearchText);
 								aFilterItems.push(oFilterName);
-								oFilter = new sap.ui.model.Filter(aFilterItems, false);
+								oFilter = new Filter(aFilterItems, false);
 								aFilter.push(oFilter);
 								oBinding.filter(aFilter);
 							}
@@ -569,7 +582,7 @@ sap.ui.define([
 					descriptionKey: "AirportName",
 					ok: jQuery.proxy(function (oControlEvent) {
 						this.oInput.setValue(oControlEvent.getParameter("tokens")[0].getKey());
-                        this.oInput.fireChange();
+						this.oInput.fireChange();
 						AirportValueHelp.close();
 					}, this),
 					cancel: function (oControlEvent) {
@@ -682,26 +695,26 @@ sap.ui.define([
 						let oFilter = {};
 						let aFilter = [];
 						if (aSelectionSet[0].getValue() !== "") {
-							let oFilterCode = new sap.ui.model.Filter("AirportCode", sap.ui.model.FilterOperator.Contains, aSelectionSet[0].getValue());
+							let oFilterCode = new Filter("AirportCode", sap.ui.model.FilterOperator.Contains, aSelectionSet[0].getValue());
 							aFilterItems.push(oFilterCode);
 							bAllFieldsEmpty = false;
 						}
 						if (aSelectionSet[1].getValue() !== "") {
-							let oFilterName = new sap.ui.model.Filter("AirportName", sap.ui.model.FilterOperator.Contains, aSelectionSet[1].getValue());
+							let oFilterName = new Filter("AirportName", sap.ui.model.FilterOperator.Contains, aSelectionSet[1].getValue());
 							aFilterItems.push(oFilterName);
 							bAllFieldsEmpty = false;
 						}
 						if (sap.ui.getCore().byId("AirportBasicSearch").getValue() !== "") {
-							let oFilterCode = new sap.ui.model.Filter("AirportCode", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
+							let oFilterCode = new Filter("AirportCode", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
 								"AirportBasicSearch").getValue());
 							aFilterItems.push(oFilterCode);
-							let oFilterName = new sap.ui.model.Filter("AirportName", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
+							let oFilterName = new Filter("AirportName", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
 								"AirportBasicSearch").getValue());
 							aFilterItems.push(oFilterName);
 							bAllFieldsEmpty = false;
 						}
 						if (!bAllFieldsEmpty) {
-							oFilter = new sap.ui.model.Filter(aFilterItems, false);
+							oFilter = new Filter(aFilterItems, false);
 							aFilter.push(oFilter);
 						}
 						oBinding.filter(aFilter);
@@ -726,13 +739,13 @@ sap.ui.define([
 								} else if (AirportValueHelp.theTable.getBinding("items")) {
 									oBinding = AirportValueHelp.theTable.getBinding("items");
 								}
-								let oFilterCode = new sap.ui.model.Filter("AirportCode", sap.ui.model.FilterOperator.Contains,
+								let oFilterCode = new Filter("AirportCode", sap.ui.model.FilterOperator.Contains,
 									flightBasicSearchText);
 								aFilterItems.push(oFilterCode);
-								let oFilterName = new sap.ui.model.Filter("AirportName", sap.ui.model.FilterOperator.Contains,
+								let oFilterName = new Filter("AirportName", sap.ui.model.FilterOperator.Contains,
 									flightBasicSearchText);
 								aFilterItems.push(oFilterName);
-								oFilter = new sap.ui.model.Filter(aFilterItems, false);
+								oFilter = new Filter(aFilterItems, false);
 								aFilter.push(oFilter);
 								oBinding.filter(aFilter);
 							}
@@ -882,26 +895,26 @@ sap.ui.define([
 						let oFilter = {};
 						let aFilter = [];
 						if (aSelectionSet[0].getValue() !== "") {
-							let oFilterCode = new sap.ui.model.Filter("CrewId", sap.ui.model.FilterOperator.Contains, aSelectionSet[0].getValue());
+							let oFilterCode = new Filter("CrewId", sap.ui.model.FilterOperator.Contains, aSelectionSet[0].getValue());
 							aFilterItems.push(oFilterCode);
 							bAllFieldsEmpty = false;
 						}
 						if (aSelectionSet[1].getValue() !== "") {
-							let oFilterName = new sap.ui.model.Filter("Role", sap.ui.model.FilterOperator.Contains, aSelectionSet[1].getValue());
+							let oFilterName = new Filter("Role", sap.ui.model.FilterOperator.Contains, aSelectionSet[1].getValue());
 							aFilterItems.push(oFilterName);
 							bAllFieldsEmpty = false;
 						}
 						if (sap.ui.getCore().byId("CrewBasicSearch").getValue() !== "") {
-							let oFilterCode = new sap.ui.model.Filter("CrewId", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
+							let oFilterCode = new Filter("CrewId", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
 								"CrewBasicSearch").getValue());
 							aFilterItems.push(oFilterCode);
-							let oFilterName = new sap.ui.model.Filter("Role", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
+							let oFilterName = new Filter("Role", sap.ui.model.FilterOperator.Contains, sap.ui.getCore().byId(
 								"CrewBasicSearch").getValue());
 							aFilterItems.push(oFilterName);
 							bAllFieldsEmpty = false;
 						}
 						if (!bAllFieldsEmpty) {
-							oFilter = new sap.ui.model.Filter(aFilterItems, false);
+							oFilter = new Filter(aFilterItems, false);
 							aFilter.push(oFilter);
 						}
 						oBinding.filter(aFilter);
@@ -926,13 +939,13 @@ sap.ui.define([
 								} else if (CrewValueHelp.theTable.getBinding("items")) {
 									oBinding = CrewValueHelp.theTable.getBinding("items");
 								}
-								let oFilterCode = new sap.ui.model.Filter("CrewId", sap.ui.model.FilterOperator.Contains,
+								let oFilterCode = new Filter("CrewId", sap.ui.model.FilterOperator.Contains,
 									flightBasicSearchText);
 								aFilterItems.push(oFilterCode);
-								let oFilterName = new sap.ui.model.Filter("Role", sap.ui.model.FilterOperator.Contains,
+								let oFilterName = new Filter("Role", sap.ui.model.FilterOperator.Contains,
 									flightBasicSearchText);
 								aFilterItems.push(oFilterName);
-								oFilter = new sap.ui.model.Filter(aFilterItems, false);
+								oFilter = new Filter(aFilterItems, false);
 								aFilter.push(oFilter);
 								oBinding.filter(aFilter);
 							}
@@ -976,17 +989,12 @@ sap.ui.define([
 
 			},*/
 			onAddCrew: function (oEvent) {
-				var oCrewModel = this.getView().getModel("CrewModel");
-				var aCrewData = oCrewModel.getData();
-				var oCrewObj = {
+				this.getView().getModel("CrewModel").setProperty("/", this.getView().getModel("CrewModel").getProperty("/").concat({
 					"CrewId": "",
 					"LastName": "",
 					"FirstName": "",
 					"Role": ""
-				};
-				aCrewData.push(oCrewObj);
-				oCrewModel.setData(aCrewData);
-				oCrewModel.refresh();
+				}));
 			},
 			onDeleteCrew: function (oEvent) {
 				var oCrewModel = this.getView().getModel("CrewModel");
@@ -1040,44 +1048,44 @@ sap.ui.define([
 			},*/
 			fnNavigateToDetailPage: function (newFlightId) {
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-				oRouter.navTo("AirFlightDetail",{DetailPath: "FlightSet('" + newFlightId + "')"});	
+				oRouter.navTo("AirFlightDetail", { DetailPath: "FlightSet('" + newFlightId + "')" });
 			},
 
-			fnBRequiredFields : function (oEntity) {
-				if (oEntity.CreationDate === '' || oEntity.CreationDate != undefined){
-                  return true;
-				}else if (oEntity.AirlineId === '' || oEntity.AirlineId === undefined){
+			fnBRequiredFields: function (oEntity) {
+				if (oEntity.CreationDate === '' || oEntity.CreationDate != undefined) {
 					return true;
-				}else if (oEntity.AirlineName === '' || oEntity.AirlineName === undefined){
+				} else if (oEntity.AilineId === '' || oEntity.AilineId === undefined) {
 					return true;
-				}else if (oEntity.FlightNo === '' || oEntity.FlightNo === undefined){
+				} else if (oEntity.AirlineName === '' || oEntity.AirlineName === undefined) {
 					return true;
-				}else if (oEntity.DestinationAirportCode === '' || oEntity.DestinationAirportCode === undefined){
+				} else if (oEntity.FlightNo === '' || oEntity.FlightNo === undefined) {
 					return true;
-				}else if (oEntity.DestinationAirportName === '' || oEntity.DestinationAirportName === undefined){
+				} else if (oEntity.DestinationAirportCode === '' || oEntity.DestinationAirportCode === undefined) {
 					return true;
-				}else if (oEntity.OriginAirportCode === '' || oEntity.OriginAirportCode === undefined){
+				} else if (oEntity.DestinationAirportName === '' || oEntity.DestinationAirportName === undefined) {
 					return true;
-				}else if (oEntity.OriginAirportName === '' || oEntity.OriginAirportName === undefined){
+				} else if (oEntity.OriginAirportCode === '' || oEntity.OriginAirportCode === undefined) {
 					return true;
-				}else if (oEntity.DepartureDateTime === '' || oEntity.DepartureDateTime === undefined){
+				} else if (oEntity.OriginAirportName === '' || oEntity.OriginAirportName === undefined) {
 					return true;
-				}else if (oEntity.ArrivalDateTime === '' || oEntity.ArrivalDateTime === undefined){
+				} else if (oEntity.DepartureDateTime === '' || oEntity.DepartureDateTime === undefined) {
+					return true;
+				} else if (oEntity.ArrivalDateTime === '' || oEntity.ArrivalDateTime === undefined) {
 					return true;
 				}
 				return false;
 			},
 
-			fnTrackChange : function (oEvent){
+			fnTrackChange: function (oEvent) {
 				var oView = this.getView(),
 					oModel = oView.getModel(),
-				    sSelectedKeyFrom = oModel.getProperty('/DestinationAirportCode'),
+					sSelectedKeyFrom = oModel.getProperty('/DestinationAirportCode'),
 					sSelectedKeyTo = oModel.getProperty('/OriginAirportCode'),
 					aAirport = this.getView().getModel("oAirPort").getProperty("/"),
 					sSelectedObjFrom = '',
 					sSelectedObjTo = '',
 					oI18n = this.getOwnerComponent().getModel("i18n");
-				  
+
 				if (sSelectedKeyTo === sSelectedKeyFrom) {
 					// Display error message
 					MessageBox.error(oI18n.getProperty("msgErrorSameDesAndArrival"));
@@ -1086,12 +1094,12 @@ sap.ui.define([
 					oView.getModel("UIModel").setProperty("/TravelState", "None");
 					sSelectedObjFrom = aAirport.find(obj => obj.AirportCode === sSelectedKeyFrom);
 					sSelectedObjTo = aAirport.find(obj => obj.AirportCode === sSelectedKeyTo);
-					if(sSelectedObjFrom !== undefined){
-					oModel.setProperty("/DestinationAirportName", sSelectedObjFrom.AirportName);
-				  } 
-				  if(sSelectedObjTo !== undefined){
-					oModel.setProperty("/OriginAirportName", sSelectedObjTo.AirportName);
-				}
+					if (sSelectedObjFrom !== undefined) {
+						oModel.setProperty("/DestinationAirportName", sSelectedObjFrom.AirportName);
+					}
+					if (sSelectedObjTo !== undefined) {
+						oModel.setProperty("/OriginAirportName", sSelectedObjTo.AirportName);
+					}
 				}
 			}
 		});
