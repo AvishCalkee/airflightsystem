@@ -27,7 +27,7 @@
 						</f:FormElement>
                         <f:FormElement label="{i18n>lstMaintDate}">
 							<f:fields>
-								<Text text="{ path:'ToAirline/LMaintenaceDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'short' } }" />
+								<Text text="{ path:'ToAirline/LMaintenancedate', type:'sap.ui.model.type.Date', formatOptions: { style: 'short' } }" />
 							</f:fields>
 						</f:FormElement>
 					</f:formElements>
@@ -95,7 +95,7 @@
 						</f:FormElement>
 						<f:FormElement label="{i18n>maxSeat}">
 							<f:fields>
-								<Text text="{ToAirline/MaxSeatCap}" />
+								<Text text="{ToAirline/MaxSeatcap}" />
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>maxWeight}">
@@ -117,7 +117,7 @@
 							<f:fields>
                                 <RatingIndicator id="Safetyrating" maxValue="5" 
                                 class="sapUiSmallMarginBottom" 
-                                value="{ToAirline/SafetyRate}"  
+                                value="{ToAirline/SafeRate}"  
                                 tooltip="Safety Rating" 
                                 enabled="false"/>
 							</f:fields>

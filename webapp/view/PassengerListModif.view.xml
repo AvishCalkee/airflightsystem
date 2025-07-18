@@ -63,7 +63,7 @@ xmlns:form="sap.ui.layout.form"
 											<m:ColumnListItem>
 												<m:cells>
 													<m:VBox>
-														<m:Input id="txtPassengerId"  placeholder="Enter passenger Id" value="{EditPassengerList>PassengerId}" class="sapUiSmallMarginBottom" />
+														<m:Input id="txtPassengerId"  placeholder="Enter passenger Id" value="{EditPassengerList>PassengerId}" class="sapUiSmallMarginBottom" enabled="false"/>
 													</m:VBox>
 													<m:VBox>
 														
@@ -79,19 +79,20 @@ xmlns:form="sap.ui.layout.form"
 													</m:VBox>
 													<!--Fin DEFI 1029 - MJU(+)-->
 													<m:VBox>
-														<m:Input id="inputPassportNum"  placeholder="Enter passport Number" value="{EditPassengerList>PassportNum}" class="sapUiSmallMarginBottom" />
+														<m:Input id="inputPassportNum"  placeholder="Enter passport Number"  value="{EditPassengerList>PassportNumber}" class="sapUiSmallMarginBottom" />
 													</m:VBox>
 													<m:VBox>
 														<m:Input id="inputNat" placeholder="Enter Nationality" value="{EditPassengerList>Nationality}" class="sapUiSmallMarginBottom" />
 													</m:VBox>
 													<m:VBox>
-														<m:Input id="inputSeatNum"  placeholder="Enter seat Number" value="{EditPassengerList>SeatNum}" class="sapUiSmallMarginBottom" />
+														<m:Input id="inputSeatNum"  placeholder="Enter seat Number" value="{path: 'EditPassengerList>SeatNumber', type: 'sap.ui.model.type.Integer'}" type='Number' class="sapUiSmallMarginBottom" />
 													</m:VBox>
 													<m:VBox >
 														<m:DatePicker
 															id="DPDOB"
+															maxDate="{UIModel>/maxDate}"
 															value="{
-																'path':'EditPassengerList>DOB',
+																'path':'EditPassengerList>DateOfBirth',
 																'type':'sap.ui.model.type.Date',
 																'formatOptions': {
 																	'pattern': 'yyyy-MM-dd'

@@ -15,10 +15,22 @@ sap.ui.define([
             formatter: Formatter,
             onInit: function () {
 
-                let oRouter = this.getOwnerComponent().getRouter();
+                var oRouter = this.getOwnerComponent().getRouter();
                 oRouter.getRoute("AirFlightDetail").attachPatternMatched(this.fnObjectMatched, this);
-
                 this.getView().setModel(new JSONModel(),'EditPassengerList');
+                var eventBus = this.getOwnerComponent().getEventBus();
+                eventBus.subscribe("channelAirFlight", "BusyModifButton", this.fnBusyModifButton, this);
+            },
+
+            fnBusyModifButton: function (sChannel, sEvent, oData) {
+                let oUIModel = this.getView().getModel("UIModel");
+                if (oUIModel.getProperty("/iCountDataReceived") === 2)  {
+                    oUIModel.setProperty("/modifBtnBusy", false);
+                    oUIModel.setProperty("/iCountDataReceived", 0);
+                    var iPlaneCap = this.getView().getModel().getProperty(this.getView().getBindingContext().getPath()+'/ToAirline/MaxSeatcap')
+                    var iNumPassenger = this.getView().byId("viewPassengerList").byId('stPassengerList').getTable().getItems().length;
+                    this.fnFlightOccupation(iPlaneCap,iNumPassenger);
+                } 
             },
 
             fnObjectMatched: async function (oEvent) {
@@ -28,21 +40,24 @@ sap.ui.define([
                 this.getView().getModel("crewModel").setProperty("/selectedFlightId", sFlightId)
 
                 await this.fnRestoreUIModel();
+                this.getView().getModel("UIModel").setProperty("/maxDate", new Date());
                 oView.bindElement({
                     path: sFlightId,
-                    parameters: { expand: "ToDepartureAirport,ToDestinationAirport,ToAirline,ToPassenger" },
+                    parameters: { expand: "ToDepartureAirport,ToDestinationAirport,ToAirline" },
                     events: {
                         dataRequested: function () {
                             oView.setBusy(true);
+                            oView.getModel("UIModel").setProperty("/modifBtnBusy", true);
                         },
                         dataReceived: function (result) {
                             let oFlightData = result.getParameter("data");
-                            this.fnFlightOccupation(result.getParameter("data").ToAirline.MaxSeatcap,result.getParameter("data").ToPassenger.length);
                             // Safely check if FlightDuration exists and has milliseconds
                             //let flightDurationMs = oFlightData.FlightDuration && oFlightData.FlightDuration.ms ? oFlightData.FlightDuration.ms : 0;
-                            
+                            oView.getModel("UIModel").setProperty("/iCountDataReceived", oView.getModel("UIModel").getProperty("/iCountDataReceived") + 1);
+                            this.getOwnerComponent().getEventBus().publish("channelAirFlight", "BusyModifButton", oView);
                             oView.setBusy(false);
                         }.bind(this),
+
                         change: function (oData) {
                             oView.setBusy(false);
                         }
@@ -56,7 +71,7 @@ sap.ui.define([
             },
 
             fnFlightOccupation : function (iMaxSeat,iTotalPassenger){
-                var iPercentageBook = iTotalPassenger * (100/iMaxSeat);
+                var iPercentageBook = Math.round(iTotalPassenger * (100/iMaxSeat));
                 if(iPercentageBook>50){
                     this.getView().getModel("UIModel").setProperty("/sOccupationStatus", "Success");
                 }else{
@@ -121,8 +136,12 @@ sap.ui.define([
                 this.getView().getModel("UIModel").setProperty("/modifMode", true);
                 this.getOwnerComponent().getEventBus().publish("channelAirFlight", "PopulateEditPassengerTable", this);
             },
-            fnOnCancel: function (oEvent) {
-                this.getView().getModel("UIModel").setProperty("/modifMode", false);
+            fnOnCancel: function (oEvent,bResetChanges) {
+                var oView = this.getView();
+                if( oEvent ||bResetChanges){
+                    oView.getModel().resetChanges();
+                }
+                oView.getModel("UIModel").setProperty("/modifMode", false);
                 this.getOwnerComponent().getEventBus().publish("channelAirFlight", "PopulateEditPassengerTable", this);
             },
 
@@ -221,11 +240,13 @@ sap.ui.define([
                     bPassengerChanges = this.getView().byId('viewPassengerListModif').getController().fnSave(sBatchGroup,sChangeSet,oView);
                 
                     if(this.getView().getModel().getProperty(this.getView().getBindingContext().getPath()+'/OriginAirportCode') === this.getView().getModel().getProperty(this.getView().getBindingContext().getPath()+'/DestinationAirportCode')){
-                        MessageBox.error(oI18n.getProperty("msgDiffAirport"));
+                        MessageBox.error(oI18n.getProperty("msgErrorSameDesAndArrival"));
                         return;
                     }
 
-                oModel.setDeferredGroups(oModel.getDeferredGroups().concat([sBatchGroup]));
+                    //oModel.setUseBatch(true); 
+
+                oModel.setDeferredGroups([sBatchGroup]);
                 /* Détermination de changements */
                 bIsChanged = oModel.hasPendingChanges(true);
 
@@ -235,15 +256,37 @@ sap.ui.define([
                     if (oChanges.hasOwnProperty(key)) {
                         bIsChanged = true;
                         delete oChanges[key].__metadata;
-                        oModel.update("/" + key, oChanges[key], {
+                        /*var obj = {AilineId: "BA",
+                            HrtbAirportname: "Heathrow Airport",
+                            CountryName: "United Kingdom",
+                            AirportName: "British Airways",
+                            FlightId: "BA1234",
+                            CompanyName: "British Airways",
+                            YManufactured: null,
+                            LMaintenancedate: null,
+                            Tel: "1234567890",
+                            Email: "",
+                            Website: "https://www.britishairways.com",
+                            MaxSeatcap: 200,
+                            MaxWeight: 1000,
+                            EngineType: "Jet",
+                            SafeRate: 0.95,
+                            CrewNum: 5,
+                        };*/
+
+                        if(key.includes('AirlineSet') || key.includes('FlightSet')){
+                        oModel.update("/"+key, oChanges[key], {
+                            method: "Merge",
                             groupId: sBatchGroup,
                             changeSetId: sChangeSet
                         });
                     }
+
+                    }
                 }
 
                 /* Effectuer la sauvegarde dans le backend ou ne rien faire. */
-                if (bIsChanged) {
+                if (bIsChanged || bPassengerChanges) {
                     let aSavePromises = [];
                     this.getView().getModel("UIModel").setProperty("/appBusy", true);
                     // Changement present : lancer la sauvegarde du document par $batch
@@ -264,9 +307,10 @@ sap.ui.define([
 
                 } else {
                     // Pas de changement
-                    //this.fnCancelChanges();
+                    this.fnOnCancel(undefined,false);
                     sap.m.MessageToast.show(oI18n.getProperty("msgNothingChanged"));
                     //oAppModel.setProperty("/busy", false);
+                    oView.getModel("UIModel").setProperty("/appBusy", false);
                     oView.setBusy(false);
                 }
 
@@ -275,8 +319,11 @@ sap.ui.define([
                 let oI18n = this.getOwnerComponent().getModel("i18n"),
                     oView = this.getView();
 
-                oView.setBusy(false);
-                sap.m.MessageToast.show(oI18n.getProperty("msgSaveSuccess"))
+                    oView.getModel("UIModel").setProperty("/appBusy", false);
+                    oView.getModel("UIModel").setProperty("/modifMode", false);
+                    sap.m.MessageToast.show(oI18n.getProperty("msgSaveSuccess"));
+                    oView.byId('viewPassengerList').getController().onRefreshTableContent();
+                    oView.getModel().refresh(true);
             },
             fnUpdateErrorCallback: function () {
                 let oI18n = this.getOwnerComponent().getModel("i18n"),
@@ -416,6 +463,20 @@ sap.ui.define([
                 }
                 
             },
+
+            /*use this method beacause formatter is does not support two-bindings, 
+            this enable model to detect changes automatically*/
+            fnArrivalDateTimeChange : function (oEvent) {
+                var oDateTime = oEvent.getParameter("value");
+                oEvent.getSource().setValue(oDateTime);   
+            },
+
+            /*use this method beacause formatter is does not support two-bindings, 
+            this enable model to detect changes automatically*/
+            fnDepartureDateTimeChange : function (oEvent) {
+                var oDateTime = oEvent.getParameter("value");
+                oEvent.getSource().setValue(oDateTime);   
+            }
 
         });
     });

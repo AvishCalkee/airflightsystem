@@ -16,7 +16,7 @@
 						</f:FormElement>
 						<f:FormElement label="{i18n>compname}">
 							<f:fields>
-                                <Input id="oCompanyName" value="{ToAirLine/CompanyName}" type="Text" />
+                                <Input id="oCompanyName" value="{ToAirline/CompanyName}" type="Text" />
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>yearmanuf}">
@@ -26,7 +26,7 @@
 						</f:FormElement>
                         <f:FormElement label="{i18n>lstMaintDate}">
 							<f:fields>
-								<DatePicker id="lstMaintDate" value="{path:'ToAirline/LMaintenaceDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'short'}}"/>
+								<DatePicker id="lstMaintDate" value="{path:'ToAirline/LMaintenancedate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'short'}}"/>
 							</f:fields>
 						</f:FormElement>
 					</f:formElements>
@@ -96,12 +96,12 @@
 						</f:FormElement>
 						<f:FormElement label="{i18n>maxSeat}">
 							<f:fields>
-								<Input id="oHub" value="{ToAirline/MaxSeatCap}" type="Number" />
+								<Input id="oHub" value="{path: 'ToAirline/MaxSeatcap', type: 'sap.ui.model.type.Integer'}" type="Number" />
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>maxWeight}">
 							<f:fields>
-								<Input id="oSize" value="{ToAirline/MaxWeight}" type="Text"/>
+								<Input id="oSize" value="{path: 'ToAirline/MaxWeight', type: 'sap.ui.model.type.Integer'}" type="Number"/>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>engType}">
@@ -111,14 +111,14 @@
 						</f:FormElement>
                         <f:FormElement label="{i18n>numCrew}">
 							<f:fields>
-								<Input id="oCapacity" value="{ToAirline/CrewNum}" type="Number"/>
+								<Input id="oCapacity" value="{path: 'ToAirline/CrewNum', type: 'sap.ui.model.type.Integer'}" type="Number"/>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>SafetyRating}">
 							<f:fields>
                                 <RatingIndicator id="safetyrating" maxValue="5" 
                                 class="sapUiSmallMarginBottom" 
-                                value="{ToAirline/SafetyRate}"
+                                value="{ToAirline/SafeRate}"
                                 tooltip="Safety Rating" />
 							</f:fields>
 						</f:FormElement>

@@ -20,6 +20,9 @@ server:
             url: http://10.0.1.206:8000
           - path: /sap/opu/odata/sap/ZDFLIGHTSYSTEM_SRV
             url: http://10.0.2.107:8000
+          - url: http://10.0.2.107:8000
+            authenticationType: basic
+            path: /sap/opu/odata/sap/ZDFLIGHTSYSTEM_SRV/
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
@@ -32,7 +35,7 @@ server:
         mountPath: /
         services:
           - urlPath: /sap/opu/odata/sap/ZDFLIGHTSYSTEM_SRV
-            metadataPath: ./webapp/localService/ZDFLIGHTSYSTEM_SRV/metadata.xml
-            mockdataPath: ./webapp/localService/ZDFLIGHTSYSTEM_SRV/data
+            metadataPath: ./webapp/localService/mainService/metadata.xml
+            mockdataPath: ./webapp/localService/mainService/data
             generateMockData: true
         annotations: []

@@ -9,7 +9,8 @@
 	>
 	<l:VerticalLayout class='sapUiNoContentPadding' width='100%'>
 			<smartTable:SmartTable id="sTBaggage"  
-			entitySet="BaggageSet" 
+			entitySet="BaggageSet"
+			tableBindingPath="ToBaggage"
 			beforeRebindTable="onBeforeRebindTable" 
 			tableType="ResponsiveTable" 
 			useTablePersonalisation="true" 

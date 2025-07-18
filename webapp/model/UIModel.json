@@ -1,5 +1,6 @@
 {
     "modifMode": false,
+    "modifBtnBusy": false,
     "appBusy":false,
     "bVisibleFlightOccup":false,
     "iOccupationPercentage":0,
@@ -11,6 +12,7 @@
 		"addEnable":true,
 		"deleteDisable":false
 	},
-  "TravelState":"None"
-
+  "TravelState":"None",
+  "maxDate": "",
+  "iCountDataReceived": 0
 }

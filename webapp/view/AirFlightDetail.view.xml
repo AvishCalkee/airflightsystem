@@ -21,7 +21,7 @@
 					</m:VBox>
 				</expandedHeading>
 				<actions>
-					<m:Button id='btnEdit' text="{i18n>edit}" icon="sap-icon://edit" type="Emphasized" visible="{=!${UIModel>/modifMode}}" press="fnOnModif"></m:Button>
+					<m:Button id='btnEdit' text="{i18n>edit}" icon="sap-icon://edit" type="Emphasized" visible="{=!${UIModel>/modifMode}}" press="fnOnModif" busy="{UIModel>/modifBtnBusy}"></m:Button>
 					<m:Button icon="sap-icon://show" text="{i18n>ViewCrew}" type="Emphasized" press="onViewCrewList" tooltip="edit"></m:Button>
 				</actions>
 			</ObjectPageDynamicHeaderTitle>

@@ -8,9 +8,9 @@
 	>
 	<l:VerticalLayout class='sapUiNoContentPadding' width='100%'>
 			
-        <smartTable:SmartTable id="stPassengerList" header="{i18n>lpassenger}" enableAutoBinding="true" entitySet="PassengerSet"
+        <smartTable:SmartTable id="stPassengerList" header="{i18n>lpassenger}" enableAutoBinding="true" entitySet="PassengerSet" tableBindingPath="ToPassenger"
             placeToolbarInTable="true" tableType="ResponsiveTable" enableExport="true" 
-            initiallyVisibleFields="PassengerId,FirstName,LastName,Email,PassportNumber,Nationality,SeatNumber" 
+            initiallyVisibleFields="PassengerId,FirstName,LastName,Email,PassportNumber,Nationality,SeatNumber,DateOfBirth" 
             useTablePersonalisation="true" showVariantManagement="true" noData="{i18n>noData}" showRowCount="true" 
             class="sapUiResponsiveContentPadding" beforeRebindTable="fnOnBeforeRebindTable">
 
@@ -21,7 +21,7 @@
                     <m:ToolbarSeparator id="toolbarSeparator"/>
                 </m:OverflowToolbar>
             </smartTable:customToolbar>
-            <m:Table sticky="ColumnHeaders,HeaderToolbar" growing="true" growingScrollToLoad="false" growingThreshold="10" 
+            <m:Table id="tblPassenger" sticky="ColumnHeaders,HeaderToolbar" growing="true" growingScrollToLoad="false" growingThreshold="10" 
                 growingTriggerText="{i18n>load}" fixedLayout="false" popinLayout="GridSmall">
             </m:Table>
 

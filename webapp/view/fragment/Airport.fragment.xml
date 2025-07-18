@@ -79,13 +79,13 @@
 
 				<core:Title text="Arrival Airport" />
 				<Label text="Airport Code" />
-				<Text text="{ToDepartureAirport/AirportCode}" />
+				<Text text="{ToDestinationAirport/AirportCode}" />
 				<Label text="Airport Name" />
-				<Text text="{ToDepartureAirport/AirportName}" />
+				<Text text="{ToDestinationAirport/AirportName}" />
 				<Label text="City" />
-				<Text text="{ToDepartureAirport/City}" />
+				<Text text="{ToDestinationAirport/City}" />
 				<Label text="Country" />
-				<Text text="{ToDepartureAirport/Country}" />
+				<Text text="{ToDestinationAirport/Country}" />
 				
 				<Label text="Arrival Date/Time"/>
 				<tnt:InfoLabel id="iLabelArrivalDateTime" text="{ path:'ArrivalDateTime', formatter: '.formatter.fnFormatDate'}"  colorScheme="6" width = "140px"/>
@@ -144,6 +144,7 @@
 				<!-- <tnt:InfoLabel id="infoLabelDeparture" text="{ path:'DepartureDateTime', formatter: '.formatter.fnFormatDate'}"  colorScheme="6" width = "140px"/> -->
 				<DateTimePicker
 					id="dtpDeparture"
+					change="fnDepartureDateTimeChange"
 					showCurrentDateButton="true"
 					showCurrentTimeButton="true"
 					value="{
@@ -198,6 +199,7 @@
 				<!-- <tnt:InfoLabel id="infoLabelArrival" text="{ path:'ArrivalDateTime', formatter: '.formatter.fnFormatDate'}"  colorScheme="6" width = "140px"/> -->
 				<DateTimePicker
 					id="dtpArrival"
+					change="fnArrivalDateTimeChange"
 					showCurrentDateButton="true"
 					showCurrentTimeButton="true"
 					value="{
