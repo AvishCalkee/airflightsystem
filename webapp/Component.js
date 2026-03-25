@@ -33,6 +33,7 @@ sap.ui.define([
 
                 this.setModel(models.createBaggageModel(), "BaggageModel");
                 this.setModel(models.createViewCrewModel(), "crewModel");
+
             }
         });
     }

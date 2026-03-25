@@ -71,23 +71,23 @@
 
 								<core:Title text=""/>
 								<Label text="{i18n>airlineID}" required="true"/>
-								<Input id="idAirlineId" value="{AilineId}" showValueHelp="true" valueHelpRequest="onRequestAirline" change="onChangeFlight" visible="true"/>
+								<Input id="idAirlineId" value="{AilineId}" showValueHelp="true" valueHelpRequest="fnShowFlightPopUp" change="onChangeFlight" visible="true"/>
 
 								<Label text="{i18n>airlineName}" required="true"/>
 								<Input id="idAirlinename" value="{AirlineName}" />
-
+                               <!--
 								<Label text="{i18n>planeID}" required="true"/>
-								<Input id="inptPlaneId" value="{FlightNo}" showValueHelp="true" valueHelpRequest="onRequestFlight" visible="true"/>
+								<Input id="inptPlaneId" value="{FlightId}" showValueHelp="true" valueHelpRequest="fnShowFlightPopUp" visible="true"/>-->
                                 
 								<Label text="{i18n>arrivalAirportCode}" required="true"/>
-								<Input value="{OriginAirportCode}" valueState="{UIModel>/TravelState}" showValueHelp="true" valueHelpRequest="onRequestAirportCode"  change="fnTrackChange" visible="true"/>
+								<Input id="oOriginAirport" value="{OriginAirportCode}" valueState="{UIModel>/TravelState}" showValueHelp="true" valueHelpRequest="fnRequestAirport"  change="fnTrackChange" visible="true"/>
 
 								<Label text="{i18n>arrivalAirportName}" required="true"/>
 								<Input value="{OriginAirportName}"/>
 
 								<core:Title text=""/>
 								<Label text="{i18n>desAirportCode}" required="true"/>
-								<Input value="{DestinationAirportCode}" valueState="{UIModel>/TravelState}"  showValueHelp="true" showSuggestion="true" valueHelpRequest="onRequestAirportCode"  change="fnTrackChange" visible="true"/>
+								<Input id="oDestinationAirport" value="{DestinationAirportCode}" valueState="{UIModel>/TravelState}"  showValueHelp="true" showSuggestion="true" valueHelpRequest="fnRequestAirport"  change="fnTrackChange" visible="true"/>
 
 								<Label text="{i18n>desAirportName}" required="true"/>
 								<Input value="{DestinationAirportName}"/>
@@ -95,20 +95,21 @@
 								<Label text="{i18n>departureDate}" required="true"/>
 								<!--><DatePicker id="idFlighteDateTime" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/><-->
                                 
-                                <DateTimePicker
+                               <DateTimePicker
 								id="dpDepatrueDate"
 								showCurrentDateButton="true"
 								showCurrentTimeButton="true"
-								value= "{
-		                             'path': '/DepartureDateTime',
-									'type': 'sap.ui.model.type.DateTime',
-									'formatOptions': {
-										'style': 'medium',
-										UTC: true
-									}
+								value="{
+									path: '/DepartureDateTime',
+									type: 'sap.ui.model.type.DateTime',
+									formatOptions: { style: 'medium',
+													strictParsing: true, 
+													UTC: true}
 								}"
 								change="handleChange"
 								class="sapUiSmallMarginBottom"/>
+
+
 
 								<Label text="{i18n>arrivalDate}" required="true"/>
 								<DateTimePicker
@@ -142,7 +143,7 @@
 								<OverflowToolbar>
 									<content>
 										<ToolbarSpacer/>
-										<Button id="idAddCrewbtn" text="{i18n>add}" press="onAddCrew" type="Transparent" visible="true" enabled="true"/>
+										<Button id="idAddCrewbtn" text="{i18n>add}" press="fnAddCrew" type="Transparent" visible="true" enabled="true"/>
 										<Button id="idDeleteCrewbtn" text="{i18n>delete}" press="onDeleteCrew" type="Transparent" visible="true" enabled="true"/>
 									</content>
 								</OverflowToolbar>
@@ -164,7 +165,7 @@
 							<items>
 								<ColumnListItem vAlign="Middle">
 									<cells>
-										<Input id="idCrewId" value="{CrewModel>CrewId}" showValueHelp="true" valueHelpRequest="onRequestCrew"/>
+										<Input id="idCrewId" value="{CrewModel>CrewId}" showValueHelp="true" valueHelpRequest="fnShowCrewPopUp"/>
 										<Input id="idRole" value="{CrewModel>Role}"/>
 										<Input id="idLastName" value="{CrewModel>LastName}"/>
 										<Input id="idFirstName" value="{CrewModel>FirstName}"/>
@@ -180,7 +181,7 @@
 			<OverflowToolbar>
 				<ToolbarSpacer />
 				<Button type="Emphasized" press="fnSave" text="{i18n>save}" />
-				<Button press="onPressCancelBooking" text="{i18n>cancel}" />
+				<Button press="fnBtnBack" text="{i18n>cancel}" />
 			</OverflowToolbar>
 		</uxap:footer>
 	</uxap:ObjectPageLayout>
