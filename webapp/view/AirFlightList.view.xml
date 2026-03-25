@@ -153,7 +153,7 @@
 								<m:Text text="{ path:'ArrivalDateTime', formatter: '.formatter.fnFormatDate'}" />
 								<m:Text text="{ path:'DepartureDateTime', formatter: '.formatter.fnFormatDate'}" />
 								<m:ObjectStatus text="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatus' }" state="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatusState' }" icon="{ path: 'FlightStatus', formatter: '.formatter.fnFlightStatusIcon' }"/>
-								<m:Text text="{path: 'FlightDuration', formatter: '.formatter.fnFlightDuration'}" />
+								<m:Text text="{ parts: ['DepartureDateTime','ArrivalDateTime'], formatter: '.formatter.fnFlightDuration'}" />
 								
 								<m:Tokenizer width='100%' tokens="{path : 'ToCrew',templateShareable: true}">
 									<m:Token editable="false" text="{LastName}" tooltip="{Role}" class='tokenizerToLeft'>

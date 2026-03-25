@@ -137,12 +137,12 @@
 					<ObjectPageSubSection >
 						<blocks>
 							<mvc:XMLView viewName="fiori.bootcamp.airflightsystem.view.BaggageList"/>
-							<!-- <core:Fragment id="Baggage" fragmentName="fiori.bootcamp.airflightsystem.view.fragment.Baggage" type="XML"/> -->
+							
 						</blocks>
 					</ObjectPageSubSection>
 
 				</subSections>
-			</ObjectPageSection>
+			</ObjectPageSection> 
 
 
 		</sections>

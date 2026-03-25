@@ -98,15 +98,17 @@
         "type": "sap.ui.model.json.JSONModel",
         "dataSource": "FlightDestination_json_model_data_source"
       },
-      "mainService": {
-        "dataSource": "mainService",
-        "preload": true,
-        "settings": {}
-      },
+
       "": {
         "dataSource": "mainService",
         "preload": true,
-        "settings": {}
+        "settings": {
+          "defaultOperationMode": "Server",
+					"defaultBindingMode": "TwoWay",
+					"defaultCountMode": "None",
+					"useBatch": true
+        }
+        	
       }
     },
     "resources": {

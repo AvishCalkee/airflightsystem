@@ -7,6 +7,7 @@
 		confirm="fnOnValueHelpClose"
 		cancel="fnOnValueHelpClose">
 		<StandardListItem
+		    id="standardListAirport"
 			icon="sap-icon://globe"
 			iconDensityAware="false"
 			iconInset="false"

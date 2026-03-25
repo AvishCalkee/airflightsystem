@@ -4,9 +4,11 @@ sap.ui.define([
 	"sap/m/MessageBox",
 	'sap/ui/core/date/UI5Date',
 	"sap/m/MessageToast",
-	"sap/ui/model/Filter"
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
+	"sap/ui/core/Fragment",
 ],
-	function (Controller, JSONModel, MessageBox, UI5Date, MessageToast,Filter) {
+	function (Controller, JSONModel, MessageBox, UI5Date, MessageToast, Filter, FilterOperator, Fragment) {
 		"use strict";
 
 		return Controller.extend("fiori.bootcamp.airflightsystem.controller.AirFlightCreate", {
@@ -30,11 +32,11 @@ sap.ui.define([
 					CreationDate: UI5Date.getInstance(),
 					FlightStatus: "In creation",
 					AilineId: "",
-					FlightId: "",
+					FlightId: "1",
 					DestinationAirportCode: "",
 					OriginAirportCode: "",
 					DepartureDateTime: UI5Date.getInstance(),
-					ArrivalDateTime: "",
+					ArrivalDateTime: null,
 					FlightDuration: ""
 
 				});
@@ -59,17 +61,12 @@ sap.ui.define([
 						this.getView().byId("cbxTo").setBusy(false);
 					}.bind(this)
 				});
+                
 
 				var oDestinationModel = new JSONModel();
 				oDestinationModel.setData(this.getOwnerComponent().getModel("flightDestination_global_json_model").getData());
-				this.getView().setModel(oDestinationModel);
+				this.getView().setModel(oDestinationModel,'destinationLocalModel');
 
-				var oCreationDate = this.getView().byId("dpCreationDate");
-				oCreationDate.setValue(new Date());
-				oCreationDate.setEditable(false);
-
-				var oStatus = this.getView().byId("ilStatus");
-				oStatus.setText("In creation");
 			},
 
 			fnSave: function (oEvent) {
@@ -104,7 +101,7 @@ sap.ui.define([
 				delete FlightEntity.AirlineName;
 
 				//Remove offset errors
-				if (FlightEntity.ArrivalDateTime != undefined && FlightEntity.DepartureDateTime != undefined0) {
+				if (FlightEntity.ArrivalDateTime != undefined && FlightEntity.DepartureDateTime != undefined) {
 					FlightEntity.ArrivalDateTime = FlightEntity.ArrivalDateTime.slice(1, -5);
 					FlightEntity.DepartureDateTime = FlightEntity.DepartureDateTime.slice(1, -5);
 				}
@@ -173,6 +170,8 @@ sap.ui.define([
 				});
 
 			},
+
+
 			getAirlineList: function (oData, response) {
 				this.getView().setBusy(false);
 				var AirlineValueHelp = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
@@ -180,8 +179,8 @@ sap.ui.define([
 					supportMultiselect: false,
 					supportRanges: false,
 					supportRangesOnly: false,
-					key: "AirlineId",
-					descriptionKey: "AirlineName",
+					key: "AilineId",
+					descriptionKey: "HrtbAirportname",
 					ok: jQuery.proxy(function (oControlEvent) {
 						this.oInput.setValue(oControlEvent.getParameter("tokens")[0].getKey());
 
@@ -204,12 +203,12 @@ sap.ui.define([
 					label: "Airline Name",
 					key: "HrtbAirportname"
 
-				},{
+				}, {
 					label: "Country Name",
 					key: "CountryName"
 				},
-			
-			]);
+
+				]);
 
 				var airlineF4ColModel = new sap.ui.model.json.JSONModel();
 				airlineF4ColModel.setData({
@@ -370,6 +369,142 @@ sap.ui.define([
 				});
 
 			},
+
+			fnOnRefresh: function (oEvent) {
+				var oSmartTable = sap.ui.core.Fragment.byId("fragmentFlight", "stFlight");
+				oSmartTable.rebindTable();
+
+			},
+
+			fnOnSearch: function (oEvent) {
+				// add filter for search
+				var aFilters = [];
+				var sQuery = oEvent.getSource().getValue();
+				if (sQuery && sQuery.length > 0) {
+					var filter = new Filter("AilineId", FilterOperator.Contains, sQuery);
+					aFilters.push(filter);
+				}
+
+				// update list binding
+				var otbleFlight = Fragment.byId("fragmentFlight", "tblFlight");
+				var oBinding = otbleFlight.getBinding("items");
+				oBinding.filter(aFilters, "Application");
+			},
+
+			fnGetAirline: function () {
+				/* this.getOwnerComponent().getModel().read('/AirlineSet', {
+						   success: (function (oData) {
+						   	
+						   }).bind(this),
+						   error: function(){
+						   }
+					   });	*/
+			},
+
+			fnCloseAirportDialog: function (oEvent){
+				if (this._oAirportDialog) {
+					this._oAirportDialog.close();
+					this._oAirportDialog.destroy();
+					this._oAirportDialog = null;
+				}
+			},
+
+			fnCloseAirlinesDialog: function (oEvent){
+				if (this._oFlightDialog) {
+					this._oFlightDialog.close();
+					this._oFlightDialog.destroy();
+					this._oFlightDialog = null;
+				}
+			},
+
+
+
+			fnOnSearchAirport: function (oEvent) {
+			// add filter for search
+			var aFilters = [];
+			var sQuery = oEvent.getSource().getValue();
+			if (sQuery && sQuery.length > 0) {
+				var filter = new Filter("AirportName", FilterOperator.Contains, sQuery);
+				aFilters.push(filter);
+			}
+
+			// update list binding
+			var oList = Fragment.byId("fragmentAirport", "listAirports");
+			var oBinding = oList.getBinding("items");
+			oBinding.filter(aFilters, "Application");
+		},
+
+			fnShowFlightPopUp: function (oEvent) {
+				var oBtn = oEvent.getSource();
+				oBtn.setBusy(true);
+
+				this.getOwnerComponent().getModel().read('/AirlineSet', {
+					success: (function (oData) {
+						var oJSONModel = new JSONModel(oData);
+						// Set JSON model with a name (optional)
+						this.getView().setModel(oJSONModel, "airlineModel");
+						if (!this._oFlightDialog) {
+							this._oFlightDialog = sap.ui.core.Fragment.load({
+								id: "fragmentFlight",
+								name: "fiori.bootcamp.airflightsystem.view.fragment.FlightList",
+								controller: this
+							}).then(function (oDialog) {
+								this._oFlightDialog = oDialog;
+								this._oFlightDialog.setModel(this.getView().getModel("airlineModel"));
+								this.getView().addDependent(this._oFlightDialog);
+								this._oFlightDialog.open();
+								oBtn.setBusy(false);
+								return this._oFlightDialog;
+							}.bind(this));
+						} else {
+							this._oFlightDialog.open();
+							oBtn.setBusy(false);
+						}
+					}).bind(this),
+					error: function () {
+					}
+				});
+
+			},
+
+			fnShowCrewPopUp: function (oEvent) {
+				var oInput = oEvent.getSource();
+				oInput.setBusy(true);
+
+				this.getOwnerComponent().getModel().read('/CrewSet', {
+					success: (function (oData) {
+						var oJSONModel = new JSONModel({items:oData.results});
+						// Set JSON model with a name (optional)
+						this.getView().setModel(oJSONModel, "crewModel");
+						this.getView().getModel("crewModel").refresh(true);
+						//this.getView().getModel("crewModel").setProperty("/items", oData.results);
+						if (!this._oCrewDialog) {
+							this._oCrewDialog = sap.ui.core.Fragment.load({
+								id: "fragmentCrew",
+								name: "fiori.bootcamp.airflightsystem.view.fragment.CrewList",
+								controller: this
+							}).then(function (oDialog) {
+								this._oCrewDialog = oDialog;
+								this._oCrewDialog.requestField = oInput;
+								this._oCrewDialog.setModel(this.getView().getModel("crewModel"));
+								this.getView().addDependent(this._oCrewDialog);
+								this._oCrewDialog.open();
+								oInput.setBusy(false);
+								return this._oCrewDialog;
+							}.bind(this));
+						} else {
+							this._oCrewDialog.requestField = oInput;
+							this._oCrewDialog.open();
+							oInput.setBusy(false);
+						}
+					}).bind(this),
+					error: function () {
+					}
+				});
+
+			},
+
+
 			getFlightList: function (oData, response) {
 				this.getView().setBusy(false);
 				var FlightValueHelp = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
@@ -561,13 +696,36 @@ sap.ui.define([
 			},
 
 			/*Airport code valuehelp*/
-			onRequestAirportCode: function (oEvent) {
-				this.oInput = oEvent.getSource();
-				var oModel = this.getOwnerComponent().getModel();
-				this.getView().setBusy(true);
-				oModel.read("/AirportSet", {
-					success: jQuery.proxy(this.getAirportList, this),
-					error: jQuery.proxy(this.getAirportListFailure, this)
+			fnRequestAirport: function (oEvent) {
+			   var oBtn = oEvent.getSource();
+				oBtn.setBusy(true);
+				this.getOwnerComponent().getModel().read('/AirportSet', {
+					success: (function (oData) {
+						var oJSONModel = new JSONModel(oData);
+						// Set JSON model with a name (optional)
+						this.getView().setModel(oJSONModel, "airportModel");
+						if (!this._oAirportDialog) {
+							this._oAirportDialog = sap.ui.core.Fragment.load({
+								id: "fragmentAirport",
+								name: "fiori.bootcamp.airflightsystem.view.fragment.AirportList",
+								controller: this
+							}).then(function (oDialog) {
+								this._oAirportDialog = oDialog;
+								this._oAirportDialog.setModel(this.getView().getModel("airportModel"));
+								this.getView().addDependent(this._oAirportDialog);
+								this._oAirportDialog.open();
+								oBtn.setBusy(false);
+								this._oAirportDialog.btnId = oBtn.getId();
+								return this._oAirportDialog;
+							}.bind(this));
+						} else {
+							this._oAirportDialog.open();
+							this._oAirportDialog.btnId = oBtn.getId();
+							oBtn.setBusy(false);
+						}
+					}).bind(this),
+					error: function () {
+					}
 				});
 
 			},
@@ -983,12 +1141,10 @@ sap.ui.define([
 
 			},*/
 			/*Cancel Booking - clear booking screen*/
-			/*onPressCancelBooking: function (oEvent) {
-				
+			fnBtnBack: function (oEvent) {
 				window.history.go(-1);
-
-			},*/
-			onAddCrew: function (oEvent) {
+			},
+			fnAddCrew: function (oEvent) {
 				this.getView().getModel("CrewModel").setProperty("/", this.getView().getModel("CrewModel").getProperty("/").concat({
 					"CrewId": "",
 					"LastName": "",
@@ -1052,15 +1208,15 @@ sap.ui.define([
 			},
 
 			fnBRequiredFields: function (oEntity) {
-				if (oEntity.CreationDate === '' || oEntity.CreationDate != undefined) {
+				if (oEntity.CreationDate === '' || oEntity.CreationDate === undefined) {
 					return true;
 				} else if (oEntity.AilineId === '' || oEntity.AilineId === undefined) {
 					return true;
 				} else if (oEntity.AirlineName === '' || oEntity.AirlineName === undefined) {
 					return true;
-				} else if (oEntity.FlightNo === '' || oEntity.FlightNo === undefined) {
+				} /*else if (oEntity.FlightNo === '' || oEntity.FlightNo === undefined) {
 					return true;
-				} else if (oEntity.DestinationAirportCode === '' || oEntity.DestinationAirportCode === undefined) {
+				} */else if (oEntity.DestinationAirportCode === '' || oEntity.DestinationAirportCode === undefined) {
 					return true;
 				} else if (oEntity.DestinationAirportName === '' || oEntity.DestinationAirportName === undefined) {
 					return true;
@@ -1100,6 +1256,62 @@ sap.ui.define([
 					if (sSelectedObjTo !== undefined) {
 						oModel.setProperty("/OriginAirportName", sSelectedObjTo.AirportName);
 					}
+				}
+			},
+
+			fnGetSelectedAirline: function () {
+				var oTable = Fragment.byId("fragmentFlight", "tblFlight");
+				var oSelectedItem = oTable.getSelectedItem();
+
+				if (oSelectedItem) {
+					var oContext = oSelectedItem.getBindingContext("airlineModel");
+					var sAilineId = this.getView().getModel('airlineModel').getProperty(oContext.getPath() + '/AilineId'),
+						sAirlineName = this.getView().getModel('airlineModel').getProperty(oContext.getPath() + '/HrtbAirportname');
+					this.getView().getModel().setProperty('/AilineId', sAilineId);
+					this.getView().getModel().setProperty('/AirlineName', sAirlineName);
+					this._oFlightDialog.close();
+				} else {
+					MessageToast.show("Please select an airline.");
+				}
+			},
+
+			fnGetSelectedAirport: function () {
+				var oList = Fragment.byId("fragmentAirport", "listAirports");
+				var oSelectedItem = oList.getSelectedItem();
+
+				if (oSelectedItem) {
+					var oContext = oSelectedItem.getBindingContext("airportModel");
+					var sAirportCode = this.getView().getModel('airportModel').getProperty(oContext.getPath() + '/AirportCode'),
+						sAirportName = this.getView().getModel('airportModel').getProperty(oContext.getPath() + '/AirportName');
+				    if(this._oAirportDialog.btnId.includes("oOriginAirport")){
+							this.getView().getModel().setProperty('/OriginAirportCode', sAirportCode);
+							this.getView().getModel().setProperty('/OriginAirportName', sAirportName);
+					}else{
+						this.getView().getModel().setProperty('/DestinationAirportCode', sAirportCode);
+						this.getView().getModel().setProperty('/DestinationAirportName', sAirportName);
+					}	
+					
+					this._oAirportDialog.close();
+				} else {
+					MessageToast.show("Please select an airport.");
+				}
+			},
+
+			fnGetSelectedCrew: function (oEvent) {
+               var oList = Fragment.byId("fragmentCrew", "crewList");
+				var oSelectedItem = oList.getSelectedItem();
+
+				if (oSelectedItem) {
+					var oContext = oSelectedItem.getBindingContext("crewModel"),
+					oCrew = this.getView().getModel('crewModel').getProperty(oContext.getPath()),
+					sPathCrewList = this._oCrewDialog.requestField.getBindingContext("CrewModel").getPath();
+					this.getView().getModel("CrewModel").setProperty(sPathCrewList + "/CrewId", oCrew.CrewId),
+					this.getView().getModel("CrewModel").setProperty(sPathCrewList + "/LastName", oCrew.LastName),
+					this.getView().getModel("CrewModel").setProperty(sPathCrewList + "/FirstName", oCrew.FirstName),
+					this.getView().getModel("CrewModel").setProperty(sPathCrewList + "/Role", oCrew.Role);
+					this._oCrewDialog.close();
+				} else {
+					MessageToast.show("Please select a crew.");
 				}
 			}
 		});

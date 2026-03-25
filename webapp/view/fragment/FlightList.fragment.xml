@@ -1,0 +1,67 @@
+<core:FragmentDefinition id="fragmentFlight" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:semantic="sap.f.semantic" 
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	>
+
+	<Dialog id="flightDialog" title="Details" contentWidth="100%">
+		<content>
+  <Table id="tblFlight"
+		inset="false"
+		mode="SingleSelectMaster"
+		items="{airlineModel>/results}">
+		<headerToolbar>
+			<OverflowToolbar>
+				<content>
+					<Title text="Airlines" level="H2"/>
+					<ToolbarSpacer />
+					<SearchField liveChange="fnOnSearch" width="80%"/>
+				</content>
+			</OverflowToolbar>
+		</headerToolbar>
+		<infoToolbar>
+			<OverflowToolbar>
+				<Label text="Airlines avaliable"/>
+			</OverflowToolbar>
+		</infoToolbar>
+		<columns>
+			<Column
+				>
+				<Text text="Airline Id" />
+				<dependents>
+					<!--<p:ColumnAIAction press="onAIActionPress"></p:ColumnAIAction>-->
+				</dependents>
+			</Column>
+			<Column
+				minScreenWidth="Tablet"
+				demandPopin="true">
+				<Text text="Country Name"/>
+			</Column>
+			<Column
+				minScreenWidth="Desktop"
+				demandPopin="true"
+				>
+				<Text text="Airlines Name" />
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem vAlign="Middle">
+				<cells>
+					<ObjectIdentifier
+						title="{airlineModel>AilineId}"
+						text="{airlineModel>MaxSeatcap}"/>
+					<Text
+						text="{airlineModel>CountryName}" />
+					<Text
+						text="{airlineModel>HrtbAirportname}" />
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+		</content>
+		<buttons>
+		    <Button text="Select" press="fnGetSelectedAirline" type="Emphasized"/>
+			<Button icon="sap-icon://action" type="Transparent" press="fnCloseAirlinesDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

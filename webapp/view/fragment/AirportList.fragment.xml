@@ -1,0 +1,52 @@
+<core:FragmentDefinition id="fragmentAirPort" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:semantic="sap.f.semantic" 
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	>
+
+	<Dialog id="airPortDialog" title="Details" contentWidth="100%">
+		<content>
+			<!--	<Page showHeader="false" >
+		<subHeader>
+			<OverflowToolbar>
+				<SearchField liveChange=".onSearch" width="80%" />
+			</OverflowToolbar>
+		</subHeader>-->
+		<VBox>
+  <!-- Search field -->
+  <SearchField
+    placeholder="Search items..."
+    liveChange="fnOnSearchAirport"
+    width="100%" />
+		<List
+			id="listAirports"
+			items="{airportModel>/results}"
+			mode="SingleSelectMaster"
+			growing="true"
+			growingThreshold="50"
+			includeItemInSelection="true">
+			<infoToolbar>
+				<OverflowToolbar visible="false">
+					<Label />
+				</OverflowToolbar>
+			</infoToolbar>
+			<StandardListItem
+				title="{airportModel>AirportName}"
+				description="{airportModel>AirportCode}"
+				icon="sap-icon://functional-location"
+				iconInset="false"
+				highlight="Success"
+				info="{airportModel>Country}"
+				infoState="Information"
+				infoStateInverted="true"
+				/>
+		</List>
+	<!--</Page>-->
+  </VBox>
+		</content>
+		<buttons>
+		    <Button text="Select" press="fnGetSelectedAirport" type="Emphasized"/>
+			<Button icon="sap-icon://action" type="Transparent" press="fnCloseAirportDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>
