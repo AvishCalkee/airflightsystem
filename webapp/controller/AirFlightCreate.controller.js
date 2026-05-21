@@ -26,6 +26,8 @@ sap.ui.define([
 
 			fnIntModel: function (oEvent) {
 
+				this.getView().setBusy(false);
+
 				var oModel = new JSONModel({
 					Destination: "",
 					Departure: "",
@@ -66,6 +68,9 @@ sap.ui.define([
 				var oDestinationModel = new JSONModel();
 				oDestinationModel.setData(this.getOwnerComponent().getModel("flightDestination_global_json_model").getData());
 				this.getView().setModel(oDestinationModel,'destinationLocalModel');
+				//Reinitialize crew model
+				var oJSONModel = new JSONModel();
+				this.getView().setModel(oJSONModel, "crewModel");
 
 			},
 
@@ -99,6 +104,7 @@ sap.ui.define([
 				delete FlightEntity.DestinationAirportName;
 				delete FlightEntity.DestinationCountries;
 				delete FlightEntity.AirlineName;
+				delete FlightEntity.FlightDuration;
 
 				//Remove offset errors
 				if (FlightEntity.ArrivalDateTime != undefined && FlightEntity.DepartureDateTime != undefined) {
@@ -139,18 +145,22 @@ sap.ui.define([
 							return response.data.__metadata.type === "ZGW_ZD_FLIGHTSYSTEM_SRV.Flight";
 						});
 						//Get the newly created entity's id
-						newFlightId = flightResponse.data.FlightId;
+						newFlightId = oSuccess[0].__batchResponses[0].__changeResponses[0].data.FlightId;
 					}
 
 					this.getView().setBusy(false);
-					MessageToast.show("Saved Successfully");
+					if(newFlightId === "" || newFlightId === undefined){		
+						MessageToast.show("Error occurred while creationg the flight.");
+					} else {
+						MessageToast.show("Saved Successfully");
+						//Navigate to details page
+						this.fnNavigateToDetailPage(newFlightId);
+					}
 
-					//Navigate to details page
-					this.fnNavigateToDetailPage(newFlightId);
 
 				}.bind(this),
 					function (oError) {
-						MessageToast.error("Error occured");
+						MessageToast.show("Error occured");
 					}.bind(this));
 
 			},
@@ -728,7 +738,7 @@ sap.ui.define([
 					}
 				});
 
-			},
+			}, /*
 			getAirportList: function (oData, response) {
 				this.getView().setBusy(false);
 				var AirportValueHelp = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
@@ -911,14 +921,15 @@ sap.ui.define([
 					}));
 				}
 				AirportValueHelp.setFilterBar(oFilterBar);
-			},
+			}, */
+			/*
 			getAirportListFailure: function (oError) {
 				this.getView().setBusy(false);
 				let oMessage = oError.message;
 				MessageBox.error(oMessage, {
 					title: "Error"
 				});
-			},
+			},*/
 
 			onRequestCrew: function (oEvent) {
 				this.oInput = oEvent.getSource();
@@ -930,6 +941,7 @@ sap.ui.define([
 				});
 
 			},
+			/*
 			getCrewList: function (oData, response) {
 				this.getView().setBusy(false);
 				var CrewValueHelp = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
@@ -1111,7 +1123,9 @@ sap.ui.define([
 					}));
 				}
 				CrewValueHelp.setFilterBar(oFilterBar);
-			},
+			},*/
+
+			/*
 			getCrewListFailure: function (oError) {
 				this.getView().setBusy(false);
 				let oMessage = oError.message;
@@ -1204,7 +1218,7 @@ sap.ui.define([
 			},*/
 			fnNavigateToDetailPage: function (newFlightId) {
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-				oRouter.navTo("AirFlightDetail", { DetailPath: "FlightSet('" + newFlightId + "')" });
+				oRouter.navTo("AirFlightDetail", { DetailPath: "FlightSet('" + newFlightId + "')" },true);
 			},
 
 			fnBRequiredFields: function (oEntity) {
@@ -1232,7 +1246,7 @@ sap.ui.define([
 				return false;
 			},
 
-			fnTrackChange: function (oEvent) {
+			fnTrackChange: function (oEvent,bCheckRequired) {
 				var oView = this.getView(),
 					oModel = oView.getModel(),
 					sSelectedKeyFrom = oModel.getProperty('/DestinationAirportCode'),
@@ -1241,6 +1255,10 @@ sap.ui.define([
 					sSelectedObjFrom = '',
 					sSelectedObjTo = '',
 					oI18n = this.getOwnerComponent().getModel("i18n");
+					if(oEvent !== undefined){
+						bCheckRequired = oEvent.getSource().data("checkRequired") === "true" ? true : false;
+					}
+
 
 				if (sSelectedKeyTo === sSelectedKeyFrom) {
 					// Display error message
@@ -1248,14 +1266,17 @@ sap.ui.define([
 					oView.getModel("UIModel").setProperty("/TravelState", "Error");
 				} else {
 					oView.getModel("UIModel").setProperty("/TravelState", "None");
-					sSelectedObjFrom = aAirport.find(obj => obj.AirportCode === sSelectedKeyFrom);
-					sSelectedObjTo = aAirport.find(obj => obj.AirportCode === sSelectedKeyTo);
-					if (sSelectedObjFrom !== undefined) {
-						oModel.setProperty("/DestinationAirportName", sSelectedObjFrom.AirportName);
+					if(bCheckRequired){
+						sSelectedObjFrom = aAirport.find(obj => obj.AirportCode === sSelectedKeyFrom);
+						sSelectedObjTo = aAirport.find(obj => obj.AirportCode === sSelectedKeyTo);
+						if (sSelectedObjFrom !== undefined) {
+							oModel.setProperty("/DestinationAirportName", sSelectedObjFrom.AirportName);
+						}
+						if (sSelectedObjTo !== undefined) {
+							oModel.setProperty("/OriginAirportName", sSelectedObjTo.AirportName);
+						}
 					}
-					if (sSelectedObjTo !== undefined) {
-						oModel.setProperty("/OriginAirportName", sSelectedObjTo.AirportName);
-					}
+					
 				}
 			},
 
@@ -1292,6 +1313,8 @@ sap.ui.define([
 					}	
 					
 					this._oAirportDialog.close();
+					this.fnTrackChange(undefined,false);
+
 				} else {
 					MessageToast.show("Please select an airport.");
 				}

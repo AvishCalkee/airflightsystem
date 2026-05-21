@@ -36,7 +36,7 @@
 					<f:formElements>
 						<f:FormElement label="{i18n>address}">
 							<f:fields>
-								<Input id="oAddress" value="{ToAirline/address}" type="Text" />
+								<Input id="oAddress" value="{ToAirline/Address}" type="Text" />
 							</f:fields>
 						</f:FormElement>
 
@@ -91,7 +91,14 @@
 					<f:formElements>
 						<f:FormElement label="{i18n>status}">
 							<f:fields>
-								<Input id="oStatus" value="{ToAirline/Status}" type="Text" />
+								<ComboBox class="sapUiSmallMarginBottom"
+									id="oCmbStatus"
+									loadItems="handleLoadItems"
+									valueState="{ parts:['ToAirline/Operstatus'], formatter: '.formatter.fnOperationStatusValueState' }"
+									selectedKey="{ToAirline/Operstatus}"
+									items="{operationStatusModel>/Statut}">
+					<core:ListItem key="{operationStatusModel>text}" text="{operationStatusModel>text}"/>
+				</ComboBox>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>maxSeat}">

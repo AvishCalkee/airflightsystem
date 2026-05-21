@@ -91,6 +91,19 @@ function (JSONModel, DateFormat) {
             var days = Math.floor(durationMs / (1000 * 60 * 60 * 24));
 
             return `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+        },
+
+        fnOperationStatusValueState: function (sStatus) {
+            switch (sStatus) {
+                case 'Active':
+                    return 'Success';
+                case 'InActive':
+                    return 'Warning';
+                case 'Suspended':
+                    return 'Error';
+                default:
+                    return 'None';
+            } 
         }
     };
 

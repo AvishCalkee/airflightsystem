@@ -1,0 +1,16 @@
+{
+    "Statut": [
+        {
+            "key": "1",
+            "text": "Active"
+        },
+        {
+            "key": "2",
+            "text": "InActive"
+        },
+        {
+            "key": "3",
+            "text": "Suspended"
+        }
+    ]
+}

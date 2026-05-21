@@ -38,6 +38,9 @@
 								 change="fnTrackChange"
 								 valueState="{UIModel>/TravelState}">
 								    <core:Item key="{oAirPort>AirportCode}" text="{oAirPort>Country}"/>
+									<customData>
+										<core:CustomData key="checkRequired" value="true"/>
+									</customData>
 								</ComboBox>
 								<core:Title/>
 								<Label text="{i18n>destinationTo}" required="true"/>
@@ -48,6 +51,10 @@
 								valueState="{UIModel>/TravelState}"
 								>
 								    <core:Item key="{oAirPort>AirportCode}" text="{oAirPort>Country}"/>
+									<customData>
+										<core:CustomData key="checkRequired" value="true"/>
+									</customData>
+
 								</ComboBox>
 							</f:content>
 						</f:SimpleForm>
@@ -80,17 +87,29 @@
 								<Input id="inptPlaneId" value="{FlightId}" showValueHelp="true" valueHelpRequest="fnShowFlightPopUp" visible="true"/>-->
                                 
 								<Label text="{i18n>arrivalAirportCode}" required="true"/>
-								<Input id="oOriginAirport" value="{OriginAirportCode}" valueState="{UIModel>/TravelState}" showValueHelp="true" valueHelpRequest="fnRequestAirport"  change="fnTrackChange" visible="true"/>
+								<Input id="oOriginAirport" value="{OriginAirportCode}" valueState="{UIModel>/TravelState}" showValueHelp="true" valueHelpRequest="fnRequestAirport"  change="fnTrackChange" visible="true">
+									
+									<customData>
+										<core:CustomData key="checkRequired" value="true"/>
+									</customData>
+
+								</Input>
 
 								<Label text="{i18n>arrivalAirportName}" required="true"/>
-								<Input value="{OriginAirportName}"/>
+								<Input value="{OriginAirportName}" editable="false"/>
 
 								<core:Title text=""/>
 								<Label text="{i18n>desAirportCode}" required="true"/>
-								<Input id="oDestinationAirport" value="{DestinationAirportCode}" valueState="{UIModel>/TravelState}"  showValueHelp="true" showSuggestion="true" valueHelpRequest="fnRequestAirport"  change="fnTrackChange" visible="true"/>
+								<Input id="oDestinationAirport" value="{DestinationAirportCode}" valueState="{UIModel>/TravelState}"  showValueHelp="true" showSuggestion="true" valueHelpRequest="fnRequestAirport"  change="fnTrackChange" visible="true">
+								  <customData>
+										<core:CustomData key="checkRequired" value="true"/>
+									</customData>
+								</Input>
+
+									
 
 								<Label text="{i18n>desAirportName}" required="true"/>
-								<Input value="{DestinationAirportName}"/>
+								<Input value="{DestinationAirportName}" editable="false"/>
 
 								<Label text="{i18n>departureDate}" required="true"/>
 								<!--><DatePicker id="idFlighteDateTime" value="{ 'path':'Booking>/DepartureDateTime', 'type':'sap.ui.model.type.DateTime' }" change="onHandleDateChange" class="sapUiSmallMarginBottom"/><-->

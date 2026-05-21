@@ -37,7 +37,7 @@
 					<f:formElements>
 						<f:FormElement label="{i18n>address}">
 							<f:fields>
-								<Text text="{ToAirline/address}" />
+								<Text text="{ToAirline/Address}" />
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>number}">
@@ -90,7 +90,7 @@
 					<f:formElements>
 						<f:FormElement label="{i18n>status}">
 							<f:fields>
-								<Text text="{ToAirline/Status}" />
+								<Text text="{ToAirline/Operstatus}" />
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="{i18n>maxSeat}">

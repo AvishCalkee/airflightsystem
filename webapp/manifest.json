@@ -24,6 +24,10 @@
         "uri": "valueHelp/DestinationCountries.json",
         "type": "JSON"
       },
+      "OperationalStatut_json_model_data_source": {
+        "uri": "valueHelp/OperationalStatut.json",
+        "type": "JSON"
+      },
       "annotation0": {
         "type": "ODataAnnotation",
         "uri": "annotation/annotation0.xml",
@@ -97,6 +101,10 @@
       "flightDestination_global_json_model": {
         "type": "sap.ui.model.json.JSONModel",
         "dataSource": "FlightDestination_json_model_data_source"
+      },
+      "operationStatus_global_json_model": {
+        "type": "sap.ui.model.json.JSONModel",
+        "dataSource": "OperationalStatut_json_model_data_source"
       },
 
       "": {

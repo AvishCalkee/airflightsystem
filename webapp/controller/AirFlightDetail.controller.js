@@ -20,7 +20,15 @@ sap.ui.define([
                 this.getView().setModel(new JSONModel(),'EditPassengerList');
                 var eventBus = this.getOwnerComponent().getEventBus();
                 eventBus.subscribe("channelAirFlight", "BusyModifButton", this.fnBusyModifButton, this);
+
+                var oOperationStatusModel = new JSONModel();
+				oOperationStatusModel.setData(this.getOwnerComponent().getModel("operationStatus_global_json_model").getData());
+				this.getView().setModel(oOperationStatusModel,'operationStatusModel');
             },
+
+            handleLoadItems: function(oControlEvent) {
+			oControlEvent.getSource().getBinding("items").resume();
+		},
 
             fnBusyModifButton: function (sChannel, sEvent, oData) {
                 let oUIModel = this.getView().getModel("UIModel");
@@ -50,9 +58,6 @@ sap.ui.define([
                             oView.getModel("UIModel").setProperty("/modifBtnBusy", true);
                         },
                         dataReceived: function (result) {
-                            let oFlightData = result.getParameter("data");
-                            // Safely check if FlightDuration exists and has milliseconds
-                            //let flightDurationMs = oFlightData.FlightDuration && oFlightData.FlightDuration.ms ? oFlightData.FlightDuration.ms : 0;
                             oView.getModel("UIModel").setProperty("/iCountDataReceived", oView.getModel("UIModel").getProperty("/iCountDataReceived") + 1);
                             this.getOwnerComponent().getEventBus().publish("channelAirFlight", "BusyModifButton", oView);
                             oView.setBusy(false);
@@ -60,6 +65,7 @@ sap.ui.define([
 
                         change: function (oData) {
                             oView.setBusy(false);
+                            oView.byId('viewPassengerList').getController().onRefreshTableContent()
                         }
 
                     }
@@ -81,16 +87,6 @@ sap.ui.define([
                 this.getView().getModel("UIModel").setProperty("/iOccupationPercentage", iPercentageBook);
             },
 
-            _fnConvertMsToTime: function (duration) {
-
-                let seconds = Math.floor((duration / 1000) % 60),
-                    minutes = Math.floor((duration / (1000 * 60)) % 60),
-                    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-
-                return (hours < 10 ? "0" + hours : hours) + ":" +
-                    (minutes < 10 ? "0" + minutes : minutes) + ":" +
-                    (seconds < 10 ? "0" + seconds : seconds);
-            },
             onPressGoToAirportWebsite: function (oEvent) {
                 // window.location.href = "https://ui5.sap.com";
                 sap.m.URLHelper.redirect("https://ui5.sap.com", true);
@@ -336,34 +332,6 @@ sap.ui.define([
                 this.getView().byId("stPassengerList").rebindTable()
             },
 
-            _fnCallBaggageSet: function () {
-
-                let oModel = this.getOwnerComponent().getModel();
-                //let sPath = "/BaggageSet";  
-                let aTable = [];
-                this.getView().getModel("BaggageModel").setProperty("/items", []);
-
-                oModel.read("/BaggageSet", {
-                    success: function (oData, response) {
-
-                        let oResults = oData.results;
-                        if (oResults.length > 0) {
-
-                            for (let eachItemsObject of oResults) {
-                                let { BagWeight, PassengerId, BaggageId } = eachItemsObject;
-                                let oModel = { BagWeight, PassengerId, BaggageId };
-                                aTable.push(oModel);
-                            }
-                            this.getView().getModel("BaggageModel").setProperty("/items", aTable);
-                            this.getView().getModel("BaggageModel").refresh(true);
-                        }
-
-                    }.bind(this),
-                    error: function (oError) {
-                        console.error("Error retrieving data", oError);
-                    }
-                });
-            },
 
             onViewCrewList: function (oButton) {
                 let oModel = this.getView().getModel();
